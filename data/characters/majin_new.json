@@ -1,8 +1,14 @@
 {
     "version": "1.0.0",
+<<<<<<<< Updated upstream:data/characters/majin_new.json
     "name": "Majin Sonic (New-OG)",
     "assetPath": "characters/MajinOG",
     "singTime": 6,
+========
+    "name": "Boyfriend (Final Escape - Sonic.exe's Hand)",
+    "assetPath": "characters/beef",
+    "singTime": 4,
+>>>>>>>> Stashed changes:data/characters/beef.json
     "isPixel": false,
     "scale": 1,
     "healthIcon": {

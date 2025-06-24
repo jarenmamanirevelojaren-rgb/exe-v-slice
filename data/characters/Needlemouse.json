@@ -1,0 +1,92 @@
+{
+	"version": "1.0.0",
+	"renderType": "sparrow",
+	"offsets": [
+		0,
+		0
+	],
+	"danceEvery": 1,
+	"scale": 1.2,
+	"name": "Needlemouse",
+	"flipX": false,
+	"cameraOffsets": [
+		0,
+		0
+	],
+	"isPixel": false,
+	"singTime": 4,
+	"startingAnimation": "idle",
+	"healthIcon": {
+		"offsets": [
+			0,
+			0
+		],
+		"isPixel": false,
+		"scale": 1,
+		"id": "needlemouse",
+		"flipX": false
+	},
+	"assetPath": "characters/Needlemouse",
+	"animations": [
+		{
+			"flipY": false,
+			"offsets": [
+				-191,
+				-289
+			],
+			"frameRate": 24,
+			"prefix": "Needlemouse_IDLE",
+			"flipX": false,
+			"looped": false,
+			"name": "idle"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				40,
+				-268
+			],
+			"frameRate": 24,
+			"prefix": "Needlemouse_LEFT",
+			"flipX": false,
+			"looped": false,
+			"name": "singLEFT"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				-187,
+				-258
+			],
+			"frameRate": 24,
+			"prefix": "Needlemouse_RIGHT",
+			"flipX": false,
+			"looped": false,
+			"name": "singRIGHT"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				-183,
+				-104
+			],
+			"frameRate": 24,
+			"prefix": "Needlemouse_UP",
+			"flipX": false,
+			"looped": false,
+			"name": "singUP"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				-70,
+				-263
+			],
+			"frameRate": 24,
+			"prefix": "Needlemouse_DOWN",
+			"flipX": false,
+			"looped": false,
+			"name": "singDOWN"
+		}
+	]
+}

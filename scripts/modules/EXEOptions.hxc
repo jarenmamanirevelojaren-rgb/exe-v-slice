@@ -37,6 +37,12 @@ class EXEOptions extends Module
     public var cameramove:Bool = true;
     public var dolyrics:Bool = true;
     public var forcemiddlescroll:Bool = true;
+<<<<<<< Updated upstream
+=======
+    public var modcharts:Bool = true;
+    public var exehud:Bool = true;
+    public var hpcolors:Bool = true;
+>>>>>>> Stashed changes
     public var cameramoveIntensity:Int = 20; // New: Intensity value
 
     function bindSave(){
@@ -60,7 +66,14 @@ class EXEOptions extends Module
         if(save.data.cameramove == null) save.data.cameramove = true;
         if(save.data.dolyrics == null) save.data.dolyrics = true;
         if(save.data.forcemiddlescroll == null) save.data.forcemiddlescroll = true;
+<<<<<<< Updated upstream
         if(save.data.cameramoveIntensity == null) save.data.cameramoveIntensity = 20; // New: default intensity
+=======
+        if(save.data.modcharts == null) save.data.modcharts = true;
+        if(save.data.exehud == null) save.data.exehud = true;
+        if(save.data.hpcolors == null) save.data.hpcolors = true;
+        if(save.data.cameramoveIntensity == null) save.data.cameramoveIntensity = 20;
+>>>>>>> Stashed changes
 
         fatalpopups = save.data.fatalpopups;
         screenstatic = save.data.screenstatic;
@@ -70,6 +83,12 @@ class EXEOptions extends Module
         dolyrics = save.data.dolyrics;
         forcemiddlescroll = save.data.forcemiddlescroll;
         cameramoveIntensity = save.data.cameramoveIntensity; // New: load intensity
+<<<<<<< Updated upstream
+=======
+        modcharts = save.data.modcharts;
+        exehud = save.data.exehud;
+        hpcolors = save.data.hpcolors;
+>>>>>>> Stashed changes
 
         closeSave();
     }
@@ -88,7 +107,21 @@ class EXEOptions extends Module
             prefs.items.createItem(120, 120 * prefs.items.length + 30, "VERSUS SONIC.EXE:", "bold", () -> false); // Separate options from the default preferences OR modded preferences.
 			prefs.preferenceDesc.push(""); // Prevent null errors.
 
+<<<<<<< Updated upstream
             prefs.createPrefItemCheckbox("Note Camera Movement", "Makes the camera move depending on note-hit direction. \nUsed in all songs.", function(value) {
+=======
+            prefs.createPrefItemCheckbox("RETRO SONIC HUD", "Enables the RETRO SONIC HUD for all songs.", function(value) {
+                save.data.exehud = value;
+                exehud = value;
+            }, save.data.exehud);
+
+            prefs.createPrefItemCheckbox("Icon Colored Healthbar", "Colors the healthbar based on the color of the icons. \nNote: Disabling requires restart", function(value) {
+                save.data.hpcolors = value;
+                hpcolors = value;
+            }, save.data.hpcolors);
+
+            prefs.createPrefItemCheckbox("Note Camera Movement", "Makes the camera move depending on the direction of the note you hit.", function(value) {
+>>>>>>> Stashed changes
                 save.data.cameramove = value;
                 cameramove = value;
             }, save.data.cameramove);
@@ -113,12 +146,20 @@ class EXEOptions extends Module
                 dolyrics = value;
             }, save.data.dolyrics);
 
+<<<<<<< Updated upstream
             prefs.createPrefItemCheckbox("Jumpscares", "Enables jumpscares for certain songs. \nUsed in: Too Slow, Triple Trouble", function(value) {
+=======
+            prefs.createPrefItemCheckbox("Jumpscares", "Enables jumpscares for certain songs.", function(value) {
+>>>>>>> Stashed changes
                 save.data.dojumpscares = value;
                 dojumpscares = value;
             }, save.data.dojumpscares);
 
+<<<<<<< Updated upstream
             prefs.createPrefItemCheckbox("Screen Static", "Enables the static overlay that appears throughout certain songs. \nUsed in: Too Slow, You Can't Run", function(value) {
+=======
+            prefs.createPrefItemCheckbox("Screen Static", "Enables the static overlay that appears throughout certain songs.", function(value) {
+>>>>>>> Stashed changes
                 save.data.screenstatic = value;
                 screenstatic = value;
             }, save.data.screenstatic);
@@ -128,12 +169,25 @@ class EXEOptions extends Module
                 fatalpopups = value;
             }, save.data.fatalpopups);
 
+<<<<<<< Updated upstream
             prefs.createPrefItemCheckbox("Screen Ratio Editing", "Allows certain songs to adjust the screen width. \nUsed in: Fatality", function(value) {
+=======
+            prefs.createPrefItemCheckbox("Force RETRO Aspect Ratio", "Allows certain songs to adjust the aspect ratio to be more in line with that of an old console game.", function(value) {
+>>>>>>> Stashed changes
                 save.data.screenratio = value;
                 screenratio = value;
             }, save.data.screenratio);
 
+<<<<<<< Updated upstream
             prefs.createPrefItemCheckbox("Forceable Middlescroll", "Allows certain songs to force the middlescroll mechanic. \nUsed in: Fatality", function(value) {
+=======
+            prefs.createPrefItemCheckbox("Mod Charts", "Allows certain songs to modify the Player or Opponent's strumlines.", function(value) {
+                save.data.modcharts = value;
+                modcharts = value;
+            }, save.data.modcharts);
+
+            prefs.createPrefItemCheckbox("Force Middlescroll", "Allows certain songs to force the middlescroll mechanic.", function(value) {
+>>>>>>> Stashed changes
                 save.data.forcemiddlescroll = value;
                 forcemiddlescroll = value;
             }, save.data.forcemiddlescroll);

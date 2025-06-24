@@ -1,0 +1,270 @@
+import funkin.play.PlayState;
+import funkin.play.event.ScriptedSongEvent;
+import funkin.play.notes.Strumline;
+import funkin.play.notes.StrumlineNote;
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+import funkin.modding.module.ModuleHandler;
+
+/**
+ * Event that makes the strumline notes spin, similar to Majin spin
+ * 
+ * Parameters:
+ * - target: Which strumline to spin (player, opponent, both)
+ * - direction: Spin direction (clockwise, counter-clockwise)
+ * - spins: Number of full rotations (default: 1)
+ * - duration: Duration of the spin in seconds (default: 0.35)
+ * - easing: Easing function to use (default: quartOut)
+ */
+class StrumlineSpin extends ScriptedSongEvent {
+    
+    // Static variables to track spinning state
+    static var isSpinning:Bool = false;
+    static var spinTweens:Array<FlxTween> = [];
+    
+    public function new() {
+        super('Strumline Spin');
+    }
+    
+    public override function handleEvent(data) {
+        if (PlayState.instance == null || PlayState.instance.currentStage == null) return;
+        if (PlayState.instance.isMinimalMode) return;
+        
+        // Check if mod charts are enabled
+        var modChartsEnabled = ModuleHandler.getModule("EXEOptions").scriptGet("modcharts");
+        if (!modChartsEnabled) return; // Don't spin if mod charts are disabled
+        
+        // Prevent multiple spins at once
+        if (isSpinning) return;
+        
+        // Parse parameters with better null checking
+        var target:String = 'both';
+        var direction:String = 'clockwise';
+        var spins:Int = 1;
+        var duration:Float = 0.35;
+        var easing:String = 'quartOut';
+        
+        if (data.value != null) {
+            if (data.value.target != null) target = data.value.target;
+            if (data.value.direction != null) direction = data.value.direction;
+            if (data.value.spins != null) {
+                spins = Std.parseInt(Std.string(data.value.spins));
+                // Clamp spins to safe range
+                if (spins == null || spins < 1) spins = 1;
+                if (spins > 5) spins = 5; // Reduced max to prevent crashes
+            }
+            if (data.value.duration != null) {
+                duration = data.value.duration;
+                // Clamp duration to safe range
+                if (duration < 0.1) duration = 0.1;
+                if (duration > 3.0) duration = 3.0;
+            }
+            if (data.value.easing != null) easing = data.value.easing;
+        }
+        
+        // Convert direction to multiplier
+        var directionMultiplier = (direction == 'counter-clockwise') ? -1 : 1;
+        
+        // Calculate target angle
+        var targetAngle = 360.0 * spins * directionMultiplier;
+        
+        // Get easing function
+        var easingFunc = getEasingFunction(easing);
+        
+        // Clear any existing tweens first
+        clearAllTweens();
+        
+        // Start spinning
+        isSpinning = true;
+        
+        // Spin the appropriate strumlines
+        switch(target) {
+            case 'player':
+                spinStrumline(PlayState.instance.playerStrumline, targetAngle, duration, easingFunc);
+            case 'opponent':
+                spinStrumline(PlayState.instance.opponentStrumline, targetAngle, duration, easingFunc);
+            case 'both':
+                spinStrumline(PlayState.instance.playerStrumline, targetAngle, duration, easingFunc);
+                spinStrumline(PlayState.instance.opponentStrumline, targetAngle, duration, easingFunc);
+        }
+        
+        // Safety check - if no tweens were created, reset spinning state
+        if (spinTweens.length == 0) {
+            isSpinning = false;
+        }
+    }
+    
+    function clearAllTweens() {
+        // Cancel any existing tweens
+        for (tween in spinTweens) {
+            if (tween != null) {
+                tween.cancel();
+            }
+        }
+        spinTweens = [];
+    }
+    
+    function spinStrumline(strumline:Strumline, targetAngle:Float, duration:Float, easingFunc:Dynamic) {
+        if (strumline == null || strumline.strumlineNotes == null) return;
+        
+        // Spin each strumline note
+        var noteCount = strumline.strumlineNotes.length;
+        for (i in 0...noteCount) {
+            var note = strumline.strumlineNotes.members[i];
+            if (note != null && note.exists) {
+                var tween = FlxTween.tween(note, {angle: targetAngle}, duration, {
+                    ease: easingFunc,
+                    onComplete: function(tween:FlxTween) {
+                        // Safety check before resetting angle
+                        if (note != null && note.exists) {
+                            note.angle = 0;
+                        }
+                        
+                        // Remove tween from tracking array
+                        spinTweens.remove(tween);
+                        
+                        // Check if all tweens are complete
+                        if (spinTweens.length == 0) {
+                            isSpinning = false;
+                        }
+                    }
+                });
+                
+                // Track the tween
+                if (tween != null) {
+                    spinTweens.push(tween);
+                }
+            }
+        }
+    }
+    
+    function getEasingFunction(easingName:String):Dynamic {
+        return switch(easingName) {
+            case 'linear': FlxEase.linear;
+            case 'quadIn': FlxEase.quadIn;
+            case 'quadOut': FlxEase.quadOut;
+            case 'quadInOut': FlxEase.quadInOut;
+            case 'cubeIn': FlxEase.cubeIn;
+            case 'cubeOut': FlxEase.cubeOut;
+            case 'cubeInOut': FlxEase.cubeInOut;
+            case 'quartIn': FlxEase.quartIn;
+            case 'quartOut': FlxEase.quartOut;
+            case 'quartInOut': FlxEase.quartInOut;
+            case 'quintIn': FlxEase.quintIn;
+            case 'quintOut': FlxEase.quintOut;
+            case 'quintInOut': FlxEase.quintInOut;
+            case 'smoothStepIn': FlxEase.smoothStepIn;
+            case 'smoothStepOut': FlxEase.smoothStepOut;
+            case 'smoothStepInOut': FlxEase.smoothStepInOut;
+            case 'sineIn': FlxEase.sineIn;
+            case 'sineOut': FlxEase.sineOut;
+            case 'sineInOut': FlxEase.sineInOut;
+            case 'bounceIn': FlxEase.bounceIn;
+            case 'bounceOut': FlxEase.bounceOut;
+            case 'bounceInOut': FlxEase.bounceInOut;
+            case 'circIn': FlxEase.circIn;
+            case 'circOut': FlxEase.circOut;
+            case 'circInOut': FlxEase.circInOut;
+            case 'expoIn': FlxEase.expoIn;
+            case 'expoOut': FlxEase.expoOut;
+            case 'expoInOut': FlxEase.expoInOut;
+            case 'backIn': FlxEase.backIn;
+            case 'backOut': FlxEase.backOut;
+            case 'backInOut': FlxEase.backInOut;
+            case 'elasticIn': FlxEase.elasticIn;
+            case 'elasticOut': FlxEase.elasticOut;
+            case 'elasticInOut': FlxEase.elasticInOut;
+            default: FlxEase.quartOut; // Default fallback
+        }
+    }
+    
+    public override function getEventSchema() {
+        return [
+            {
+                name: "target",
+                title: "Target Strumline",
+                type: "enum",
+                defaultValue: "both",
+                keys: [
+                    "Player" => "player",
+                    "Opponent" => "opponent", 
+                    "Both" => "both"
+                ]
+            },
+            {
+                name: "direction",
+                title: "Spin Direction",
+                type: "enum",
+                defaultValue: "clockwise",
+                keys: [
+                    "Clockwise" => "clockwise",
+                    "Counter-Clockwise" => "counter-clockwise"
+                ]
+            },
+            {
+                name: "spins",
+                title: "Number of Spins",
+                type: "enum",
+                defaultValue: "1",
+                keys: [
+                    "1 Spin" => "1",
+                    "2 Spins" => "2",
+                    "3 Spins" => "3",
+                    "4 Spins" => "4",
+                    "5 Spins" => "5"
+                ]
+            },
+            {
+                name: "duration",
+                title: "Duration (seconds)",
+                type: "float",
+                defaultValue: 0.35,
+                min: 0.1,
+                max: 3.0
+            },
+            {
+                name: "easing",
+                title: "Easing Function",
+                type: "enum",
+                defaultValue: "quartOut",
+                keys: [
+                    "Linear" => "linear",
+                    "Quad In" => "quadIn",
+                    "Quad Out" => "quadOut",
+                    "Quad In/Out" => "quadInOut",
+                    "Cube In" => "cubeIn",
+                    "Cube Out" => "cubeOut",
+                    "Cube In/Out" => "cubeInOut",
+                    "Quart In" => "quartIn",
+                    "Quart Out" => "quartOut",
+                    "Quart In/Out" => "quartInOut",
+                    "Quint In" => "quintIn",
+                    "Quint Out" => "quintOut",
+                    "Quint In/Out" => "quintInOut",
+                    "Sine In" => "sineIn",
+                    "Sine Out" => "sineOut",
+                    "Sine In/Out" => "sineInOut",
+                    "Bounce In" => "bounceIn",
+                    "Bounce Out" => "bounceOut",
+                    "Bounce In/Out" => "bounceInOut",
+                    "Circ In" => "circIn",
+                    "Circ Out" => "circOut",
+                    "Circ In/Out" => "circInOut",
+                    "Expo In" => "expoIn",
+                    "Expo Out" => "expoOut",
+                    "Expo In/Out" => "expoInOut",
+                    "Back In" => "backIn",
+                    "Back Out" => "backOut",
+                    "Back In/Out" => "backInOut",
+                    "Elastic In" => "elasticIn",
+                    "Elastic Out" => "elasticOut",
+                    "Elastic In/Out" => "elasticInOut"
+                ]
+            }
+        ];
+    }
+    
+    public override function getTitle() {
+        return "Strumline Spin";
+    }
+}

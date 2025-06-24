@@ -43,6 +43,16 @@ class HillZone extends Stage
 	var sonicJump:FunkinSprite;
 	var topBorder:FlxSprite;
 	var bottomBorder:FlxSprite;
+	
+	var originalStrumlineX:Float = 0;
+	var originalStrumlineY:Float = 0;
+	var strumlinePositionSet:Bool = false;
+	
+	var originalOpponentStrumlineX:Float = 0;
+	var originalOpponentStrumlineY:Float = 0;
+	var opponentStrumlinePositionSet:Bool = false;
+
+	var doStrumlineWiggle:Bool = false;
 
 	override function onCreate(event:ScriptEvent):Void
 	{
@@ -95,8 +105,8 @@ class HillZone extends Stage
 			}
 
 			// The "Cinematics"
-			topBorder = new FlxSprite(0, 0).makeGraphic(FlxG.width, 50, 0xFF000000);
-			bottomBorder = new FlxSprite(0, FlxG.height - 50).makeGraphic(FlxG.width, 50, 0xFF000000);
+			topBorder = new FlxSprite(0, -50).makeGraphic(FlxG.width, 50, 0xFF000000);
+			bottomBorder = new FlxSprite(0, FlxG.height - 0).makeGraphic(FlxG.width, 50, 0xFF000000);
 			topBorder.scale.set(5, 5);
 			bottomBorder.scale.set(5, 5);
 	
@@ -117,6 +127,71 @@ class HillZone extends Stage
 		super.buildStage();
 	}
 
+	override function onUpdate(event:UpdateScriptEvent):Void
+	{
+		super.onUpdate(event);
+
+		modChartsEnabled = ModuleHandler.getModule("EXEOptions").scriptGet("modcharts");
+
+		// Make the player strumline wiggle and wave
+		if (doStrumlineWiggle && modChartsEnabled && game != null && game.playerStrumline != null)
+		{
+			// Store original position on first frame
+			if (!strumlinePositionSet)
+			{
+				originalStrumlineX = game.playerStrumline.x;
+				originalStrumlineY = game.playerStrumline.y;
+				strumlinePositionSet = true;
+			}
+			
+			var wiggleAmount = 15; // Adjust this value to control wiggle intensity
+			var wiggleSpeed = 3; // Adjust this value to control wiggle speed
+			var waveAmount = 8; // Subtle wavy effect intensity
+			var waveSpeed = 1.5; // Slower wave speed for subtlety
+			var time = Conductor.instance.songPosition / 1000; // Convert to seconds
+			
+			// Apply wiggle as offset from original position
+			var wiggleX = Math.sin(time * wiggleSpeed) * wiggleAmount;
+			var wiggleY = Math.cos(time * wiggleSpeed * 0.8) * (wiggleAmount * 0.6);
+			
+			// Add subtle wavy effect with different frequency
+			var waveX = Math.sin(time * waveSpeed * 2) * waveAmount * 0.5;
+			var waveY = Math.sin(time * waveSpeed) * waveAmount;
+			
+			game.playerStrumline.x = originalStrumlineX + wiggleX + waveX;
+			game.playerStrumline.y = originalStrumlineY + wiggleY + waveY;
+		}
+		
+		// Make the opponent strumline wiggle and wave
+		if (doStrumlineWiggle && modChartsEnabled && game != null && game.opponentStrumline != null)
+		{
+			// Store original position on first frame
+			if (!opponentStrumlinePositionSet)
+			{
+				originalOpponentStrumlineX = game.opponentStrumline.x;
+				originalOpponentStrumlineY = game.opponentStrumline.y;
+				opponentStrumlinePositionSet = true;
+			}
+			
+			var wiggleAmount = 15; // Adjust this value to control wiggle intensity
+			var wiggleSpeed = 3; // Adjust this value to control wiggle speed
+			var waveAmount = 8; // Subtle wavy effect intensity
+			var waveSpeed = 1.5; // Slower wave speed for subtlety
+			var time = Conductor.instance.songPosition / 1000; // Convert to seconds
+			
+			// Apply wiggle as offset from original position
+			var wiggleX = Math.sin(time * wiggleSpeed) * wiggleAmount;
+			var wiggleY = Math.cos(time * wiggleSpeed * 0.8) * (wiggleAmount * 0.6);
+			
+			// Add subtle wavy effect with different frequency (slightly offset for variation)
+			var waveX = Math.sin((time + 0.5) * waveSpeed * 2) * waveAmount * 0.5;
+			var waveY = Math.sin((time + 0.3) * waveSpeed) * waveAmount;
+			
+			game.opponentStrumline.x = originalOpponentStrumlineX + wiggleX + waveX;
+			game.opponentStrumline.y = originalOpponentStrumlineY + wiggleY + waveY;
+		}
+	}
+
 	function onStepHit(event:SongTimeScriptEvent):Void
 	{
 		super.onStepHit(event);
@@ -132,7 +207,11 @@ class HillZone extends Stage
 				}
 			});
 		}
+<<<<<<< Updated upstream
 		if (game.currentSong.id.toLowerCase() == "too-slow" && event.step == 763 && game.currentVariation != "encore")
+=======
+		if (game.currentSong.id.toLowerCase() == "too-slow" && event.step == 760 && game.currentVariation != "encore")
+>>>>>>> Stashed changes
 		{
 			FlxG.camera.flash(0xFFFF0000, 1);    
 		}
@@ -165,6 +244,10 @@ class HillZone extends Stage
 				}
 			});
 			FlxTween.tween(game.camHUD, { alpha: 1 }, 1);
+<<<<<<< Updated upstream
+=======
+			doStrumlineWiggle = true; 
+>>>>>>> Stashed changes
 		}
 		if (game.currentSong.id.toLowerCase() == "too-slow" && event.step == 1472 && enableJumpscare && game.currentVariation != "encore")
 		{

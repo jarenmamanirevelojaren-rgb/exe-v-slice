@@ -44,9 +44,9 @@ class PhantomNote extends Module {
 		if (drainTimer == null) return; // Prevent an error
 		drainTimer.start(0.2, function(timer:FlxTimer):Void {
 			PlayState.instance.health = Math.max(0.01, PlayState.instance.health - drainRate); // Drain health but ensure it doesn't go below 0.01.
-			if (PlayState.instance.health <= 0.01) { // Stop draining at minimum HP.
-				if (drainTimer != null) {
-				    drainTimer.stop();
+			if (PlayState.instance.health <= 0.01) {
+				if (drainTimer != null && drainTimer.active) { // Prevent null errors by making sure it's only stopping a timer that is active
+				    drainTimer.cancel();
 				}
 			}
 		}, 50);

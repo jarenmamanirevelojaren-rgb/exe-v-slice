@@ -100,7 +100,11 @@ class FatalZone extends Stage
 
 	function createPopup():Void
 	{
+<<<<<<< Updated upstream
 		if (enableFatalPopups) {
+=======
+		if (enableFatalPopups && !PlayState.instance.isGamePaused) {
+>>>>>>> Stashed changes
 			var popup = FunkinSprite.create(
 				FlxG.random.float(0, FlxG.width - 400), // Random X position, adjusted for popup width
 				FlxG.random.float(0, FlxG.height - 300) // Random Y position, adjusted for popup height

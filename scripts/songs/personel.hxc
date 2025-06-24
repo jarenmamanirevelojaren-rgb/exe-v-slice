@@ -1,0 +1,37 @@
+import flixel.util.FlxTimer;
+import funkin.play.Countdown;
+import funkin.play.PlayState;
+import funkin.play.song.Song;
+import funkin.modding.events.ScriptEvent;
+
+// Check the other script in scripts/stages/xenoStage for the stage prop editing, everything else is done here.
+
+class PersonelSong extends Song {
+    var game;
+
+    public function new() {
+        super("personel");
+    }
+
+    override function onCreate(event:ScriptEvent):Void {
+
+
+        game = PlayState.instance;
+
+        super.onCreate(event);
+
+
+    }
+
+	public override function onCountdownStart(event:CountdownScriptEvent):Void
+	{
+		super.onCountdownStart(event);
+
+        new FlxTimer().start(0.000001, function(tmr)
+        {
+            Countdown.skipCountdown();
+        });
+	}
+
+}
+

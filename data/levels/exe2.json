@@ -1,10 +1,10 @@
 {
   "version": "1.0.0",
-  "name": "ROUND 2 (FREEPLAY)",
-  "titleAsset": "storymenu/titles/round2",
+  "name": "FUN IS INFINITE / VS MAJIN SONIC",
+  "titleAsset": "storymenu/titles/majin",
   "props": [
     {
-      "assetPath": "storymenu/props/menu_fplaycoldsteel",
+      "assetPath": "storymenu/props/menu_majin",
       "scale": 1.05,
       "offsets": [0, 61],
       "animations": [
@@ -17,5 +17,9 @@
     }
   ],
   "background": "#F9CF51",
+<<<<<<< Updated upstream:data/levels/exeround2.json
   "songs": ["endless", "cycles", "faker", "black-sun", "fatality"]
+=======
+  "songs": ["endless"]
+>>>>>>> Stashed changes:data/levels/exe2.json
 }

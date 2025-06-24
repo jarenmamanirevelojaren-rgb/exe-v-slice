@@ -11,6 +11,17 @@
         "flipX": false,
         "scale": 1
     },
+<<<<<<<< Updated upstream:data/characters/majin.json
+========
+    "offsets": [
+        -365,
+        -50
+    ],
+    "cameraOffsets": [
+        -140,
+        -80
+    ],
+>>>>>>>> Stashed changes:data/characters/xenofinal.json
     "animations": [
         {
             "name": "singLEFT",

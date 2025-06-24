@@ -1,50 +1,424 @@
 import flixel.FlxG;
-import flixel.math.FlxBasePoint;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
-import flixel.util.FlxTimer;
-import flixel.FlxCamera;
-import funkin.graphics.FunkinSprite;
-import funkin.modding.module.ScriptedModule;
-import funkin.modding.events.ScriptEvent;
-import funkin.modding.events.ScriptEventDispatcher;
-import funkin.util.ReflectUtil;
+import flixel.FlxSprite;
 import funkin.Paths;
 import funkin.play.PlayState;
-//import funkin.Highscore.Tallies;
-import funkin.modding.module.ModuleHandler;
+import funkin.Preferences;
 import funkin.modding.module.Module;
-import flixel.text.FlxText;
-
+import funkin.modding.module.ModuleHandler;
+import funkin.modding.events.ScriptEvent;
+import funkin.util.Constants;
+import haxe.ds.StringMap;
+import Math;
+import Std;
 
 class EXEHud extends Module
 {
-    private var missCounter:FlxText;
+    // Pixel-style HUD sprites
+    var sonicMissesSprite:FlxSprite;
+    var sonicTimeSprite:FlxSprite;
+    var sonicScoreSprite:FlxSprite;
+    var sonicColonSprite:FlxSprite;
+    
+    var scoreNumbers:Array<FlxSprite> = [];
+    var missesNumbers:Array<FlxSprite> = [];
+    var timeNumbers:Array<FlxSprite> = [];
+    
+    var misses:Int = 0;
+    
+    var textX:Float = 20;
+    var textY:Float = 0;
+    var hudOffset:Float = 50;
+    
+    var fontStyle:String = "sonic1";
+    var numbersOffset:Array<Int> = [7, 11];
+    
+    var inPlay:Bool = false;
+    var state:PlayState;
+    
+    var doRetroAspectRatio:Bool = false;
 
     public function new()
     {
         super('EXEHud');
     }
     
-    override function onCreate(event:ScriptEvent):Void
-    {
-        super.onCreate(event);
+    override function onCountdownStart(ev:ScriptEvent) {
+        super.onCountdownStart(ev);
         
-        if (ReflectUtil.getClassNameOf(FlxG.state) == "funkin.play.PlayState")
-        {
-            game = PlayState.instance;
+        var playState = PlayState.instance;
+        if (playState == null) return;
+        
+        state = playState;
+    }
+    
+    function onPlayStateEnter() {
+        if (state == null) return;
+        
+        var exeHudEnabled = true;
+        try {
+            var exeOptions = ModuleHandler.getModule("EXEOptions");
+            if (exeOptions != null) {
+                exeHudEnabled = exeOptions.scriptGet("exehud");
+            }
+        } catch (e:Dynamic) {
+            exeHudEnabled = true;
+        }
+        
+        cleanup();
+        
+        if (!exeHudEnabled) {
+            if (state.scoreText != null) {
+                state.scoreText.visible = true;
+            }
+            return;
+        }
+        
+        determineFontStyle();
+        
+        // Set up positioning
+        setupPositioning();
+        
+        if (state.scoreText != null) {
+            state.scoreText.visible = false;
+        }
+        
+        if (state.healthBarBG != null) {
+            var currentStage = state.currentStage?.id ?? "";
+            var healthBarAsset = (currentStage == "fatalZone") ? 'fatalHealth' : 'hpR-light';
+            state.healthBarBG.loadGraphic(Paths.image(healthBarAsset));
+            state.healthBarBG.cameras = [state.camHUD];
+        }
+        
+        if (state.healthBar != null) {
+            state.healthBar.y = FlxG.height * (!Preferences.downscroll ? 0.88 : 0.12);
+            state.healthBar.screenCenter(0x01);
+            state.healthBar.x += 100;
+            state.healthBar.cameras = [state.camHUD];
+            
+            var currentStage = state.currentStage?.id ?? "";
+            if (currentStage == "fatalZone") {
+                state.healthBar.x += 50;
+                state.healthBarBG.scale.set(1.2, 1.3);
+                state.healthBar.scale.set(0.8, 1.1);
+            } else {
+                state.healthBar.scale.set(1.010, 1.2);
+            }
+        }
+        
+        if (state.healthBarBG != null && state.healthBar != null) {
+            state.healthBarBG.setPosition(state.healthBar.x + - 28, state.healthBar.y - 7);
+        }
+        
+        createPixelHUD();
+        
+        state.refresh();
+    }
+    
+    function determineFontStyle() {
+        var currentStage = state.currentStage?.id ?? "";
+        
+        if (currentStage == "fatalZone") {
+            fontStyle = "sonic3";
+        } else if (currentStage == "horizon") {
+            fontStyle = "chaotix";
+            numbersOffset = [7, 13];
+        } else if (currentStage.indexOf("sonic2") != -1) {
+            fontStyle = "sonic2";
+            numbersOffset = [8, 11];
+        } else {
+            fontStyle = "sonic1";
+            numbersOffset = [7, 11];
+        }
+    }
+    
+    function setupPositioning() {
+        doRetroAspectRatio = ModuleHandler.getModule("EXEOptions").scriptGet("screenratio");
 
-            // Initialize the miss counter
-            missCounter = new FlxText(10, FlxG.height - 30, 200, "Misses: 0");
-            missCounter.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-            missCounter.scrollFactor.set();
-            missCounter.cameras = [game.camHUD];
-            game.add(missCounter);
+        if (!Preferences.downscroll) {
+            textY = FlxG.height - 160;
+        } else {
+            textY = hudOffset;
+        }
+        
+        // Move HUD elements to the right for fatalZone stage
+        var currentStage = state.currentStage?.id ?? "";
+        if (currentStage == "fatalZone" && doRetroAspectRatio) {
+            textX = 160; // Move further to the right for fatalZone
+        } else {
+            textX = 20; // Default position
+        }
+    }
+    
+    function createPixelHUD() {
+        var directory = 'sonicUI/' + fontStyle;
+        
+        // Create main HUD sprites
+        sonicMissesSprite = new FlxSprite(textX, textY);
+        sonicMissesSprite.loadGraphic(Paths.image(directory + '/misses'));
+        sonicMissesSprite.antialiasing = false;
+        sonicMissesSprite.scale.set(3.5, 3.5);
+        sonicMissesSprite.updateHitbox();
+        sonicMissesSprite.zIndex = 10000;
+        sonicMissesSprite.cameras = [state.camHUD];
+        state.add(sonicMissesSprite);
+        
+        sonicTimeSprite = new FlxSprite(textX, textY + hudOffset);
+        sonicTimeSprite.loadGraphic(Paths.image(directory + '/time'));
+        sonicTimeSprite.antialiasing = false;
+        sonicTimeSprite.scale.set(3.5, 3.5);
+        sonicTimeSprite.updateHitbox();
+        sonicTimeSprite.zIndex = 10000;
+        sonicTimeSprite.cameras = [state.camHUD];
+        state.add(sonicTimeSprite);
+        
+        sonicScoreSprite = new FlxSprite(textX, textY + (hudOffset * 2));
+        sonicScoreSprite.loadGraphic(Paths.image(directory + '/score'));
+        sonicScoreSprite.antialiasing = false;
+        sonicScoreSprite.scale.set(3.5, 3.5);
+        sonicScoreSprite.updateHitbox();
+        sonicScoreSprite.zIndex = 10000;
+        sonicScoreSprite.cameras = [state.camHUD];
+        state.add(sonicScoreSprite);
+        
+        sonicColonSprite = new FlxSprite();
+        sonicColonSprite.loadGraphic(Paths.image(directory + '/colon'));
+        sonicColonSprite.antialiasing = false;
+        sonicColonSprite.scale.set(3, 3);
+        sonicColonSprite.updateHitbox();
+        sonicColonSprite.zIndex = 10000;
+        sonicColonSprite.cameras = [state.camHUD];
+        state.add(sonicColonSprite);
+        
+        scoreNumbers = [];
+        missesNumbers = [];
+        timeNumbers = [];
+        
+        var timeLabels = ['TenMinutes', 'Minutes', 'TenSeconds', 'Seconds'];
+        for (i in 0...timeLabels.length) {
+            var timeNum = createNumberSprite(directory + '/numbers');
+            timeNumbers.push(timeNum);
+            state.add(timeNum);
+        }
+        
+        updatePixelHUDPositions();
+    }
+    
+    function createNumberSprite(graphicPath:String):FlxSprite {
+        var sprite = new FlxSprite();
+        sprite.loadGraphic(Paths.image(graphicPath), true, numbersOffset[0], numbersOffset[1]);
+        sprite.animation.add('numbers', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 0, false);
+        sprite.antialiasing = false;
+        sprite.scale.set(3, 3);
+        sprite.updateHitbox();
+        sprite.cameras = [state.camHUD];
+        return sprite;
+    }
+    
 
-            // Update the miss counter on every update
-            game.onUpdate.add(function(elapsed:Float):Void {
-                missCounter.text = "Misses: " +  PlayState.Highscore.tallies.missed;
-            });
+    
+    function updatePixelHUDPositions() {
+        if (sonicColonSprite != null && sonicTimeSprite != null) {
+            sonicColonSprite.setPosition(
+                sonicTimeSprite.x + sonicTimeSprite.width + 44,
+                sonicTimeSprite.y
+            );
+        }
+        
+        // Position time numbers
+        var hudTimeOffsets = [22, 22, 28, 27];
+        for (i in 0...timeNumbers.length) {
+            if (timeNumbers[i] != null && sonicTimeSprite != null) {
+                timeNumbers[i].setPosition(
+                    sonicTimeSprite.x + sonicTimeSprite.width - 26 + (hudTimeOffsets[i] * (i + 1)),
+                    sonicTimeSprite.y + 2
+                );
+            }
+        }
+    }
+    
+    function updatePixelNumbers() {
+        var directory = 'sonicUI/' + fontStyle;
+        
+        var missesStr = Std.string(misses);
+        ensureNumberSprites(missesNumbers, missesStr.length, directory + '/numbers');
+        for (i in 0...missesStr.length) {
+            var digit = Std.parseInt(missesStr.charAt(i));
+            if (digit == null) digit = 0;
+            
+            if (i < missesNumbers.length && missesNumbers[i] != null && missesNumbers[i].animation != null) {
+                missesNumbers[i].animation.play('numbers');
+                if (missesNumbers[i].animation.curAnim != null) {
+                    missesNumbers[i].animation.curAnim.curFrame = digit;
+                }
+                missesNumbers[i].setPosition(
+                    sonicMissesSprite.x + sonicMissesSprite.width + 22 + (22 * i),
+                    sonicMissesSprite.y + 2
+                );
+            }
+        }
+        
+        var scoreStr = Std.string(state.songScore);
+        ensureNumberSprites(scoreNumbers, scoreStr.length, directory + '/numbers');
+        for (i in 0...scoreStr.length) {
+            var digit = Std.parseInt(scoreStr.charAt(i));
+            if (digit == null) digit = 0;
+            
+            if (i < scoreNumbers.length && scoreNumbers[i] != null && scoreNumbers[i].animation != null) {
+                scoreNumbers[i].animation.play('numbers');
+                if (scoreNumbers[i].animation.curAnim != null) {
+                    scoreNumbers[i].animation.curAnim.curFrame = digit;
+                }
+                scoreNumbers[i].setPosition(
+                    sonicScoreSprite.x + sonicScoreSprite.width + 22 + (22 * i),
+                    sonicScoreSprite.y + 2
+                );
+            }
+        }
+        
+        var songPos = Math.max(0, state.conductorInUse.songPosition);
+        if (timeNumbers.length >= 4) {
+            for (i in 0...4) {
+                if (timeNumbers[i] != null && timeNumbers[i].animation != null) {
+                    timeNumbers[i].animation.play('numbers');
+                    if (timeNumbers[i].animation.curAnim != null) {
+                        switch (i) {
+                            case 0: timeNumbers[i].animation.curAnim.curFrame = Math.floor((songPos / 600000) % 10); // Ten minutes
+                            case 1: timeNumbers[i].animation.curAnim.curFrame = Math.floor((songPos / 60000) % 10);  // Minutes
+                            case 2: timeNumbers[i].animation.curAnim.curFrame = Math.floor((songPos / 10000) % 6);   // Ten seconds
+                            case 3: timeNumbers[i].animation.curAnim.curFrame = Math.floor((songPos / 1000) % 10);   // Seconds
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    function ensureNumberSprites(array:Array<FlxSprite>, count:Int, graphicPath:String) {
+        while (array.length < count) {
+            var sprite = createNumberSprite(graphicPath);
+            array.push(sprite);
+            state.add(sprite);
+        }
+        
+        for (i in count...array.length) {
+            if (array[i] != null) {
+                array[i].visible = false;
+            }
+        }
+        
+        for (i in 0...count) {
+            if (array[i] != null) {
+                array[i].visible = true;
+            }
+        }
+    }
+    
+
+    
+    function cleanup() {
+        var stuffToRemove = [sonicMissesSprite, sonicTimeSprite, sonicScoreSprite, sonicColonSprite];
+        
+        for (thing in stuffToRemove) {
+            if (thing != null) thing.destroy();
+        }
+        
+        // Clean up number arrays
+        for (sprite in scoreNumbers) {
+            if (sprite != null) sprite.destroy();
+        }
+        for (sprite in missesNumbers) {
+            if (sprite != null) sprite.destroy();
+        }
+        for (sprite in timeNumbers) {
+            if (sprite != null) sprite.destroy();
+        }
+        
+        // Reset variables
+        misses = 0;
+        
+        sonicMissesSprite = null;
+        sonicTimeSprite = null;
+        sonicScoreSprite = null;
+        sonicColonSprite = null;
+        
+        scoreNumbers = [];
+        missesNumbers = [];
+        timeNumbers = [];
+    }
+    
+    override function onBeatHit(ev:ScriptEvent) {
+        super.onBeatHit(ev);
+    }
+    
+    override function onSongEvent(ev:ScriptEvent) {
+        super.onSongEvent(ev);
+    }
+    
+    override function onPause(ev:ScriptEvent) {
+        super.onPause(ev);
+    }
+    
+    override function onDestroy(ev:ScriptEvent) {
+        super.onDestroy(ev);
+        cleanup();
+    }
+    
+    override function onUpdate(ev:ScriptEvent) {
+        super.onUpdate(ev);
+        if (!inPlay) return;
+        
+        var exeHudEnabled = true;
+        try {
+            var exeOptions = ModuleHandler.getModule("EXEOptions");
+            if (exeOptions != null) {
+                exeHudEnabled = exeOptions.scriptGet("exehud");
+            }
+        } catch (e:Dynamic) {
+            exeHudEnabled = true;
+        }
+        
+        if (!exeHudEnabled) return;
+        
+        updatePixelNumbers();
+    }
+    
+    override function onNoteMiss(ev:ScriptEvent) {
+        super.onNoteMiss(ev);
+        if (!inPlay || ev.healthChange == 0) return;
+        
+        misses++;
+    }
+    
+    override function onNoteGhostMiss(ev:ScriptEvent) {
+        super.onNoteGhostMiss(ev);
+        if (!inPlay || ev.healthChange == 0) return;
+        
+        misses++;
+    }
+    
+    override function onSongRetry(ev:ScriptEvent) {
+        super.onSongRetry(ev);
+        
+        misses = 0;
+    }
+    
+    override function onStateChangeBegin(ev:ScriptEvent) {
+        super.onStateChangeBegin(ev);
+        state = ev.targetState;
+        
+        if (state == null || !Std.isOfType(state, PlayState)) {
+            cleanup();
+            inPlay = false;
+        }
+    }
+    
+    override function onStateChangeEnd(ev:ScriptEvent) {
+        super.onStateChangeEnd(ev);
+        
+        state = ev.targetState;
+        if (state != null && Std.isOfType(state, PlayState)) {
+            onPlayStateEnter();
+            inPlay = true;
         }
     }
 }

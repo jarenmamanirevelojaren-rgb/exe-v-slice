@@ -1,0 +1,87 @@
+import flixel.tweens.FlxTween;
+import funkin.modding.events.ScriptEvent;
+import funkin.play.PlayState;
+import funkin.play.stage.Stage;
+import funkin.play.character.CharacterType;
+import funkin.play.character.BaseCharacter;
+import funkin.play.character.CharacterDataParser;
+
+class MarbleZone extends Stage 
+{
+	var sarah:BaseCharacter;
+
+	public function new()
+	{
+		super('marbleZone');
+	}
+
+    override function onCreate(event:ScriptEvent):Void {
+		super.onCreate(event);
+
+        if (PlayState.instance.currentSong.id.toLowerCase() != "round-a-bout") return;
+
+        game = PlayState.instance;
+        gameStage = PlayState.instance.currentStage;
+
+        dad = PlayState.instance.currentStage.getDad();
+
+        sarah = CharacterDataParser.fetchCharacter('Sarah');
+        if (sarah != null) {
+
+            sarah.x = -1010;
+            sarah.y = -980;
+            
+            sarah.characterType = CharacterType.DAD;
+    
+            sarah.alpha = 0;
+            
+            sarah.playAnimation('idle');
+        } else {
+            trace('Failed to load Sarah character data!');
+        }
+    }
+
+    override function onUpdate():Void {
+        super.onUpdate();
+
+        if (PlayState.instance.currentSong.id.toLowerCase() != "round-a-bout") return;
+
+        if (sarah != null) {
+            var dadAnim = PlayState.instance.currentStage.getDad().animation.curAnim;
+            
+            if (dadAnim != null) {
+                var animName = dadAnim.name;
+            
+                if (animName == 'idle') {
+                    sarah.playAnimation('idle');
+                }
+                else if (animName == 'singLEFT') {
+                    sarah.playAnimation('singLEFT', true);
+                }
+                else if (animName == 'singDOWN') {
+                    sarah.playAnimation('singDOWN', true);
+                }
+                else if (animName == 'singUP') {
+                    sarah.playAnimation('singUP', true);
+                }
+                else if (animName == 'singRIGHT') {
+                    sarah.playAnimation('singRIGHT', true);
+                }
+            }
+        }
+    }
+    function onStepHit(event:SongTimeScriptEvent):Void {
+        super.onStepHit(event);
+
+        if (PlayState.instance.currentSong.id.toLowerCase() != "round-a-bout") return;
+
+        if (event.step == 761) {
+            sarah.zIndex = 100;
+            game.add(sarah);
+            FlxTween.tween(sarah, { alpha: 0.7 }, 1);
+
+            PlayState.instance.currentStage.getDad().zIndex = 201;
+            PlayState.instance.currentStage.refresh();
+        }
+    }
+}

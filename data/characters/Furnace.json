@@ -1,0 +1,106 @@
+{
+    "version": "1.0.0",
+    "name": "Furnace",
+    "assetPath": "characters/Furnace_sheet",
+    "singTime": 4,
+    "isPixel": true,
+    "scale": 6,
+    "offsets": [
+        -120,
+        -25
+    ],
+    "cameraOffsets": [
+        -120,
+        250
+    ],
+    "healthIcon": {
+        "id": "furnace",
+        "isPixel": false,
+        "flipX": false,
+        "scale": 1
+    },
+    "animations": [
+        {
+            "name": "idle",
+            "prefix": "Furnace idle",
+            "offsets": [
+                -106,
+                -50
+            ],
+            "looped": true
+        },
+        {
+            "name": "singUP",
+            "prefix": "Furnace up",
+            "offsets": [
+                -106,
+                -50
+            ]
+        },
+        {
+            "name": "singUP-loop",
+            "prefix": "Furnace up",
+            "offsets": [
+                -106,
+                -50
+            ],
+            "frameIndices": [12, 13, 14, 15],
+            "looped": true
+        },
+        {
+            "name": "singDOWN",
+            "prefix": "Furnace down",
+            "offsets": [
+                -106,
+                -50
+            ]
+        },
+        {
+            "name": "singDOWN-loop",
+            "prefix": "Furnace down",
+            "offsets": [
+                -106,
+                -50
+            ],
+            "frameIndices": [12, 13, 14, 15],
+            "looped": true
+        },
+        {
+            "name": "singLEFT",
+            "prefix": "Furnace left",
+            "offsets": [
+                -106,
+                -50
+            ]
+        },
+        {
+            "name": "singLEFT-loop",
+            "prefix": "Furnace left",
+            "offsets": [
+                -106,
+                -50
+            ],
+            "frameIndices": [12, 13, 14, 15],
+            "looped": true
+        },
+        {
+            "name": "singRIGHT",
+            "prefix": "Furnace right",
+            "offsets": [
+                -106,
+                -50
+            ]
+        },
+        {
+            "name": "singRIGHT-loop",
+            "prefix": "Furnace right",
+            "offsets": [
+                -106,
+                -50
+            ],
+            "frameIndices": [15, 16, 17, 18],
+            "looped": true
+        }
+    ],
+    "flipX": false
+}
