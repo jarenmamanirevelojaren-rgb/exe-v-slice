@@ -49,11 +49,6 @@ class HillZone extends Stage
 		FunkinSprite.cacheTexture(Paths.image('sonicJUMPSCARE'));
 		FunkinSprite.cacheTexture(Paths.image('simplejump720'));
 		FunkinSprite.cacheTexture(Paths.image('daSTAT'));
-		
-		// Preload jumpscare sounds
-		FunkinSound.preloadSound(Paths.sound('datOneSound'));
-		FunkinSound.preloadSound(Paths.sound('sppok'));
-		FunkinSound.preloadSound(Paths.sound('staticBUZZ'));
 
 		if (!PlayState.instance.currentSong.id.toLowerCase() == "too-slow") return;
 
