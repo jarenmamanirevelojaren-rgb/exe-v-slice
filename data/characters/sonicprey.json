@@ -1,0 +1,99 @@
+{
+    "version": "1.0.0",
+    "name": "Sonic the Hedgehog",
+    "assetPath": "characters/running_sonic_sheet",
+    "singTime": 4,
+    "isPixel": true,
+    "scale": 6,
+    "offsets": [
+        -120,
+        -25
+    ],
+    "cameraOffsets": [
+        -30,
+        250
+    ],
+    "healthIcon": {
+        "id": "pixsonic",
+        "isPixel": false,
+        "flipX": false,
+        "scale": 1
+    },
+    "animations": [
+        {
+            "name": "idle",
+            "prefix": "sonic idle",
+            "offsets": [
+                -106,
+                -50
+            ],
+            "looped": true
+        },
+        {
+            "name": "singUP",
+            "prefix": "sonic sing up",
+            "offsets": [
+                -106,
+                -50
+            ]
+        },
+        {
+            "name": "singUPmiss",
+            "prefix": "sonic up miss",
+            "offsets": [
+                -106,
+                -50
+            ]
+        },
+        {
+            "name": "singDOWN",
+            "prefix": "sonic sing down",
+            "offsets": [
+                -106,
+                -50
+            ]
+        },
+        {
+            "name": "singDOWNmiss",
+            "prefix": "sonic down miss",
+            "offsets": [
+                -106,
+                -50
+            ]
+        },
+        {
+            "name": "singLEFT",
+            "prefix": "sonic left sing",
+            "offsets": [
+                -106,
+                -50
+            ]
+        },
+        {
+            "name": "singLEFTmiss",
+            "prefix": "sonic left miss",
+            "offsets": [
+                -106,
+                -50
+            ]
+        },
+        {
+            "name": "singRIGHT",
+            "prefix": "sonic sing right",
+            "offsets": [
+                -106,
+                -50
+            ]
+        },
+        {
+            "name": "first dialogue",
+            "prefix": "dialogue 1",
+            "offsets": [
+                -106,
+                -44
+            ],
+            "frameRate": 24
+        }
+    ],
+    "flipX": true
+}

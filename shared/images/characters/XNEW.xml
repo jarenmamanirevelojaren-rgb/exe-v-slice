@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="XNEW.png">
+	<!-- Created with Adobe Animate version 21.0.7.42652 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="XLeft0000" x="0" y="0" width="632" height="693"/>
+	<SubTexture name="XLeft0001" x="632" y="0" width="630" height="680" frameX="0" frameY="-13" frameWidth="632" frameHeight="693"/>
+	<SubTexture name="XLeft0002" x="1262" y="0" width="629" height="680" frameX="-1" frameY="-13" frameWidth="632" frameHeight="693"/>
+	<SubTexture name="XLeft0003" x="1891" y="0" width="629" height="677" frameX="-1" frameY="-16" frameWidth="632" frameHeight="693"/>
+	<SubTexture name="XLeft0004" x="2520" y="0" width="629" height="677" frameX="-1" frameY="-16" frameWidth="632" frameHeight="693"/>
+	<SubTexture name="XLeft0005" x="3149" y="0" width="629" height="676" frameX="-1" frameY="-17" frameWidth="632" frameHeight="693"/>
+	<SubTexture name="XLeft0006" x="3778" y="0" width="629" height="676" frameX="-1" frameY="-17" frameWidth="632" frameHeight="693"/>
+	<SubTexture name="XLeft0007" x="4407" y="0" width="629" height="675" frameX="-1" frameY="-18" frameWidth="632" frameHeight="693"/>
+	<SubTexture name="XLeft0008" x="5036" y="0" width="629" height="675" frameX="-1" frameY="-18" frameWidth="632" frameHeight="693"/>
+	<SubTexture name="XLeft0009" x="5665" y="0" width="629" height="675" frameX="-1" frameY="-18" frameWidth="632" frameHeight="693"/>
+	<SubTexture name="XLeft0010" x="6294" y="0" width="629" height="677" frameX="-1" frameY="-16" frameWidth="632" frameHeight="693"/>
+	<SubTexture name="XLeft0011" x="6923" y="0" width="629" height="677" frameX="-1" frameY="-16" frameWidth="632" frameHeight="693"/>
+	<SubTexture name="lordxidle0000" x="7552" y="0" width="621" height="765" frameX="-1" frameY="-1" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0001" x="0" y="765" width="617" height="764" frameX="-1" frameY="-2" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0002" x="617" y="765" width="611" height="761" frameX="0" frameY="-5" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0003" x="617" y="765" width="611" height="761" frameX="0" frameY="-5" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0004" x="1228" y="765" width="610" height="757" frameX="-1" frameY="-9" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0005" x="1228" y="765" width="610" height="757" frameX="-1" frameY="-9" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0006" x="1838" y="765" width="610" height="756" frameX="-1" frameY="-10" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0007" x="1838" y="765" width="610" height="756" frameX="-1" frameY="-10" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0008" x="2448" y="765" width="610" height="759" frameX="-1" frameY="-7" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0009" x="2448" y="765" width="610" height="759" frameX="-1" frameY="-7" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0010" x="3058" y="765" width="610" height="763" frameX="-1" frameY="-3" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0011" x="3058" y="765" width="610" height="763" frameX="-1" frameY="-3" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0012" x="3668" y="765" width="614" height="766" frameX="-1" frameY="0" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0013" x="3668" y="765" width="614" height="766" frameX="-1" frameY="0" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0014" x="4282" y="765" width="619" height="765" frameX="-1" frameY="-1" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0015" x="4901" y="765" width="633" height="755" frameX="-2" frameY="-11" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0016" x="5534" y="765" width="633" height="747" frameX="-2" frameY="-19" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0017" x="5534" y="765" width="633" height="747" frameX="-2" frameY="-19" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0018" x="6167" y="765" width="633" height="741" frameX="-2" frameY="-25" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0019" x="6167" y="765" width="633" height="741" frameX="-2" frameY="-25" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0020" x="6800" y="765" width="628" height="737" frameX="-2" frameY="-29" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0021" x="6800" y="765" width="628" height="737" frameX="-2" frameY="-29" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0022" x="7428" y="765" width="622" height="743" frameX="-2" frameY="-23" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0023" x="7428" y="765" width="622" height="743" frameX="-2" frameY="-23" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0024" x="0" y="1531" width="618" height="754" frameX="-2" frameY="-12" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0025" x="0" y="1531" width="618" height="754" frameX="-2" frameY="-12" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0026" x="618" y="1531" width="621" height="761" frameX="-1" frameY="-5" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0027" x="618" y="1531" width="621" height="761" frameX="-1" frameY="-5" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="lordxidle0028" x="1239" y="1531" width="621" height="765" frameX="-1" frameY="-1" frameWidth="635" frameHeight="766"/>
+	<SubTexture name="xidle0000" x="1860" y="1531" width="566" height="551" frameX="-8" frameY="-8" frameWidth="581" frameHeight="559"/>
+	<SubTexture name="xidle0001" x="2426" y="1531" width="581" height="543" frameX="0" frameY="-16" frameWidth="581" frameHeight="559"/>
+	<SubTexture name="xidle0002" x="2426" y="1531" width="581" height="543" frameX="0" frameY="-16" frameWidth="581" frameHeight="559"/>
+	<SubTexture name="xidle0003" x="3007" y="1531" width="580" height="545" frameX="0" frameY="-14" frameWidth="581" frameHeight="559"/>
+	<SubTexture name="xidle0004" x="3007" y="1531" width="580" height="545" frameX="0" frameY="-14" frameWidth="581" frameHeight="559"/>
+	<SubTexture name="xidle0005" x="3587" y="1531" width="580" height="557" frameX="0" frameY="-2" frameWidth="581" frameHeight="559"/>
+	<SubTexture name="xidle0006" x="3587" y="1531" width="580" height="557" frameX="0" frameY="-2" frameWidth="581" frameHeight="559"/>
+	<SubTexture name="xidle0007" x="4167" y="1531" width="580" height="559" frameX="0" frameY="0" frameWidth="581" frameHeight="559"/>
+	<SubTexture name="xidle0008" x="4167" y="1531" width="580" height="559" frameX="0" frameY="0" frameWidth="581" frameHeight="559"/>
+	<SubTexture name="xidle0009" x="4747" y="1531" width="581" height="559"/>
+	<SubTexture name="xidle0010" x="4747" y="1531" width="581" height="559"/>
+	<SubTexture name="xidle0011" x="5328" y="1531" width="581" height="556" frameX="0" frameY="-3" frameWidth="581" frameHeight="559"/>
+	<SubTexture name="xright0000" x="5909" y="1531" width="620" height="687" frameX="-1" frameY="-7" frameWidth="621" frameHeight="694"/>
+	<SubTexture name="xright0001" x="6529" y="1531" width="585" height="678" frameX="0" frameY="-16" frameWidth="621" frameHeight="694"/>
+	<SubTexture name="xright0002" x="6529" y="1531" width="585" height="678" frameX="0" frameY="-16" frameWidth="621" frameHeight="694"/>
+	<SubTexture name="xright0003" x="7114" y="1531" width="577" height="675" frameX="0" frameY="-19" frameWidth="621" frameHeight="694"/>
+	<SubTexture name="xright0004" x="7114" y="1531" width="577" height="675" frameX="0" frameY="-19" frameWidth="621" frameHeight="694"/>
+	<SubTexture name="xright0005" x="0" y="2296" width="578" height="683" frameX="0" frameY="-11" frameWidth="621" frameHeight="694"/>
+	<SubTexture name="xright0006" x="0" y="2296" width="578" height="683" frameX="0" frameY="-11" frameWidth="621" frameHeight="694"/>
+	<SubTexture name="xright0007" x="578" y="2296" width="578" height="691" frameX="0" frameY="-3" frameWidth="621" frameHeight="694"/>
+	<SubTexture name="xright0008" x="1156" y="2296" width="580" height="691" frameX="0" frameY="-3" frameWidth="621" frameHeight="694"/>
+	<SubTexture name="xright0009" x="1736" y="2296" width="580" height="694" frameX="0" frameY="0" frameWidth="621" frameHeight="694"/>
+	<SubTexture name="xup0000" x="2316" y="2296" width="613" height="816" frameX="-51" frameY="0" frameWidth="664" frameHeight="816"/>
+	<SubTexture name="xup0001" x="2929" y="2296" width="638" height="792" frameX="-21" frameY="-24" frameWidth="664" frameHeight="816"/>
+	<SubTexture name="xup0002" x="3567" y="2296" width="638" height="792" frameX="-21" frameY="-24" frameWidth="664" frameHeight="816"/>
+	<SubTexture name="xup0003" x="4205" y="2296" width="650" height="787" frameX="0" frameY="-29" frameWidth="664" frameHeight="816"/>
+	<SubTexture name="xup0004" x="4855" y="2296" width="650" height="787" frameX="0" frameY="-29" frameWidth="664" frameHeight="816"/>
+	<SubTexture name="xup0005" x="5505" y="2296" width="629" height="787" frameX="-16" frameY="-29" frameWidth="664" frameHeight="816"/>
+	<SubTexture name="xup0006" x="6134" y="2296" width="629" height="787" frameX="-16" frameY="-29" frameWidth="664" frameHeight="816"/>
+	<SubTexture name="xup0007" x="6763" y="2296" width="609" height="793" frameX="-29" frameY="-23" frameWidth="664" frameHeight="816"/>
+	<SubTexture name="xup0008" x="7372" y="2296" width="609" height="793" frameX="-29" frameY="-23" frameWidth="664" frameHeight="816"/>
+	<SubTexture name="xup0009" x="0" y="3112" width="601" height="796" frameX="-37" frameY="-20" frameWidth="664" frameHeight="816"/>
+	<SubTexture name="xup0010" x="601" y="3112" width="601" height="796" frameX="-37" frameY="-20" frameWidth="664" frameHeight="816"/>
+</TextureAtlas>

@@ -376,6 +376,40 @@
             ]
         },
         {
+            "zIndex": -1,
+            "position": [
+                -2250.0,
+                -1200.0
+            ],
+            "scale": [
+                1,
+                1
+            ],
+            "animType": "sparrow",
+            "name": "Band2",
+            "isPixel": false,
+            "startingAnimation": "idle",
+            "assetPath": "FinalEscape/bandp",
+            "scroll": [
+                1,
+                1
+            ],
+            "animations": [
+                {
+                    "offsets": [
+                        0,
+                        0
+                    ],
+                    "flipY": false,
+                    "frameRate": 24,
+                    "prefix": "bandp idle",
+                    "looped": true,
+                    "flipX": false,
+                    "name": "idle"
+                }
+            ]
+        },
+        {
             "zIndex": 100,
             "position": [
                 -1700,

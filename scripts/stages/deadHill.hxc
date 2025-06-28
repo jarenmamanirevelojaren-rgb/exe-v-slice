@@ -1,0 +1,107 @@
+import flixel.FlxG;
+import flixel.math.FlxBasePoint;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxTimer;
+import flixel.text.FlxText;
+import flixel.text.FlxTextBorderStyle;
+import flixel.FlxCamera;
+import funkin.audio.FunkinSound;
+import funkin.Conductor;
+import funkin.graphics.FunkinSprite;
+import funkin.modding.module.ScriptedModule;
+import funkin.modding.events.ScriptEvent;
+import funkin.modding.events.ScriptEventDispatcher;
+import funkin.util.ReflectUtil;
+import funkin.Paths;
+import funkin.play.PlayState;
+import funkin.play.stage.Stage;
+import funkin.play.stage.Bopper;
+import funkin.play.stage.StageProp;
+import funkin.data.stage.StageRegistry;
+import funkin.play.character.CharacterType;
+import funkin.play.character.BaseCharacter;
+import funkin.play.character.CharacterDataParser;
+import funkin.play.song.Song;
+import flixel.FlxSprite;
+import haxe.Json;
+import funkin.play.notes.Strumline;
+import funkin.play.notes.StrumlineNote;
+import flixel.math.FlxMath;
+import flixel.math.FlxPoint;
+import funkin.modding.module.ModuleHandler;
+
+class DeadHill extends Stage
+{
+    var staticScreen:FunkinSprite;
+	var staticLooping:Bool = false;
+	var staticLoopSound:FunkinSound = null;
+	var staticLoopTimer:FlxTimer = null;
+	var blackOverlay:FunkinSprite;
+	var healthReductionTimer:FlxTimer = null;
+	var initialMaxHealth:Float = 2.0;
+	var currentMaxHealth:Float = 2.0;
+	var healthReductionRate:Float = 0.03; // How much to reduce max health each time
+	var healthReductionInterval:Float = 3.5; // How often to reduce health (in seconds)
+	var healthReductionStarted:Bool = false; // Track if health reduction has started
+
+	public function new()
+	{
+		super('deadHill');
+	}
+
+	override function onCreate(event:ScriptEvent):Void {
+		super.onCreate(event);
+
+		if (PlayState.instance.currentSong.id.toLowerCase() != "black-sun") return;
+		game = PlayState.instance;
+
+		// Get the actual maximum health from the health bar, not current health
+		initialMaxHealth = game.healthBar != null ? game.healthBar.max : 2.0;
+		currentMaxHealth = initialMaxHealth;
+		healthReductionStarted = false;
+	}
+	
+	override function onUpdate(event:ScriptEvent):Void {
+		super.onUpdate(event);
+		
+		// Only check if we haven't started health reduction yet and if it's the black-sun song
+		if (!healthReductionStarted && game != null && PlayState.instance.currentSong.id.toLowerCase() == "black-sun") {
+			// Check if player's health is at maximum (or very close to it)
+			if (game.health >= initialMaxHealth - 0.01) {
+				// Start the health reduction system
+				healthReductionStarted = true;
+				healthReductionTimer = new FlxTimer().start(healthReductionInterval, reduceMaxHealth, 0);
+			}
+		}
+	}
+	
+	function reduceMaxHealth(timer:FlxTimer):Void {
+		// Don't reduce health if the game is paused
+		if (game == null || game.isGamePaused) {
+			return;
+		}
+		
+		currentMaxHealth -= healthReductionRate;
+		
+		if (currentMaxHealth < 0.2) {
+			currentMaxHealth = 0.2;
+		}
+		
+		if (game.health > currentMaxHealth) {
+			game.health = currentMaxHealth;
+		}
+		
+		if (game.healthBar != null) {
+			game.healthBar.max = currentMaxHealth;
+		}
+	}
+	
+	override function onDestroy(event:ScriptEvent):Void {
+		if (healthReductionTimer != null) {
+			healthReductionTimer.cancel();
+			healthReductionTimer = null;
+		}
+		super.onDestroy(event);
+	}
+}

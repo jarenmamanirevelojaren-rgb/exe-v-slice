@@ -1,0 +1,33 @@
+{
+    "version": "1.0.0",
+    "name": "Girlfriend (Needlemouse - Scared)",
+    "assetPath": "characters/GF__Needlemouse",
+    "singTime": 4,
+    "isPixel": false,
+    "scale": 1,
+    "healthIcon": {
+        "id": "gf",
+        "isPixel": false,
+        "flipX": false,
+        "scale": 1
+    },
+    "animations": [
+        {
+            "name": "danceLeft",
+            "prefix": "GF_Scared",
+            "offsets": [
+                0,
+                -9
+            ]
+        },
+        {
+            "name": "danceRight",
+            "prefix": "GF_Scared",
+            "offsets": [
+                0,
+                -9
+            ]
+        }
+    ],
+    "flipX": false
+}

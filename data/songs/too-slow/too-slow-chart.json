@@ -156,6 +156,16 @@
     },
     {
       "t": 84666.6666666667,
+      "e": "ZoomCamera",
+      "v": {
+	"duration": 4,
+	"ease": "INSTANT",
+	"mode": "stage",
+	"zoom": 1.3
+}
+    },
+    {
+      "t": 84666.6666666667,
       "e": "PlayAnimation",
       "v": {
 	"force": true,
@@ -215,6 +225,16 @@
 	"force": true,
 	"anim": "singDOWN-alt",
 	"target": "dad"
+}
+    },
+    {
+      "t": 86972.2222222222,
+      "e": "ZoomCamera",
+      "v": {
+	"duration": 4,
+	"ease": "linear",
+	"mode": "stage",
+	"zoom": 1
 }
     },
     {
@@ -378,11 +398,21 @@
 }
     },
     {
-      "t": 129518.518518518,
-      "e": "Play Animation",
+      "t": 129583.333333333,
+      "e": "Lyrics",
       "v": {
-	"value1": "gotcha",
-	"value2": "dad"
+	"x": 0,
+	"outlineColor": "#000000",
+	"size": 32,
+	"useHealthBarPosition": true,
+	"y": 0,
+	"color": "#FF0000",
+	"alignment": "center",
+	"camera": "cutscene",
+	"borderSize": 1.5,
+	"width": 1200,
+	"font": "PressStart2P.ttf",
+	"lyric": "I'm"
 }
     },
     {
@@ -405,128 +435,129 @@
 }
     },
     {
-      "t": 136888.888888889,
-      "e": "PlayAnimation",
+      "t": 130111.111111111,
+      "e": "Lyrics",
       "v": {
-	"target": "dad",
-	"anim": "singDOWN-alt",
-	"force": true
+	"x": 0,
+	"outlineColor": "#000000",
+	"size": 32,
+	"useHealthBarPosition": true,
+	"y": 0,
+	"color": "#FF0000",
+	"alignment": "center",
+	"camera": "cutscene",
+	"borderSize": 1.5,
+	"width": 1200,
+	"font": "PressStart2P.ttf",
+	"lyric": "I'm gonna"
 }
     },
     {
-      "t": 136888.888888889,
-      "e": "Play Animation",
+      "t": 130666.666666667,
+      "e": "Lyrics",
       "v": {
-	"value1": "singDOWN-alt",
-	"value2": "dad"
+	"x": 0,
+	"outlineColor": "#000000",
+	"size": 32,
+	"useHealthBarPosition": true,
+	"y": 0,
+	"color": "#FF0000",
+	"alignment": "center",
+	"camera": "cutscene",
+	"borderSize": 1.5,
+	"width": 1200,
+	"font": "PressStart2P.ttf",
+	"lyric": "I'm gonna get-"
 }
     },
     {
-      "t": 136888.888888889,
-      "e": "Add Camera Zoom",
+      "t": 131111.111111111,
+      "e": "Lyrics",
       "v": {
-	"value1": "",
-	"value2": ""
+	"x": 0,
+	"outlineColor": "#000000",
+	"size": 32,
+	"useHealthBarPosition": true,
+	"y": 0,
+	"color": "#FF0000",
+	"alignment": "center",
+	"camera": "cutscene",
+	"borderSize": 1.5,
+	"width": 1200,
+	"font": "PressStart2P.ttf",
+	"lyric": "I'm gonna getcha!"
 }
     },
     {
-      "t": 137555.555555556,
-      "e": "PlayAnimation",
+      "t": 132861.111111111,
+      "e": "Lyrics",
       "v": {
-	"target": "dad",
-	"anim": "singDOWN-alt",
-	"force": true
+	"x": 0,
+	"outlineColor": "#000000",
+	"size": 32,
+	"useHealthBarPosition": true,
+	"y": 0,
+	"color": "#FF0000",
+	"alignment": "center",
+	"camera": "cutscene",
+	"borderSize": 1.5,
+	"width": 1200,
+	"font": "PressStart2P.ttf",
+	"lyric": "I"
 }
     },
     {
-      "t": 137555.555555556,
-      "e": "Play Animation",
+      "t": 133333.333333333,
+      "e": "Lyrics",
       "v": {
-	"value1": "singDOWN-alt",
-	"value2": "dad"
+	"x": 0,
+	"outlineColor": "#000000",
+	"size": 32,
+	"useHealthBarPosition": true,
+	"y": 0,
+	"color": "#FF0000",
+	"alignment": "center",
+	"camera": "cutscene",
+	"borderSize": 1.5,
+	"width": 1200,
+	"font": "PressStart2P.ttf",
+	"lyric": "I am..."
 }
     },
     {
-      "t": 137555.555555556,
-      "e": "Add Camera Zoom",
+      "t": 134444.444444444,
+      "e": "Lyrics",
       "v": {
-	"value1": "",
-	"value2": ""
+	"x": 0,
+	"outlineColor": "#000000",
+	"size": 32,
+	"useHealthBarPosition": true,
+	"y": 0,
+	"color": "#FF0000",
+	"alignment": "center",
+	"camera": "cutscene",
+	"borderSize": 1.5,
+	"width": 1200,
+	"font": "PressStart2P.ttf",
+	"lyric": "I am... GOD."
 }
     },
     {
-      "t": 138138.888888889,
-      "e": "Play Animation",
+      "t": 136444.444444444,
+      "e": "Lyrics",
       "v": {
-	"value1": "singDOWN-alt",
-	"value2": "dad"
-}
-    },
-    {
-      "t": 138138.888888889,
-      "e": "Add Camera Zoom",
-      "v": {
-	"value1": "",
-	"value2": ""
-}
-    },
-    {
-      "t": 138148.148148148,
-      "e": "PlayAnimation",
-      "v": {
-	"target": "dad",
-	"anim": "singDOWN-alt",
-	"force": true
-}
-    },
-    {
-      "t": 138805.555555556,
-      "e": "Play Animation",
-      "v": {
-	"value1": "singDOWN-alt",
-	"value2": "dad"
-}
-    },
-    {
-      "t": 138805.555555556,
-      "e": "Add Camera Zoom",
-      "v": {
-	"value1": "",
-	"value2": ""
-}
-    },
-    {
-      "t": 138814.814814815,
-      "e": "PlayAnimation",
-      "v": {
-	"target": "dad",
-	"anim": "singDOWN-alt",
-	"force": true
-}
-    },
-    {
-      "t": 139472.222222222,
-      "e": "Play Animation",
-      "v": {
-	"value1": "singDOWN-alt",
-	"value2": "dad"
-}
-    },
-    {
-      "t": 139472.222222222,
-      "e": "Add Camera Zoom",
-      "v": {
-	"value1": "",
-	"value2": ""
-}
-    },
-    {
-      "t": 139481.481481481,
-      "e": "PlayAnimation",
-      "v": {
-	"target": "dad",
-	"anim": "singDOWN-alt",
-	"force": true
+	"x": 0,
+	"outlineColor": "#000000",
+	"size": 32,
+	"useHealthBarPosition": true,
+	"y": 0,
+	"color": "#FF0000",
+	"alignment": "center",
+	"camera": "cutscene",
+	"borderSize": 1.5,
+	"width": 1200,
+	"font": "PressStart2P.ttf",
+	"lyric": ""
 }
     },
     {
@@ -537,14 +568,6 @@
 	"ease": "linear",
 	"zoom": 1,
 	"mode": "stage"
-}
-    },
-    {
-      "t": 140222.222222222,
-      "e": "TooSlowFlashinShit",
-      "v": {
-	"value1": "1",
-	"value2": ""
 }
     },
     {
@@ -7331,7 +7354,7 @@
         "p": [        ]
       },
       {
-        "t": 95055.5555555556,
+        "t": 95055.5555555555,
         "d": 0,
         "l": 0,
         "p": [        ]
@@ -7343,7 +7366,7 @@
         "p": [        ]
       },
       {
-        "t": 95222.2222222223,
+        "t": 95222.2222222222,
         "d": 0,
         "l": 0,
         "p": [        ]
@@ -7409,7 +7432,7 @@
         "p": [        ]
       },
       {
-        "t": 96555.5555555556,
+        "t": 96555.5555555555,
         "d": 0,
         "l": 0,
         "p": [        ]
@@ -7817,7 +7840,7 @@
         "p": [        ]
       },
       {
-        "t": 105638.888888889,
+        "t": 105611.111111111,
         "d": 3,
         "l": 0,
         "p": [        ]
@@ -7841,43 +7864,43 @@
         "p": [        ]
       },
       {
-        "t": 105972.222222222,
+        "t": 106000,
         "d": 3,
-        "l": 83.3333333333333,
+        "l": 0,
         "p": [        ]
       },
       {
-        "t": 106138.888888889,
+        "t": 106166.666666667,
         "d": 2,
-        "l": 83.3333333333333,
+        "l": 0,
         "p": [        ]
       },
       {
         "t": 106305.555555556,
         "d": 1,
-        "l": 83.3333333333333,
+        "l": 0,
         "p": [        ]
       },
       {
-        "t": 106472.222222222,
+        "t": 106500,
         "d": 3,
-        "l": 83.3333333333333,
+        "l": 0,
         "p": [        ]
       },
       {
         "t": 106638.888888889,
         "d": 2,
-        "l": 83.3333333333333,
+        "l": 0,
         "p": [        ]
       },
       {
-        "t": 106805.555555556,
+        "t": 106833.333333333,
         "d": 0,
-        "l": 83.3333333333333,
+        "l": 0,
         "p": [        ]
       },
       {
-        "t": 106972.222222222,
+        "t": 106944.444444444,
         "d": 3,
         "l": 0,
         "p": [        ]
@@ -9273,7 +9296,7 @@
         "p": [        ]
       },
       {
-        "t": 129555.555555555,
+        "t": 129555.555555556,
         "d": 1,
         "l": 0,
         "p": [        ]
@@ -9745,7 +9768,6 @@
         "t": 148638.888888889,
         "d": 3,
         "l": 0,
-        "k": "staticnote",
         "p": [        ]
       },
       {
@@ -9833,7 +9855,7 @@
         "p": [        ]
       },
       {
-        "t": 150555.555555556,
+        "t": 150583.333333333,
         "d": 3,
         "l": 0,
         "p": [        ]
@@ -9857,7 +9879,7 @@
         "p": [        ]
       },
       {
-        "t": 150888.888888889,
+        "t": 150916.666666667,
         "d": 3,
         "l": 0,
         "p": [        ]
@@ -10304,7 +10326,6 @@
         "t": 157888.888888889,
         "d": 2,
         "l": 0,
-        "k": "staticnote",
         "p": [        ]
       },
       {
@@ -18064,5 +18085,5 @@
       }
     ]
   },
-  "generatedBy": "Friday Night Funkin' - v0.5.3"
+  "generatedBy": "Friday Night Funkin' - v0.6.4"
 }

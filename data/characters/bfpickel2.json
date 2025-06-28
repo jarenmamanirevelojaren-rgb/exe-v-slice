@@ -1,0 +1,117 @@
+{
+    "version": "1.0.0",
+    "name": "Boyfriend (Genesis - Final Escape)",
+    "assetPath": "characters/BF",
+    "singTime": 4,
+    "isPixel": true,
+    "scale": 9,
+    "offsets": [
+        -100,
+        -45
+    ],
+    "cameraOffsets": [
+        -450,
+        -150
+    ],
+    "healthIcon": {
+        "id": "bfpixelycr",
+        "isPixel": false,
+        "flipX": false,
+        "scale": 1
+    },
+    "animations": [
+        {
+            "name": "idle",
+            "prefix": "BF idle dance",
+            "offsets": [
+                0,
+                0
+            ],
+            "frameRate": 12,
+			"frameIndices": [
+				2,
+				3,
+				4,
+				1,
+				0
+			]
+        },
+        {
+            "name": "singLEFT",
+            "prefix": "BF NOTE LEFT0",
+            "frameRate": 12,
+            "offsets": [
+                0,
+                0
+            ]
+        },
+        {
+            "name": "singDOWN",
+            "prefix": "BF NOTE DOWN0",
+            "frameRate": 12,
+            "offsets": [
+                0,
+                0
+            ]
+        },
+        {
+            "name": "singUP",
+            "prefix": "BF NOTE UP0",
+            "frameRate": 12,
+            "offsets": [
+                0,
+                0
+            ],
+			"frameIndices": [
+				1,
+				0
+			]
+        },
+        {
+            "name": "singRIGHT",
+            "prefix": "BF NOTE RIGHT0",
+            "frameRate": 12,
+            "offsets": [
+                0,
+                0
+            ]
+        },
+        {
+            "name": "singLEFTmiss",
+            "prefix": "BF NOTE LEFT MISS",
+            "frameRate": 12,
+            "offsets": [
+                0,
+                0
+            ]
+        },
+        {
+            "name": "singDOWNmiss",
+            "prefix": "BF NOTE DOWN MISS",
+            "frameRate": 12,
+            "offsets": [
+                0,
+                0
+            ]
+        },
+        {
+            "name": "singUPmiss",
+            "prefix": "BF NOTE UP MISS",
+            "frameRate": 12,
+            "offsets": [
+                0,
+                0
+            ]
+        },
+        {
+            "name": "singRIGHTmiss",
+            "prefix": "BF NOTE RIGHT MISS",
+            "frameRate": 12,
+            "offsets": [
+                0,
+                0
+            ]
+        }
+    ],
+    "flipX": true
+}

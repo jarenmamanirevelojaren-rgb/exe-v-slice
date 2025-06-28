@@ -1,0 +1,202 @@
+import funkin.play.PlayState;
+import funkin.play.event.ScriptedSongEvent;
+import funkin.modding.module.Module;
+import funkin.modding.module.ModuleHandler;
+import funkin.util.ReflectUtil;
+
+/* Script by Greeny3483
+    * Allows the girlfriend to sing instead of the opponent.
+    * Like in the song Slaybells.
+    * Some code used is from Indie Cross V-Slice Port by @jarekboho
+*/
+
+class GirlfriendSingEvent extends ScriptedSongEvent {
+
+	public function new() {
+		super('Girlfriend Sing');
+	}
+
+	override function getEventSchema() {
+		return [
+			{
+				name: "action",
+				title: "Action",
+				type: "enum",
+				defaultValue: "swap",
+				keys: [
+					"Girlfriend Sings" => "swap",
+					"Return to Normal" => "normal"
+				],
+			}
+		];
+	}
+
+	override function handleEvent(data) {
+		if (PlayState.instance == null || PlayState.instance.currentStage == null) return;
+		if (PlayState.instance.isMinimalMode) return;
+
+		var action = getValue(data.value, 'action', 'swap');
+		
+		ModuleHandler.getModule('girlfriend-sing-handler').scriptCall('handleGirlfriendSing', [action]);
+	}
+
+	override function getTitle() {
+		return "Girlfriend Sing";
+	}
+
+	//helper function
+	function getValue(dataValue:Dynamic, field:String, def:Dynamic) {
+		if (dataValue == null) return def;
+		var value = ReflectUtil.getAnonymousField(dataValue, field);
+		if (value == null)
+			return def;
+		else
+			return value;
+	}
+}
+
+class GirlfriendSingHandler extends Module {
+	
+	var isGirlfriendSinging:Bool = false;
+	var originalOpponentVolume:Float = 1.0;
+	var originalPlayerVolume:Float = 1.0;
+
+	public function new() {
+		super('girlfriend-sing-handler');
+	}
+
+	override function onCreate(event) {
+		super.onCreate(event);
+		isGirlfriendSinging = false;
+	}
+
+	override function onSongStart(event) {
+		super.onSongStart(event);
+		if (PlayState.instance != null && PlayState.instance.vocals != null) {
+			originalOpponentVolume = PlayState.instance.vocals.opponentVolume;
+			originalPlayerVolume = PlayState.instance.vocals.playerVolume;
+		}
+	}
+
+	override function onSongRetry(event) {
+		super.onSongRetry(event);
+		isGirlfriendSinging = false;
+		restoreNormalSinging();
+	}
+
+	override function onNoteHit(event) {
+		super.onNoteHit(event);
+		
+		if (!isGirlfriendSinging) return;
+		
+		var note = event.note;
+		if (note == null) return;
+
+		if (!note.noteData.getMustHitNote()) {
+			var girlfriend = PlayState.instance.currentStage.getGirlfriend();
+			var opponent = PlayState.instance.currentStage.getDad();
+			
+			if (girlfriend != null && opponent != null) {
+				opponent.holdTimer = 0;
+				opponent.playAnimation('idle', true);
+				
+				girlfriend.playSingAnimation(note.noteData.getDirection(), false);
+				girlfriend.holdTimer = 0;
+			}
+		}
+	}
+
+	override function onNoteMiss(event) {
+		super.onNoteMiss(event);
+		
+		if (!isGirlfriendSinging) return;
+		
+		var note = event.note;
+		if (note == null) return;
+
+		if (!note.noteData.getMustHitNote()) {
+			var girlfriend = PlayState.instance.currentStage.getGirlfriend();
+			var opponent = PlayState.instance.currentStage.getDad();
+			
+			if (girlfriend != null && opponent != null) {
+				girlfriend.playSingAnimation(note.noteData.getDirection(), true);
+				
+				opponent.holdTimer = 0;
+				opponent.playAnimation('idle', true);
+			}
+		}
+	}
+
+	override function onNoteIncoming(event) {
+		super.onNoteIncoming(event);
+		
+		if (!isGirlfriendSinging) return;
+		
+		var note = event.note;
+		if (note == null) return;
+
+		if (!note.noteData.getMustHitNote()) {
+			var opponent = PlayState.instance.currentStage.getDad();
+			if (opponent != null) {
+				opponent.holdTimer = 0;
+			}
+		}
+	}
+
+	function handleGirlfriendSing(action:String) {
+		switch (action) {
+			case "swap":
+				swapToGirlfriendSinging();
+			case "normal":
+				restoreNormalSinging();
+		}
+	}
+
+	function swapToGirlfriendSinging() {
+		if (PlayState.instance == null || PlayState.instance.vocals == null) return;
+		
+		isGirlfriendSinging = true;
+		
+		if (PlayState.instance.vocals.opponentVoices != null && PlayState.instance.vocals.opponentVoices.members.length > 0) {
+			// Keep opponent vocals but at lower volume
+			PlayState.instance.vocals.opponentVolume = 0.3;
+		}
+		
+		trace("Girlfriend is now singing instead of opponent!");
+	}
+
+	function restoreNormalSinging() {
+		if (PlayState.instance == null || PlayState.instance.vocals == null) return;
+		
+		isGirlfriendSinging = false;
+		
+		PlayState.instance.vocals.opponentVolume = originalOpponentVolume;
+		PlayState.instance.vocals.playerVolume = originalPlayerVolume;
+		
+		trace("Restored normal singing roles!");
+	}
+
+	override function onUpdate(event) {
+		super.onUpdate(event);
+		
+		if (!isGirlfriendSinging) return;
+		if (PlayState.instance == null || PlayState.instance.currentStage == null) return;
+
+		var girlfriend = PlayState.instance.currentStage.getGirlfriend();
+		var opponent = PlayState.instance.currentStage.getDad();
+		
+		if (girlfriend != null && opponent != null) {
+			if (opponent.isSinging()) {
+				opponent.holdTimer = 0;
+				opponent.playAnimation('idle', true);
+			}
+			
+			if (opponent.animation != null && opponent.animation.curAnim != null) {
+				var currentAnimName = opponent.animation.curAnim.name;
+				if (currentAnimName != null && currentAnimName != "idle" && currentAnimName != "hey") {
+					opponent.playAnimation('idle', true);
+				}
+			}
+		}
+	}
+}

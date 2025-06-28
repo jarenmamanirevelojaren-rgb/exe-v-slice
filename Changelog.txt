@@ -1,0 +1,65 @@
+1.1.0
+Song Additions:
+- Added Round-A-Bout
+- Added Prey
+- Added Final Escape
+  * Note: Final Escape uses the KIRB0 MIX/MiiniStar version of the song
+  * This will be changed in a new version relatively soon, as I am unsatisfied with this as well.
+
+Additions:
+- Added the RETRO SONIC HUD
+  * Can be toggled in Settings
+- Added the "Full Note Spin" and "Strumline Spin" events
+  * Mainly used in Endless, but can be added to any song you want!
+- Added a strumline modchart to Too Slow, which was seen in V1 and V2
+  * Can be toggled in Settings, and will also toggle off the Full Note Spin and Strumline Spin events
+
+Improvements:
+- Cycles now has separate instrumental and vocal tracks
+- Weeks/Levels in the story menu are now separated and belong to the opponent you're facing
+- Reduced area of cinematic effects in Too Slow
+- Reworked Lyrics Event
+  * You can now change the color, size, border size, font, etc. All through the events tab.
+  * Mainly used in Prey, but can be applied to any song you want!
+
+Bug Fixes:
+- Fixed error when hitting a Phantom Note in Triple Trouble
+- Fixed error when dying to a Phantom Note in You Can't Run/Triple Trouble
+- Fixed object order for the stage in Endless
+- Fixed Faker not being playable on EASY and NORMAL
+- Fixed Black Sun having a high scroll speed on EASY and NORMAL
+- Fixed 'Fatal Error' popups appearing even while the game is paused
+- Fixed the Green Hill BG appearing prematurely in You Can't Run
+- Fixed Girlfriend (GENESIS) conflicting with base game Girlfriend (Pixel)
+- Fixed Girlfriend (Faker) and Girlfriend (GENESIS) only playing their left animations
+- Fixed Boyfriend (GENESIS) using base game Boyfriend (Pixel)'s health icon
+
+--
+1.1.5
+Song Addition:
+- Added Slaybells
+
+Additions:
+- Built-In Ghost-Tapping
+  * I thought on this for a while, and while I will try to avoid adding clutter to the mod, this was the only way I could make it work with other options
+- Restored Black Sun's health drain mechanic from VS Sonic.Exe 2.0
+- Added the "Girlfriend Sing" event
+  * Mainly used in Slaybells, but can be used in any song you want!
+
+Improvements:
+- Changed Sonic.exe's jumpscare (animated) in Too Slow to a modernized one
+- Sonic.exe's jumpscare in Too Slow is now cached and no longer lags upon first appearance
+- Changed Sonic.exe's I AM GOD animation in Too Slow
+- Updated Too Slow's modchart
+- Static Notes are now cached and no longer lag upon first miss
+- Screen Static now plays more frequently in Too Slow
+- You can now increase or decrease the line spacing of lyrics in the Lyrics Event
+
+Bug Fixes:
+- Fixed Boyfriend (GENESIS) not having a health icon
+- Fixed Sarah's idle animation playing repeatedly and not on beat
+- Fixed Sarah's singing animations being static
+- Fixed Final Escape using the default HUD during the Green Hill section
+- Fixed EXE Hud overlapping blackout scenes in Final Escape
+- Fixed Furnace still partially being visible flying under the road in Prey
+- Fixed object order in Too Slow

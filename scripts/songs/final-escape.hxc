@@ -28,7 +28,6 @@ import haxe.Json;
 import funkin.play.notes.Strumline;
 import funkin.play.notes.StrumlineNote;
 
-// Check the other script in scripts/stages/xenoStage for the stage prop editing, everything else is done here.
 
 class FinalEscapeSong extends Song {
     var game;

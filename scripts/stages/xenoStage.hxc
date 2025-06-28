@@ -26,6 +26,7 @@ import flixel.FlxSprite;
 import haxe.Json;
 import funkin.play.notes.Strumline;
 import funkin.play.notes.StrumlineNote;
+import funkin.modding.module.ModuleHandler;
 
 class XenoStage extends Stage
 {
@@ -34,7 +35,7 @@ class XenoStage extends Stage
 	var knucklesJump:FunkinSprite;
 	var eggmanJump:FunkinSprite;
 
-	var stepCounter:FlxText;
+	var stepCounter:FlxText; // These were used in testing, before the debug mod was released
 	var beatCounter:FlxText;
 
 
@@ -58,22 +59,26 @@ class XenoStage extends Stage
 			FunkinSprite.cacheTexture(Paths.image('Knuckles'));
 			FunkinSprite.cacheTexture(Paths.image('Eggman'));
 
-			tailsJump = FunkinSprite.create(0, 0, 'Tails');
-			tailsJump.cameras = [game.camHUD];
-			game.add(tailsJump);
-			tailsJump.visible = false;
+			enableJumpscare = ModuleHandler.getModule("EXEOptions").scriptGet("dojumpscares");
 
-			knucklesJump = FunkinSprite.create(0, 0, 'Knuckles');
-			knucklesJump.cameras = [game.camHUD];
-			game.add(knucklesJump);
-			knucklesJump.visible = false;
+			if (enableJumpscare) {
+				tailsJump = FunkinSprite.create(0, 0, 'Tails');
+			    tailsJump.cameras = [game.camHUD];
+			    game.add(tailsJump);
+			    tailsJump.visible = false;
 
-			eggmanJump = FunkinSprite.create(0, 0, 'Eggman');
-			eggmanJump.cameras = [game.camHUD];
-			game.add(eggmanJump);
-			eggmanJump.visible = false;
+			    knucklesJump = FunkinSprite.create(0, 0, 'Knuckles');
+			    knucklesJump.cameras = [game.camHUD];
+			    game.add(knucklesJump);
+			    knucklesJump.visible = false;
 
-		    screenGlitch1 = FunkinSprite.create(-600, -200);
+			    eggmanJump = FunkinSprite.create(0, 0, 'Eggman');
+			    eggmanJump.cameras = [game.camHUD];
+			    game.add(eggmanJump);
+			    eggmanJump.visible = false;
+			}
+
+			screenGlitch1 = FunkinSprite.create(-600, -200);
             screenGlitch1.frames = Paths.getSparrowAtlas('Xenostage/P3_Stat');
             screenGlitch1.scrollFactor.set(1, 1);
             screenGlitch1.scale.set(5.5, 5.5);
@@ -85,30 +90,12 @@ class XenoStage extends Stage
 			screenGlitch1.animation.finishCallback = function() {
                 screenGlitch1.visible = false;
             };
-
-			stepCounter = new FlxText(10, 200, 300, "Step: 0");
-			stepCounter.setFormat(Paths.font('vcr.ttf'), 32, FlxTextBorderStyle.OUTLINE);
-			stepCounter.color = 0xFFFFFFFF; // Set text color to white
-			stepCounter.scrollFactor.set(0, 0);
-			stepCounter.cameras = [game.camHUD];
-			game.add(stepCounter);
-
-			beatCounter = new FlxText(10, 250, 300, "Beat: 0");
-			beatCounter.setFormat(Paths.font('vcr.ttf'), 32, FlxTextBorderStyle.OUTLINE);
-			beatCounter.color = 0xFFFFFFFF; // Set text color to white
-			beatCounter.scrollFactor.set(0, 0);
-			beatCounter.cameras = [game.camHUD];
-			game.add(beatCounter);
-
 		}
 	}
 
 	override function buildStage()
 	{
 		super.buildStage();
-
-		//var p3_Stats = getNamedProp('p3_Stats');
-		//p3_Stats.zIndex = -2;
 	}
 
 	function onStepHit(event:SongTimeScriptEvent):Void
@@ -119,15 +106,12 @@ class XenoStage extends Stage
         var opStrum = game.opponentStrumline; 
 		var p3_Stats = getNamedProp('p3_Stats');
 
-		stepCounter.text = "Step: " + event.step;
-		beatCounter.text = "Beat: " + event.beat;
-
 		if (game.currentSong.id.toLowerCase() == "triple-trouble" && event.step == 4) // Song start, start a static screen
 		{
 			screenGlitch1.visible = true;
 			screenGlitch1.animation.play('busk');
 		}
-		if (game.currentSong.id.toLowerCase() == "triple-trouble" && event.step == 151)
+		if (game.currentSong.id.toLowerCase() == "triple-trouble" && event.step == 151 && enableJumpscare)
 		{
 			tailsJump.visible = true;
 			tailsJump.alpha = 1;
@@ -171,20 +155,21 @@ class XenoStage extends Stage
 			strumLine.x = 45; // Swap player and opponent strums
             opStrum.x = 680;
 
-			knucklesJump.visible = true;
-			knucklesJump.alpha = 1;
-			FlxTween.tween(knucklesJump, { alpha: 0 }, 1, {
-				onComplete: function(tween:FlxTween) {
-					knucklesJump.visible = false; // Hide after fading out
-				}
-				});
-			
-			var screamSoundKnuckles = FunkinSound.playOnce(Paths.sound("KnucklesScreamLOL"), 0.6);
-			FlxTween.tween(screamSoundKnuckles, { volume: 0 }, 1, {
-				onComplete: function(tween:FlxTween) {
-					screamSoundKnuckles.stop(); // Stop the sound after fading out
-				}
-			});
+			if (enableJumpscare) {
+				knucklesJump.visible = true;
+			    knucklesJump.alpha = 1;
+			    FlxTween.tween(knucklesJump, { alpha: 0 }, 1, {
+				    onComplete: function(tween:FlxTween) {
+					    knucklesJump.visible = false; // Hide after fading out
+				    }
+			    });
+				var screamSoundKnuckles = FunkinSound.playOnce(Paths.sound("KnucklesScreamLOL"), 0.6);
+			    FlxTween.tween(screamSoundKnuckles, { volume: 0 }, 1, {
+				    onComplete: function(tween:FlxTween) {
+					    screamSoundKnuckles.stop(); // Stop the sound after fading out
+				    }
+			    });
+			}
 		}
 		if (game.currentSong.id.toLowerCase() == "triple-trouble" && event.step == 2308) {
 			screenGlitch1.visible = true;
@@ -205,20 +190,22 @@ class XenoStage extends Stage
 			strumLine.x = 680; // Swap them back
             opStrum.x = 45;
 
-			eggmanJump.visible = true;
-			eggmanJump.alpha = 1;
-			FlxTween.tween(eggmanJump, { alpha: 0 }, 1, {
-				onComplete: function(tween:FlxTween) {
-					eggmanJump.visible = false; // Hide after fading out
-				}
+			if (enableJumpscare) {
+				eggmanJump.visible = true;
+			    eggmanJump.alpha = 1;
+			    FlxTween.tween(eggmanJump, { alpha: 0 }, 1, {
+				    onComplete: function(tween:FlxTween) {
+					    eggmanJump.visible = false; // Hide after fading out
+				    }
 				});
 			
-			var screamSoundEggman = FunkinSound.playOnce(Paths.sound("EggmanScreamLOL"), 0.6);
-			FlxTween.tween(screamSoundEggman, { volume: 0 }, 1, {
-				onComplete: function(tween:FlxTween) {
-					screamSoundEggman.stop(); // Stop the sound after fading out
-				}
-			});
+			    var screamSoundEggman = FunkinSound.playOnce(Paths.sound("EggmanScreamLOL"), 0.6);
+			    FlxTween.tween(screamSoundEggman, { volume: 0 }, 1, {
+				    onComplete: function(tween:FlxTween) {
+					    screamSoundEggman.stop(); // Stop the sound after fading out
+				    }
+			    });
+			}
 		}
 		if (game.currentSong.id.toLowerCase() == "triple-trouble" && event.step == 3160) {
 			screenGlitch1.visible = true;

@@ -1,0 +1,250 @@
+import flixel.FlxG;
+import flixel.text.FlxText;
+import flixel.util.FlxTimer;
+import funkin.Conductor;
+import funkin.play.PlayState;
+import funkin.play.song.Song;
+import funkin.play.PlayStatePlaylist;
+import funkin.util.Constants;
+import lime.utils.Assets;
+import funkin.modding.events.HitNoteScriptEvent;
+import funkin.Paths;
+import flixel.util.FlxSave;
+import flixel.text.FlxTextBorderStyle;
+import funkin.Preferences;
+import Std;
+
+class IllusionSong extends Song
+{
+  var hasPlayedCutscene:Bool = false;
+
+  var songName:String = 'illusion';
+
+	function new()
+	{
+		super(songName);
+	}
+
+	var funValue:Int = 22;
+	var STOP:Bool = false;
+
+	var basePlayerStrumPos = 0;
+	var baseOpponentStrumPos = 0;
+	var basePlayerStrumPosY = 0;
+
+	var lyrics:FlxText;
+	var lyricsStr:Array<Int, String> = [0, ''];
+
+	var save = null;
+
+	public override function onCountdownStart(event:CountdownScriptEvent):Void {
+		super.onCountdownStart(event);
+
+    if (!PlayStatePlaylist.isStoryMode) hasPlayedCutscene = true;
+
+    if (!hasPlayedCutscene) {
+      trace('Pausing countdown to play cutscene.');
+
+      hasPlayedCutscene = true;
+
+      event.cancel(); // CANCEL THE COUNTDOWN!
+
+      PlayState.instance.currentStage.pause();
+
+      startDialogue();
+    }
+	}
+
+	function startDialogue() {
+    var dialogueName:String = songName + (Preferences.naughtyness ? '' : '-censored');
+
+    PlayState.instance.startConversation(dialogueName);
+		PlayState.instance.currentConversation.backdrop.color = 0xFF000000;
+  }
+
+	function onCreate(event:ScriptEvent)
+	{
+		super.onCreate(event);
+    hasPlayedCutscene = false;
+
+		basePlayerStrumPos = PlayState.instance.playerStrumline.x;
+		baseOpponentStrumPos = PlayState.instance.opponentStrumline.x;
+		basePlayerStrumPosY = PlayState.instance.playerStrumline.strumlineNotes.members[0].y;
+		PlayState.instance.opponentStrumline.noteHoldCovers.visible = false;
+		PlayState.instance.playerStrumline.noteHoldCovers.visible = false; // it gets way off freaky so it's to better to hide it
+
+		// the lyrics if enabled in options menu.
+		var lyricsPosY:Float = Preferences.downscroll ? FlxG.height * 0.3 : FlxG.height * 0.75;
+		lyrics = new FlxText(FlxG.width * 0.2, lyricsPosY, 0, '', 24);
+		lyrics.setFormat(Paths.font('NeoFontLol.ttf'), 24, 0xFFFFFFFF, "left", FlxTextBorderStyle.OUTLINE, 0xFF000000);
+		lyrics.scrollFactor.set();
+    lyrics.zIndex = 1000;
+		PlayState.instance.add(lyrics);
+		lyrics.cameras = [PlayState.instance.camHUD];
+
+		if (save != null)
+			save = null;
+
+		save = new FlxSave();
+    save.bind("lyricsOption", "Neo_Team");
+
+		if (save.data.enabled == true)
+		{
+			lyricsStr = getLyricData();
+			if (lyricsStr == null)
+				lyricsStr = [0, 'Did not work Lyrics'];
+		}
+
+		if(save != null)save.close();
+      save = null;
+	}
+
+	function onSongStart(event:ScriptEvent)
+	{
+    super.onSongStart(event);
+	}
+
+	var curbet = 0;
+
+	function onUpdate(event:UpdateScriptEvent)
+	{
+		super.onUpdate(event);
+
+		if (PlayState.instance.currentConversation != null)
+      PlayState.instance.currentConversation.pauseMusic(); // the og neo mod doesn't have any music on dialougues
+
+		curbet = ((Conductor.instance.songPosition/1000)*(Conductor.instance.bpm/60));
+
+		if (Conductor.instance.currentStep > 0)
+		{
+			for (i in 0...4)
+			{
+				new FlxTimer().start(i * 0.2, function(tmr:FlxTimer)
+				{
+					if (PlayState.instance.playerStrumline.strumlineNotes != null)
+					{
+						var cuurnotePOsY = PlayState.instance.playerStrumline.y;
+						PlayState.instance.playerStrumline.x = PlayState.instance.playerStrumline.x + (Math.sin((curbet + i*0.25) * Math.PI)) + funValue;
+						PlayState.instance.playerStrumline.strumlineNotes.members[i].y = cuurnotePOsY + (22 * Math.cos((curbet + i*0.25) * Math.PI));
+					}
+
+					if (PlayState.instance.opponentStrumline.strumlineNotes != null)
+					{
+						var cuurnotePOsY = PlayState.instance.opponentStrumline.y;
+						PlayState.instance.opponentStrumline.x = PlayState.instance.opponentStrumline.x + (Math.sin((curbet + i*0.25) * Math.PI)) + funValue;
+						PlayState.instance.opponentStrumline.strumlineNotes.members[i].y = cuurnotePOsY + (22 * Math.cos((curbet + i*0.25) * Math.PI));
+					}
+					funValue = 0;
+				});
+			}
+		}
+
+	}
+
+	function onSongRetry(event:ScriptEvent)
+	{
+		super.onSongRetry(event);
+    hasPlayedCutscene = true;
+		PlayState.instance.playerStrumline.x = basePlayerStrumPos;
+		PlayState.instance.opponentStrumline.x = baseOpponentStrumPos;
+		lyrics.text = '';
+		curbet = 0;
+		for (i in 0...4)
+		{
+			PlayState.instance.opponentStrumline.strumlineNotes.members[i].y = basePlayerStrumPosY;
+			PlayState.instance.playerStrumline.strumlineNotes.members[i].y = basePlayerStrumPosY;
+		}
+		funValue = 22;
+	}
+
+	function onNoteHit(event:HitNoteScriptEvent)
+	{
+		if (!event.note.noteData.getMustHitNote())
+		{
+			if (!STOP)
+			{
+				if (PlayState.instance.health > Constants.HEALTH_KILLER_BONUS)
+				PlayState.instance.health -= Constants.HEALTH_KILLER_BONUS/2; // we always assume monster getting the new rating: KILLER!
+
+				if (event.note.holdNoteSprite != null)
+				{
+					// if there's a sustain, it'll keep on shaking the camera.
+					FlxG.camera.shake(0.01, event.note.holdNoteSprite.sustainLength/1000);
+				}
+				else
+					FlxG.camera.shake(0.01, 0.2); // screen will shake for 0.2 seconds if opponent hits a regular note.
+			}
+		}
+
+		super.onNoteHit(event);
+	}
+
+  function onResume(event:ScriptEvent):Void
+  {
+    super.onResume(event);
+		STOP = false;
+  }
+
+	function fetchAssetPaths():Array<String>
+	{
+		var results:Array<String> = super.fetchAssetPaths();
+
+		results.push(Paths.txt('lyrics/illusion', 'shared'));
+		results.push(Paths.txt('NeoFontLol.ttf', 'shared'));
+
+		return results;
+	}
+
+	function getLyricData():Array<Int, String>
+	{
+		// tip: when loading any file, the engine assumes all the mods to be in assets/
+		// so when i loaded the lyrics file, it assumed the file to be in shared:assets/shared/data/lyrics/illusion.txt
+		var file:Array<String> = Assets.getText(Paths.txt('lyrics/illusion', 'shared')).split('\n');
+		var rawLyrics:Array<Int, String> = [];
+
+		for (i in file)
+		{
+			var item = i.split(':');
+			rawLyrics.push([Std.parseInt(item[1]), item[2].toUpperCase()]);
+		}
+
+		if (rawLyrics == [])
+			return null;
+
+		return rawLyrics;
+	}
+
+	function onStepHit(event:SongTimeScriptEvent)
+  {
+    super.onStepHit(event);
+
+		for (i in 0...lyricsStr.length)
+		{
+			if (event.step == lyricsStr[i][0])
+			{
+				lyrics.text = lyricsStr[i][1];
+			}
+		}
+  }
+
+	function onPause(event:ScriptEvent):Void
+  {
+    super.onPause(event);
+		new FlxTimer().start(1, function(tmr:FlxTimer)
+		{
+			PlayState.instance.playerStrumline.x = basePlayerStrumPos;
+			PlayState.instance.opponentStrumline.x = baseOpponentStrumPos;
+			curbet = 0;
+			for (i in 0...4)
+			{
+				PlayState.instance.opponentStrumline.strumlineNotes.members[i].y = basePlayerStrumPosY;
+				PlayState.instance.playerStrumline.strumlineNotes.members[i].y = basePlayerStrumPosY;
+			}
+		});
+		STOP = true;
+  }
+
+	public override function onDialogueEnd() {
+    Countdown.performCountdown();
+  }
+}

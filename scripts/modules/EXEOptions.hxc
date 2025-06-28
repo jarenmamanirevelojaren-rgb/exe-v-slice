@@ -1,0 +1,175 @@
+import funkin.modding.module.Module;
+import Std;
+import funkin.ui.options.OptionsState;
+import flixel.util.FlxSave;
+import flixel.FlxG;
+import funkin.play.PlayState;
+import Type;
+import funkin.util.ReflectUtil;
+import funkin.util.Constants;
+import funkin.play.character.CharacterDataParser;
+import funkin.play.character.BaseCharacter;
+import funkin.ui.PixelatedIcon;
+import funkin.ui.freeplay.SongMenuItem;
+import funkin.ui.freeplay.FreeplayState;
+import funkin.PlayerSettings;
+
+class EXEOptions extends Module
+{
+    /* Functions for the options are located in these scripts:
+        * scripts/NoteCamera.hxc - Note Camera Movement
+        * scripts/stages/hillZone.hxc - Screen Static/Jumpscares
+        * scripts/stages/hillZonePhase2.hxc - Screen Static/Vignette
+        * scripts/stages/xenoStage.hxc - Jumpscares/Vignette
+        * scripts/stages/fatalZone.hxc - Fatal Error Popups/Screen Ratio Editing
+        * scripts/stages/finalstage.hxc - Vignette/Screen Shake
+        * scripts/stages/finalstageErect - Vignette/Screen Shake
+        * scripts/events/LyricsEvent.hxc - Lyrics
+    */
+
+    public var save = null;
+    public var char:BaseCharacter;
+
+    public var fatalpopups:Bool = true;
+    public var screenstatic:Bool = true;
+    public var screenratio:Bool = true;
+    public var dojumpscares:Bool = true;
+    public var cameramove:Bool = true;
+    public var dolyrics:Bool = true;
+    public var forcemiddlescroll:Bool = true;
+    public var modcharts:Bool = true;
+    public var exehud:Bool = true;
+    public var hpcolors:Bool = true;
+    public var cameramoveIntensity:Int = 20; // New: Intensity value
+    public var ghosttap:Bool = false;
+
+    function bindSave(){
+        save = new FlxSave();
+        save.bind("exeoptions", "Greeny3483");
+    }
+
+    function closeSave(){
+        if(save != null)save.close();
+        save = null;
+    }
+
+    public function new(){
+        super("EXEOptions", 1);
+        bindSave();
+
+        if(save.data.fatalpopups == null) save.data.fatalpopups = true;
+        if(save.data.screenstatic == null) save.data.screenstatic = true;
+        if(save.data.screenratio == null) save.data.screenratio = true;
+        if(save.data.dojumpscares == null) save.data.dojumpscares = true;
+        if(save.data.cameramove == null) save.data.cameramove = true;
+        if(save.data.dolyrics == null) save.data.dolyrics = true;
+        if(save.data.forcemiddlescroll == null) save.data.forcemiddlescroll = true;
+        if(save.data.modcharts == null) save.data.modcharts = true;
+        if(save.data.exehud == null) save.data.exehud = true;
+        if(save.data.hpcolors == null) save.data.hpcolors = true;
+        if(save.data.cameramoveIntensity == null) save.data.cameramoveIntensity = 20;
+        if(save.data.ghosttap == null) save.data.ghosttap = false;
+
+        fatalpopups = save.data.fatalpopups;
+        screenstatic = save.data.screenstatic;
+        screenratio = save.data.screenratio;
+        dojumpscares = save.data.dojumpscares;
+        cameramove = save.data.cameramove;
+        dolyrics = save.data.dolyrics;
+        forcemiddlescroll = save.data.forcemiddlescroll;
+        cameramoveIntensity = save.data.cameramoveIntensity;
+        modcharts = save.data.modcharts;
+        exehud = save.data.exehud;
+        hpcolors = save.data.hpcolors;
+        ghosttap = save.data.ghosttap;
+
+        closeSave();
+    }
+
+    public var inOptions:Bool = false;
+
+    override function onStateChangeEnd(event){
+        super.onStateChangeEnd(event);
+        inOptions = false;
+        if(Std.isOfType(event.targetState, OptionsState)){
+            var prefs = event.targetState.optionsCodex.pages.get("preferences");
+            inOptions = true;
+
+            bindSave();
+
+            prefs.items.createItem(120, 120 * prefs.items.length + 30, "VERSUS SONIC.EXE:", "bold", () -> false); // Separate options from the default preferences OR modded preferences.
+			prefs.preferenceDesc.push("");
+
+            prefs.createPrefItemCheckbox("Ghost Tapping", "Allows key-presses without penalty even when no notes are present.", function(value) {
+                save.data.ghosttap = value;
+                ghosttap = value;
+            }, save.data.ghosttap);
+
+            prefs.createPrefItemCheckbox("RETRO SONIC HUD", "Enables the RETRO SONIC HUD for all songs.", function(value) {
+                save.data.exehud = value;
+                exehud = value;
+            }, save.data.exehud);
+
+            prefs.createPrefItemCheckbox("Icon Colored Healthbar", "Colors the healthbar based on the color of the icons. \nNote: Disabling requires restart", function(value) {
+                save.data.hpcolors = value;
+                hpcolors = value;
+            }, save.data.hpcolors);
+
+            prefs.createPrefItemCheckbox("Note Camera Movement", "Makes the camera move depending on the direction of the note you hit.", function(value) {
+                save.data.cameramove = value;
+                cameramove = value;
+            }, save.data.cameramove);
+
+            prefs.createPrefItemNumber(
+                "Movement Intensity",
+                "How far the camera moves when hitting a note. \nToo high a value can cause out of bounds issues.",
+                function(value:Float) {
+                    if (save.data.cameramove) {
+                        save.data.cameramoveIntensity = Std.int(value);
+                        cameramoveIntensity = Std.int(value);
+                    }
+                },
+                null,
+                save.data.cameramoveIntensity,
+                5, 100, 5, 0
+            );
+
+            prefs.createPrefItemCheckbox("Lyrics", "Toggles lyrics for certain songs.", function(value) {
+                save.data.dolyrics = value;
+                dolyrics = value;
+            }, save.data.dolyrics);
+
+            prefs.createPrefItemCheckbox("Jumpscares", "Enables jumpscares for certain songs.", function(value) {
+                save.data.dojumpscares = value;
+                dojumpscares = value;
+            }, save.data.dojumpscares);
+
+            prefs.createPrefItemCheckbox("Screen Static", "Enables the static overlay that appears throughout certain songs.", function(value) {
+                save.data.screenstatic = value;
+                screenstatic = value;
+            }, save.data.screenstatic);
+
+            prefs.createPrefItemCheckbox("Fatal Error Popups", "Enables the visibility of the 'Fatal Error' popups. \nUsed in: Fatality", function(value) {
+                save.data.fatalpopups = value;
+                fatalpopups = value;
+            }, save.data.fatalpopups);
+
+            prefs.createPrefItemCheckbox("Force RETRO Aspect Ratio", "Allows certain songs to adjust the aspect ratio to be more in line with that of an old console game.", function(value) {
+                save.data.screenratio = value;
+                screenratio = value;
+            }, save.data.screenratio);
+
+            prefs.createPrefItemCheckbox("Mod Charts", "Allows certain songs to modify the Player or Opponent's strumlines.", function(value) {
+                save.data.modcharts = value;
+                modcharts = value;
+            }, save.data.modcharts);
+
+            prefs.createPrefItemCheckbox("Force Middlescroll", "Allows certain songs to force the middlescroll mechanic.", function(value) {
+                save.data.forcemiddlescroll = value;
+                forcemiddlescroll = value;
+            }, save.data.forcemiddlescroll);
+
+        }else if(inOptions)
+            closeSave();
+    }
+}
