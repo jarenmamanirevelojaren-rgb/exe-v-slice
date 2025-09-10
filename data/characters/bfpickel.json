@@ -4,7 +4,7 @@
     "assetPath": "characters/BF",
     "singTime": 4,
     "isPixel": true,
-    "scale": 8.99999999999999,
+    "scale": 9,
     "offsets": [
         -20,
         10
@@ -14,8 +14,8 @@
         125
     ],
     "healthIcon": {
-        "id": "bf-pixel",
-        "isPixel": true,
+        "id": "bfpixelycr",
+        "isPixel": false,
         "flipX": false,
         "scale": 1
     },

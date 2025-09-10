@@ -97,33 +97,33 @@
     },
     "countdownThree": {
       "data": {
-        "audioPath": "shared:gameplay/countdown/pixel/introTHREE"
+        "audioPath": "shared:countdown/exe/bizarre"
       },
       "assetPath": null
     },
     "countdownTwo": {
       "data": {
-        "audioPath": "shared:gameplay/countdown/pixel/introTWO"
+        "audioPath": "shared:countdown/exe/bizarre"
       },
-      "assetPath": "shared:ui/countdown/pixel/ready",
-      "scale": 6.0,
-      "isPixel": true
+      "assetPath": "shared:ui/countdown/funkin/invisibleReady",
+      "scale": 1.0,
+      "isPixel": false
     },
     "countdownOne": {
       "data": {
-        "audioPath": "shared:gameplay/countdown/pixel/introONE"
+        "audioPath": "shared:countdown/exe/bizarre"
       },
-      "assetPath": "shared:ui/countdown/pixel/set",
-      "scale": 6.0,
-      "isPixel": true
+      "assetPath": "shared:ui/countdown/funkin/invisibleReady",
+      "scale": 1.0,
+      "isPixel": false
     },
     "countdownGo": {
       "data": {
-        "audioPath": "shared:gameplay/countdown/pixel/introGO"
+        "audioPath": "shared:countdown/exe/bizarre"
       },
-      "assetPath": "shared:ui/countdown/pixel/go",
-      "scale": 6.0,
-      "isPixel": true
+      "assetPath": "shared:ui/countdown/funkin/invisibleReady",
+      "scale": 1.0,
+      "isPixel": false
     },
     "judgementSick": {
       "assetPath": "default:ui/popup/pixel/sick",

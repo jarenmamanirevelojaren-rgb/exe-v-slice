@@ -14,8 +14,11 @@ import flixel.FlxG;
 
 class PhantomNote extends Module {
 
-    private var drainRate:Float = 0.002; // Slower health drain rate.
+    private var baseDrainRate:Float = 0.002;
+    private var currentDrainRate:Float = 0.002;
     private var drainTimer:FlxTimer;
+    private var stopDrainTimer:FlxTimer;
+    private var isDraining:Bool = false;
 
     function new() {
         super("phantomnote");
@@ -25,6 +28,7 @@ class PhantomNote extends Module {
 		
         game = PlayState.instance;
         drainTimer = new FlxTimer();
+        stopDrainTimer = new FlxTimer();
 
         super.onCreate(event);
 	}
@@ -35,20 +39,42 @@ class PhantomNote extends Module {
 			return;
 		}
 		if (event.note.noteData.kind == "phantomnote") {
-			drainRate += 0.005; // Increase drain rate with each note hit.
+			currentDrainRate += 0.005; // Increase drain rate with each note hit.
 			startHealthDrain();
 		}
 	}
 
 	private function startHealthDrain():Void {
-		drainTimer.start(0.2, function(timer:FlxTimer):Void { // Slower timer interval.
-			PlayState.instance.health = Math.max(0.01, PlayState.instance.health - drainRate); // Drain health but ensure it doesn't go below 0.01.
-			if (PlayState.instance.health <= 0.01) { // Stop draining at minimum HP.
-				if (drainTimer != null) {
-				    drainTimer.stop();
-				}
+		if (drainTimer == null || stopDrainTimer == null) return; // Prevent errors
+		
+		// Stop any existing drain
+		stopHealthDrain();
+		
+		// Start draining health
+		isDraining = true;
+		drainTimer.start(0.1, function(timer:FlxTimer):Void {
+			if (isDraining && PlayState.instance != null) {
+				// Drain health but ensure it doesn't go below 0.01 to prevent death
+				PlayState.instance.health = Math.max(0.01, PlayState.instance.health - currentDrainRate);
 			}
-		}, 50); // Run for 10 seconds (0.2 * 50).
+		}, 0); // 0 means infinite loops until manually stopped
+		
+		// Stop the drain after 3 seconds
+		stopDrainTimer.start(3.0, function(timer:FlxTimer):Void {
+			stopHealthDrain();
+		});
+	}
+	
+	private function stopHealthDrain():Void {
+		isDraining = false;
+		
+		// Cancel active timers
+		if (drainTimer != null && drainTimer.active) {
+			drainTimer.cancel();
+		}
+		if (stopDrainTimer != null && stopDrainTimer.active) {
+			stopDrainTimer.cancel();
+		}
 	}
 
 	function onNoteIncoming(event:NoteScriptEvent) {

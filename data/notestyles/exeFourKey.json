@@ -93,27 +93,33 @@
     },
     "countdownThree": {
       "data": {
-        "audioPath": null
+        "audioPath": "shared:countdown/exe/bizarre"
       },
       "assetPath": null
     },
     "countdownTwo": {
       "data": {
-        "audioPath": null
+        "audioPath": "shared:countdown/exe/bizarre"
       },
-      "assetPath": null
+      "assetPath": "shared:ui/countdown/funkin/invisibleReady",
+      "scale": 1.0,
+      "isPixel": false
     },
     "countdownOne": {
       "data": {
-        "audioPath": null
+        "audioPath": "shared:countdown/exe/bizarre"
       },
-      "assetPath": null
+      "assetPath": "shared:ui/countdown/funkin/invisibleReady",
+      "scale": 1.0,
+      "isPixel": false
     },
     "countdownGo": {
       "data": {
-        "audioPath": null
+        "audioPath": "shared:countdown/exe/bizarre"
       },
-      "assetPath": null
+      "assetPath": "shared:ui/countdown/funkin/invisibleReady",
+      "scale": 1.0,
+      "isPixel": false
     },
     "judgementSick": {
       "assetPath": "default:ui/popup/exe1/sick",

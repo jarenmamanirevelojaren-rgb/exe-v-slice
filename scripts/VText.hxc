@@ -1,0 +1,32 @@
+import flixel.FlxObject;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.FlxG;
+import flixel.text.FlxText;
+import flixel.text.FlxTextBorderStyle;
+import funkin.ui.mainmenu.MainMenuState;
+import funkin.play.PlayState;
+import funkin.Paths;
+import funkin.util.ReflectUtil;
+import funkin.util.Constants;
+import funkin.modding.module.Module;
+
+class ExeSplashText extends Module
+{
+  public var exeDESKTOP_VERSION:String = '0.2.6';
+
+  public function new()
+  {
+    super('ExeSplashText');
+  }
+  
+  override function onUpdate(event:UpdateScriptEvent)
+  {
+	  super.onUpdate(event);
+    
+    if (ReflectUtil.getClassNameOf(FlxG.state) == "funkin.ui.mainmenu.MainMenuState")
+    {
+      FlxG.state.leftWatermarkText.text = "FRIDAY NIGHT FUNKIN' " + Constants.VERSION + " | VERSUS SONIC.EXE V-SLICE v" + exeDESKTOP_VERSION;
+    }
+  }
+}

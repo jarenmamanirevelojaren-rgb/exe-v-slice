@@ -1,0 +1,382 @@
+import flixel.FlxG;
+import flixel.math.FlxBasePoint;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxTimer;
+import flixel.text.FlxText;
+import flixel.text.FlxTextBorderStyle;
+import flixel.FlxCamera;
+import flixel.addons.display.FlxRuntimeShader;
+import openfl.Assets;
+import openfl.filters.ShaderFilter;
+import funkin.audio.FunkinSound;
+import funkin.Conductor;
+import funkin.graphics.FunkinSprite;
+import funkin.modding.module.ScriptedModule;
+import funkin.modding.events.ScriptEvent;
+import funkin.modding.events.ScriptEventDispatcher;
+import funkin.util.ReflectUtil;
+import funkin.Paths;
+import funkin.play.PlayState;
+import funkin.play.stage.Stage;
+import funkin.play.stage.Bopper;
+import funkin.play.stage.StageProp;
+import funkin.data.stage.StageRegistry;
+import funkin.play.character.CharacterType;
+import funkin.play.character.BaseCharacter;
+import funkin.play.character.CharacterDataParser;
+import funkin.play.song.Song;
+import flixel.FlxSprite;
+import haxe.Json;
+import funkin.play.notes.Strumline;
+import funkin.play.notes.StrumlineNote;
+import funkin.modding.module.ModuleHandler;
+
+class StardustSpeedway extends Stage {
+    public function new() {
+        super('stardustSpeedway');
+    }
+
+    var topBorder:FlxSprite;
+	var bottomBorder:FlxSprite;
+	var blackOverlay:FunkinSprite;
+	var blackOverlay2:FunkinSprite;
+	var sonicrunning:FunkinSprite;
+	var furnaceflying:FunkinSprite;
+	var furnaceGotcha:FunkinSprite;
+
+	var leftBorder:FlxSprite;
+	var rightBorder:FlxSprite;
+	
+	var bgSpeed:Float = 2500;
+	var bgScrollX:Float = 0;
+	var groundScrollX:Float = 0;
+
+	var vcrShader:FlxRuntimeShader;
+	var shaderTime:Float = 0;
+
+    override function onCreate(event:ScriptEvent):Void {
+        super.onCreate(event);
+
+        if (PlayState.instance.currentSong.id.toLowerCase() != "prey") return;
+
+		/*bonusFeaturesEnabled = ModuleHandler.getModule('EXEOptions').scriptGet('bonusfeatures');
+		screenRatioEdit = ModuleHandler.getModule("EXEOptions").scriptGet("screenratio");*/
+
+        game = PlayState.instance;
+        
+        /*if (bonusFeaturesEnabled) {
+            initVCRShader();
+
+			if (screenRatioEdit) {
+				leftBorder = new FlxSprite(0, 0).makeGraphic(50, FlxG.height, 0xFF000000);
+			    leftBorder.scrollFactor.set(0, 0);
+			    leftBorder.scale.set(5, 3);
+			    leftBorder.cameras = [game.camHUD];
+				leftBorder.alpha = 20;
+			    game.add(leftBorder);
+
+			    rightBorder = new FlxSprite(FlxG.width - 50, 0).makeGraphic(50, FlxG.height, 0xFF000000);
+			    rightBorder.scrollFactor.set(0, 0);
+			    rightBorder.scale.set(5, 3);
+			    rightBorder.cameras = [game.camHUD];
+				rightBorder.alpha = 20;
+			    game.add(rightBorder);
+			}
+        }*/
+
+        blackOverlay = FunkinSprite.create(0, 0, 'blackness');
+		blackOverlay.alpha = 1;
+		blackOverlay.scale.set(5, 5);
+		blackOverlay.zIndex = 100;
+		blackOverlay.scrollFactor.set(0, 0);
+		game.add(blackOverlay);
+
+		blackOverlay2 = FunkinSprite.create(0, 0, 'blackness');
+		blackOverlay2.alpha = 1;
+		blackOverlay2.scale.set(5, 5);
+		blackOverlay2.zIndex = 300;
+		blackOverlay2.scrollFactor.set(0, 0);
+		game.add(blackOverlay2);
+
+		sonicrunning = FunkinSprite.create(540, -170);
+		sonicrunning.frames = Paths.getSparrowAtlas('characters/running_sonic_sheet');
+		sonicrunning.animation.addByPrefix('idle', 'sonic idle', 24, true);
+		sonicrunning.animation.play('idle');
+		sonicrunning.antialiasing = false;
+		sonicrunning.scale.set(6, 6);
+		sonicrunning.zIndex = 200;
+		game.add(sonicrunning);
+
+		furnaceflying = FunkinSprite.create(-1000, 300);
+		furnaceflying.frames = Paths.getSparrowAtlas('characters/Furnace_sheet');
+		furnaceflying.animation.addByPrefix('idle', 'Furnace idle', 24, true);
+		furnaceflying.animation.play('idle');
+		furnaceflying.antialiasing = false;
+		furnaceflying.scale.set(6, 6);
+		furnaceflying.zIndex = 20;
+		game.add(furnaceflying);
+
+		furnaceGotcha = FunkinSprite.create(4000, -140, 'starved/furnace_gotcha');
+		furnaceGotcha.scale.set(6, 6);
+		furnaceGotcha.antialiasing = false;
+		furnaceGotcha.flipX = true;
+		furnaceGotcha.zIndex = 20;
+		game.add(furnaceGotcha);
+
+
+		topBorder = new FlxSprite(0, -50).makeGraphic(FlxG.width, 50, 0xFF000000);
+		bottomBorder = new FlxSprite(0, FlxG.height - 0).makeGraphic(FlxG.width, 50, 0xFF000000);
+		topBorder.scale.set(5, 5);
+		bottomBorder.scale.set(5, 5);
+	
+		topBorder.cameras = [game.camCutscene];
+		bottomBorder.cameras = [game.camCutscene];
+
+		topBorder.alpha = 0;
+		bottomBorder.alpha = 0;
+	
+		game.add(topBorder);
+		game.add(bottomBorder);
+	}
+	
+	/*function initVCRShader():Void {
+        try {
+            var shaderSource = Assets.getText(Paths.frag("vcr with no glitch"));
+            vcrShader = new FlxRuntimeShader(shaderSource);
+            
+            vcrShader.setFloat("iTime", 0.0);
+            vcrShader.setFloatArray("iResolution", [FlxG.width, FlxG.height, 1.0]);
+            
+            // Apply shader to all cameras
+            game.camGame.filters = [new ShaderFilter(vcrShader)];
+            game.camHUD.filters = [new ShaderFilter(vcrShader)];
+			game.camCutscene.filters = [new ShaderFilter(vcrShader)];
+            
+        } catch (e:Dynamic) {
+            trace("Failed to load VCR shader: " + e);
+        }
+    }*/
+	override function onCountdownStart(event:CountdownScriptEvent):Void {
+
+		super.onCountdownStart(event);
+
+        if (PlayState.instance.currentSong.id.toLowerCase() != "prey") return;
+		dad = PlayState.instance.currentStage.getDad();
+		mobile = FlxG.onMobile;
+
+		disableHud();
+
+		dad.x = -1100;	
+
+		FlxTween.tween(blackOverlay2, { alpha: 0 }, 16);
+
+	}
+	function disableHud():Void {
+		game.camHUD.alpha = 0;
+		game.opponentStrumline.alpha = 0;
+		game.playerStrumline.alpha = 0;
+		game.healthBar.alpha = 0;
+		game.healthBarBG.alpha = 0;
+		game.scoreText.alpha = 0;
+		game.iconP1.alpha = 0;
+		game.iconP2.alpha = 0;
+	}
+	function fadeOutHud():Void {
+		FlxTween.tween(game.camHUD, { alpha: 0 }, 1);
+		FlxTween.tween(game.opponentStrumline, { alpha: 0 }, 1);
+		FlxTween.tween(game.playerStrumline, { alpha: 0 }, 1);
+		FlxTween.tween(game.healthBar, { alpha: 0 }, 1);
+		FlxTween.tween(game.healthBarBG, { alpha: 0 }, 1);
+		FlxTween.tween(game.scoreText, { alpha: 0 }, 1);
+		FlxTween.tween(game.iconP1, { alpha: 0 }, 1);
+		FlxTween.tween(game.iconP2, { alpha: 0 }, 1);
+	}
+	function enableHud():Void {
+		FlxTween.tween(game.camHUD, { alpha: 1 }, 1);
+		FlxTween.tween(game.opponentStrumline, { alpha: 1 }, 1);
+		FlxTween.tween(game.playerStrumline, { alpha: 1 }, 1);
+		FlxTween.tween(game.healthBar, { alpha: 1 }, 1);
+		FlxTween.tween(game.healthBarBG, { alpha: 1 }, 1);
+		FlxTween.tween(game.scoreText, { alpha: 1 }, 1);
+		FlxTween.tween(game.iconP1, { alpha: 1 }, 1);
+		FlxTween.tween(game.iconP2, { alpha: 1 }, 1);
+	}
+	function onStepHit(event:SongTimeScriptEvent):Void {
+		super.onStepHit(event);
+
+		dad = PlayState.instance.currentStage.getDad(); // Safekeeping
+
+		if (PlayState.instance.currentSong.id.toLowerCase() != "prey") return;
+
+		/*if (event.step == 1) {
+			ModuleHandler.getModule('Lyrics').scriptGet('isSonic', true);
+		}*/
+
+		if (event.step == 127) {
+			FlxG.camera.flash(0xFFFFFFFF, 1);
+			blackOverlay.visible = false;
+			blackOverlay2.visible = false;
+			sonicrunning.visible = false;
+		    topBorder.alpha = 1;
+		    bottomBorder.alpha = 1;
+		}
+		if (event.step == 256) {
+			FlxTween.tween(topBorder, {alpha: 0}, 1);
+			FlxTween.tween(bottomBorder, {alpha: 0}, 1);
+			FlxTween.tween(dad, {x: -100}, 0.2);
+			enableHud();
+		}
+		if (event.step == 1539) {
+			fadeOutHud();
+			FlxTween.tween(topBorder, {alpha: 1}, 1);
+			FlxTween.tween(bottomBorder, {alpha: 1}, 1);
+			FlxTween.tween(dad, {x: -4000}, 8);
+			FlxTween.tween(dad, {angle: -45}, 3, {ease: FlxEase.quadInOut});
+		}
+		if (event.step == 1584) {
+			dad.angle = 0;
+			FlxTween.tween(dad, {x: 680}, 2.5);
+		}
+		if (event.step == 1789) {
+			FlxTween.tween(topBorder, {alpha: 0}, 1);
+			FlxTween.tween(bottomBorder, {alpha: 0}, 1);
+			bgSpeed = 5000;
+			enableHud();
+		}
+		if (event.step == 2432) {
+            FlxTween.tween(furnaceflying, {x: 2200}, 10);
+		}
+		if (event.step == 3333) {
+            fadeOutHud();
+			FlxTween.tween(topBorder, {alpha: 1}, 1);
+			FlxTween.tween(bottomBorder, {alpha: 1}, 1);
+		}
+		if (event.step == 3335) {
+			FlxTween.tween(dad, {x: -2000}, 7);
+		}
+		if (event.step == 3365) {
+            FlxTween.tween(furnaceGotcha, {x: -500}, 0.2);
+		}
+		if (event.step == 3367) {
+            FlxG.camera.flash(0xFFFF0000, 2); 
+			blackOverlay.visible = true;
+			blackOverlay2.visible = true;
+			blackOverlay.alpha = 1;
+			blackOverlay2.alpha = 1;
+		}
+	}
+	override function onUpdate(event:ScriptEvent):Void {
+		super.onUpdate(event);
+
+		scrollBackgroundWithOffset();
+		
+        /*if (vcrShader != null && bonusFeaturesEnabled) {
+            shaderTime += FlxG.elapsed;
+            vcrShader.setFloat("iTime", shaderTime);
+        }*/
+	}
+
+	function scrollBackgroundWithOffset():Void {
+		if (bgSpeed == 0) return;
+		
+		var starvedBG = getNamedProp('StarvedBG');
+		var starvedGround = getNamedProp('StarvedGround');
+		
+		if (starvedBG == null || starvedGround == null) return;
+		
+		bgScrollX += (bgSpeed / 2) * FlxG.elapsed;
+		groundScrollX += bgSpeed * FlxG.elapsed;
+		
+		starvedBG.offset.x = bgScrollX % starvedBG.width;
+		starvedGround.offset.x = groundScrollX % starvedGround.width;
+		
+		if (starvedBG.scale.x < 3) {
+			starvedBG.scale.x = 3;
+			starvedGround.scale.x = 3;
+		}
+	}
+
+	override function onSongRetry(event:ScriptEvent):Void {
+		super.onSongRetry(event);
+
+		if (PlayState.instance.currentSong.id.toLowerCase() != "prey") return;
+
+		if (sonicrunning != null) {
+			sonicrunning.x = 540;
+			sonicrunning.y = -170;
+			sonicrunning.visible = true;
+			sonicrunning.animation.play('idle');
+		}
+
+		if (furnaceflying != null) {
+			furnaceflying.x = -1000;
+			furnaceflying.y = 300;
+		}
+
+		if (furnaceGotcha != null) {
+			furnaceGotcha.x = 4000;
+			furnaceGotcha.y = -140;
+		}
+
+		dad = PlayState.instance.currentStage.getDad();
+		if (dad != null) {
+			dad.x = -1000;
+			dad.angle = 0;
+		}
+
+		if (blackOverlay != null) {
+			blackOverlay.visible = true;
+			blackOverlay.alpha = 1;
+		}
+
+		if (blackOverlay2 != null) {
+			blackOverlay2.visible = true;
+			blackOverlay2.alpha = 1;
+		}
+
+		// Reset borders
+		if (topBorder != null) {
+			topBorder.alpha = 0;
+		}
+
+		if (bottomBorder != null) {
+			bottomBorder.alpha = 0;
+		}
+
+		bgSpeed = 2500;
+		bgScrollX = 0;
+		groundScrollX = 0;
+
+		// Reset background offsets
+		var starvedBG = getNamedProp('StarvedBG');
+		var starvedGround = getNamedProp('StarvedGround');
+		
+		if (starvedBG != null) {
+			starvedBG.offset.x = 0;
+		}
+		
+		if (starvedGround != null) {
+			starvedGround.offset.x = 0;
+		}
+
+		disableHud();
+
+		FlxTween.cancelTweensOf(blackOverlay);
+		FlxTween.cancelTweensOf(blackOverlay2);
+		FlxTween.cancelTweensOf(sonicrunning);
+		FlxTween.cancelTweensOf(furnaceflying);
+		FlxTween.cancelTweensOf(furnaceGotcha);
+		FlxTween.cancelTweensOf(topBorder);
+		FlxTween.cancelTweensOf(bottomBorder);
+		FlxTween.cancelTweensOf(dad);
+		FlxTween.cancelTweensOf(game.camHUD);
+		FlxTween.cancelTweensOf(game.opponentStrumline);
+		FlxTween.cancelTweensOf(game.playerStrumline);
+		FlxTween.cancelTweensOf(game.healthBar);
+		FlxTween.cancelTweensOf(game.healthBarBG);
+		FlxTween.cancelTweensOf(game.scoreText);
+		FlxTween.cancelTweensOf(game.iconP1);
+		FlxTween.cancelTweensOf(game.iconP2);
+	}
+}

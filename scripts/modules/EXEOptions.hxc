@@ -1,0 +1,279 @@
+import funkin.modding.module.Module;
+import Std;
+import funkin.ui.options.OptionsState;
+import flixel.FlxG;
+import funkin.play.PlayState;
+import Type;
+import funkin.util.ReflectUtil;
+import funkin.util.Constants;
+import funkin.play.character.CharacterDataParser;
+import funkin.play.character.BaseCharacter;
+import funkin.ui.PixelatedIcon;
+import funkin.ui.freeplay.SongMenuItem;
+import funkin.ui.freeplay.FreeplayState;
+import funkin.PlayerSettings;
+import funkin.save.Save;
+
+class EXEOptions extends Module
+{
+    public var char:BaseCharacter;
+
+    public var fatalpopups:Bool = true;
+    public var screenstatic:Bool = true;
+    public var screenratio:Bool = true;
+    public var dojumpscares:Bool = true;
+    public var cameramove:Bool = true;
+    public var dolyrics:Bool = true;
+    public var forcemiddlescroll:Bool = true;
+    public var modcharts:Bool = true;
+    public var exehud:Bool = true;
+    public var hpcolors:Bool = true;
+    public var cameramoveIntensity:Int = 20; // New: Intensity value
+    public var ghosttap:Bool = false;
+    public var encoreshaders:Bool = true;
+    public var encoreSkin:String = "Encore Only";
+    public var maxhpdrain:Bool = true;
+    public var bloodsplashes:Bool = true;
+    public var cinematiceffect:Bool = true;
+    public var intensivegore:Bool = true;
+    public var bonusfeatures:Bool = true;
+    public var exebackingCard:String = "Dad";
+    public var quickTimeEvents:Bool = true;
+    public var doSongIntroCards:Bool = true;
+    public var doWarningScreen:Bool = true; // Mobile Warning Screen
+
+
+    public function new(){
+        super("EXEOptions", 1);
+
+        if (!FlxG.onMobile) {
+            if(Save.instance.modOptions["exehud"] == null) Save.instance.modOptions["exehud"] = true;
+            if(Save.instance.modOptions["modcharts"] == null) Save.instance.modOptions["modcharts"] = true;
+            if(Save.instance.modOptions["forcemiddlescroll"] == null) Save.instance.modOptions["forcemiddlescroll"] = true;      
+            if(Save.instance.modOptions["cinematiceffect"] == null) Save.instance.modOptions["cinematiceffect"] = true;
+            if(Save.instance.modOptions["ghosttap"] == null) Save.instance.modOptions["ghosttap"] = false;
+        }
+        if (FlxG.onMobile) {
+            if(Save.instance.modOptions["doWarningScreen"] == null) Save.instance.modOptions["doWarningScreen"] = true;
+        }
+        if(Save.instance.modOptions["fatalpopups"] == null) Save.instance.modOptions["fatalpopups"] = true;
+        if(Save.instance.modOptions["screenstatic"] == null) Save.instance.modOptions["screenstatic"] = true;
+        if(Save.instance.modOptions["screenratio"] == null) Save.instance.modOptions["screenratio"] = true;
+        if(Save.instance.modOptions["dojumpscares"] == null) Save.instance.modOptions["dojumpscares"] = true;
+        if(Save.instance.modOptions["cameramove"] == null) Save.instance.modOptions["cameramove"] = true;
+        if(Save.instance.modOptions["dolyrics"] == null) Save.instance.modOptions["dolyrics"] = true;
+        if(Save.instance.modOptions["forcemiddlescroll"] == null) Save.instance.modOptions["forcemiddlescroll"] = true;
+        if(Save.instance.modOptions["hpcolors"] == null) Save.instance.modOptions["hpcolors"] = true;
+        if(Save.instance.modOptions["cameramoveIntensity"] == null) Save.instance.modOptions["cameramoveIntensity"] = 20;
+        if(Save.instance.modOptions["encoreshaders"] == null) Save.instance.modOptions["encoreshaders"] = true;
+        if(Save.instance.modOptions["encoreSkin"] == null) Save.instance.modOptions["encoreSkin"] = "Encore Only";
+        if(Save.instance.modOptions["maxhpdrain"] == null) Save.instance.modOptions["maxhpdrain"] = true;
+        if(Save.instance.modOptions["bloodsplashes"] == null) Save.instance.modOptions["bloodsplashes"] = true;
+        if(Save.instance.modOptions["exebackingCard"] == null) Save.instance.modOptions["exebackingCard"] = "Dad";
+        if(Save.instance.modOptions["intensivegore"] == null) Save.instance.modOptions["intensivegore"] = true;
+        if(Save.instance.modOptions["bonusfeatures"] == null) Save.instance.modOptions["bonusfeatures"] = true;
+        if(Save.instance.modOptions["quickTimeEvents"] == null) Save.instance.modOptions["quickTimeEvents"] = true;
+        if(Save.instance.modOptions["doSongIntroCards"] == null) Save.instance.modOptions["doSongIntroCards"] = true;
+
+        if (!FlxG.onMobile) {
+            ghosttap = Save.instance.modOptions["ghosttap"];
+        }
+        
+        fatalpopups = Save.instance.modOptions["fatalpopups"];
+        screenstatic = Save.instance.modOptions["screenstatic"];
+        screenratio = Save.instance.modOptions["screenratio"];
+        dojumpscares = Save.instance.modOptions["dojumpscares"];
+        cameramove = Save.instance.modOptions["cameramove"];
+        dolyrics = Save.instance.modOptions["dolyrics"];
+        forcemiddlescroll = Save.instance.modOptions["forcemiddlescroll"];
+        cameramoveIntensity = Save.instance.modOptions["cameramoveIntensity"];
+        modcharts = Save.instance.modOptions["modcharts"];
+        exehud = Save.instance.modOptions["exehud"];
+        hpcolors = Save.instance.modOptions["hpcolors"];
+        encoreshaders = Save.instance.modOptions["encoreshaders"];
+        encoreSkin = Save.instance.modOptions["encoreSkin"];
+        maxhpdrain = Save.instance.modOptions["maxhpdrain"];
+        bloodsplashes = Save.instance.modOptions["bloodsplashes"];
+        cinematiceffect = Save.instance.modOptions["cinematiceffect"];
+        intensivegore = Save.instance.modOptions["intensivegore"];
+        bonusfeatures = Save.instance.modOptions["bonusfeatures"];
+        exebackingCard = Save.instance.modOptions["exebackingCard"];
+        quickTimeEvents = Save.instance.modOptions["quickTimeEvents"];
+        doSongIntroCards = Save.instance.modOptions["doSongIntroCards"];
+        doWarningScreen = Save.instance.modOptions["doWarningScreen"];
+    }
+
+    public var inOptions:Bool = false;
+
+    override function onStateChangeEnd(event){
+        super.onStateChangeEnd(event);
+        inOptions = false;
+        if(Std.isOfType(event.targetState, OptionsState)){
+            var prefs = event.targetState.optionsCodex.pages.get("preferences");
+            inOptions = true;
+
+            prefs.items.createItem(120, 120 * prefs.items.length + 30, "EXE: HUD", "bold", () -> false); // Separate options from the default preferences OR modded preferences.
+			prefs.preferenceDesc.push("HUD options for Versus Sonic.exe.");
+
+            prefs.createPrefItemCheckbox("Blood Note Splashes", "Replaces the default note splashes with blood splashes in most VS Sonic.Exe songs.", function(value) {
+                Save.instance.modOptions["bloodsplashes"] = value;
+                bloodsplashes = value;
+                Save.instance.flush();
+            }, Save.instance.modOptions["bloodsplashes"]);
+
+            if (!FlxG.onMobile) {
+                prefs.createPrefItemCheckbox("Icon Colored Healthbar", "Colors the healthbar based on the color of the icons. \nNote: Disabling requires restart", function(value) {
+                    Save.instance.modOptions["hpcolors"] = value;
+                    hpcolors = value;
+                    Save.instance.flush();
+                }, Save.instance.modOptions["hpcolors"]);
+
+                prefs.createPrefItemCheckbox("RETRO SONIC HUD", "Enables the RETRO SONIC HUD for all songs.", function(value) {
+                    Save.instance.modOptions["exehud"] = value;
+                    exehud = value;
+                    Save.instance.flush();
+                }, Save.instance.modOptions["exehud"]);
+            }
+
+            prefs.items.createItem(120, 120 * prefs.items.length + 30, "EXE: GAMEPLAY", "bold", () -> false); // Separate options from the default preferences OR modded preferences.
+			prefs.preferenceDesc.push("Gameplay options for Versus Sonic.exe.");
+
+            if (!FlxG.onMobile) {
+                prefs.createPrefItemCheckbox("Ghost Tapping", "Allows key-presses without penalty when no notes are present.", function(value) {
+                    Save.instance.modOptions["ghosttap"] = value;
+                    ghosttap = value;
+                    Save.instance.flush();
+                }, Save.instance.modOptions["ghosttap"]);
+
+                prefs.createPrefItemCheckbox("Mod Charts", "Allows certain songs to modify the Player or Opponent's strumlines.", function(value) {
+                    Save.instance.modOptions["modcharts"] = value;
+                    modcharts = value;
+                    Save.instance.flush();
+                }, Save.instance.modOptions["modcharts"]);
+
+                prefs.createPrefItemCheckbox("Cinematics", "Allows the cinematic borders to appear during certain sections of certain songs.", function(value) {
+                    Save.instance.modOptions["cinematiceffect"] = value;
+                    cinematiceffect = value;
+                    Save.instance.flush();
+                }, Save.instance.modOptions["cinematiceffect"]);
+            }
+
+            prefs.createPrefItemCheckbox("Fatal Error Popups", "Enables the visibility of the 'Fatal Error' popups used in Fatality.", function(value) {
+                Save.instance.modOptions["fatalpopups"] = value;
+                fatalpopups = value;
+                Save.instance.flush();
+            }, Save.instance.modOptions["fatalpopups"]);
+
+            prefs.createPrefItemCheckbox("Quick Time Events", "Enables quick time events. \nNotably in Chaos.", function(value) {
+                Save.instance.modOptions["quickTimeEvents"] = value;
+                fatalpopups = value;
+                Save.instance.flush();
+            }, Save.instance.modOptions["quickTimeEvents"]);
+
+            prefs.createPrefItemCheckbox("Jumpscares", "Enables jumpscares for certain songs.", function(value) {
+                Save.instance.modOptions["dojumpscares"] = value;
+                dojumpscares = value;
+                Save.instance.flush();
+            }, Save.instance.modOptions["dojumpscares"]);
+
+            prefs.createPrefItemCheckbox("Screen Static", "Enables the static overlay that appears throughout certain songs.", function(value) {
+                Save.instance.modOptions["screenstatic"] = value;
+                screenstatic = value;
+                Save.instance.flush();
+            }, Save.instance.modOptions["screenstatic"]);
+
+            prefs.createPrefItemCheckbox("Note Camera Movement", "Makes the camera move depending on the direction of the note you hit.", function(value) {
+                Save.instance.modOptions["cameramove"] = value;
+                cameramove = value;
+                Save.instance.flush();
+            }, Save.instance.modOptions["cameramove"]);
+
+            prefs.createPrefItemNumber(
+                "Movement Intensity",
+                "How far the camera moves when hitting a note. \nToo high a value can cause out of bounds issues.",
+                function(value:Float) {
+                    if (Save.instance.modOptions["cameramove"]) {
+                        Save.instance.modOptions["cameramoveIntensity"] = Std.int(value);
+                        cameramoveIntensity = Std.int(value);
+                        Save.instance.flush();
+                    }
+                },
+                null,
+                Save.instance.modOptions["cameramoveIntensity"],
+                5, 100, 5, 0
+            );
+
+            prefs.items.createItem(120, 120 * prefs.items.length + 30, "EXE: GRAPHICS", "bold", () -> false); // Separate options from the default preferences OR modded preferences.
+			prefs.preferenceDesc.push("Graphic options for Versus Sonic.exe.");
+
+            prefs.createPrefItemCheckbox("Shaders", "Adds custom shaders (VCR, etc) to certain songs.", function(value) {
+                Save.instance.modOptions["bonusfeatures"] = value;
+                bonusfeatures = value;
+                Save.instance.flush();
+            }, Save.instance.modOptions["bonusfeatures"]);
+
+            prefs.createPrefItemCheckbox("Song Intro Cards", "Enables intro cards for most songs.", function(value) {
+                Save.instance.modOptions["doSongIntroCards"] = value;
+                doSongIntroCards = value;
+                Save.instance.flush();
+            }, Save.instance.modOptions["doSongIntroCards"]);
+
+            prefs.createPrefItemCheckbox("Pillarbox", "Adds Pillarbox to certain songs. Forcefully moving the strumline to match the aspect ratio.", function(value) {
+                Save.instance.modOptions["screenratio"] = value;
+                screenratio = value;
+                Save.instance.flush();
+            }, Save.instance.modOptions["screenratio"]);
+
+            prefs.createPrefItemCheckbox("Gore", "Removes intense aspects of gore from the mod. \nNotably the dead Sonic prop in Fight or Flight.", function(value) {
+                Save.instance.modOptions["intensivegore"] = value;
+                intensivegore = value;
+                Save.instance.flush();
+            }, Save.instance.modOptions["intensivegore"]);
+
+            if (!FlxG.onMobile) {
+                prefs.createPrefItemCheckbox("Lyrics", "Toggles lyrics/visible character dialogue for certain songs.", function(value) {
+                    Save.instance.modOptions["dolyrics"] = value;
+                    dolyrics = value;
+                    Save.instance.flush();
+                }, Save.instance.modOptions["dolyrics"]);
+            }
+
+			prefs.createPrefItemEnum("Encore Skins", "Enables Encore skins when Boyfriend is the player.", [
+				"Encore Only" => "Encore Only",
+				"Always" => "Always",
+                "Never" => "Never"
+			], function(key:String, value:String) {
+				Save.instance.modOptions["encoreSkin"] = value;
+				encoreSkin = value;
+				Save.instance.flush();
+			}, Save.instance.modOptions["encoreSkin"]);
+
+            prefs.items.createItem(120, 120 * prefs.items.length + 30, "EXE: MENU", "bold", () -> false); // Separate options from the default preferences OR modded preferences.
+			prefs.preferenceDesc.push("Menu options for Versus Sonic.exe.");
+
+            prefs.createPrefItemCheckbox("Mobile Warning Screen", "Enables the warning screen for mobile devices.", function(value) {
+                Save.instance.modOptions["doWarningScreen"] = value;
+                doWarningScreen = value;
+                Save.instance.flush();
+            }, Save.instance.modOptions["doWarningScreen"]);
+
+			prefs.createPrefItemEnum("Freeplay BG", "Allows switching between different freeplay BGs (Backing Cards).", [
+                "Dad" => "Dad",
+                "Sonic.exe (Phase 1)" => "Sonic.exe (Phase 1)",
+				"Sonic.exe (Phase 2)" => "Sonic.exe (Phase 2)",
+				"Sonic.exe (Phase 3)" => "Sonic.exe (Phase 3)",
+				"Majin Sonic" => "Majin Sonic",
+				"Lord X" => "Lord X",
+				"Faker" => "Faker",
+				"Needlemouse" => "Needlemouse",
+				"Furnace" => "Furnace",
+				"Fatal Error" => "Fatal Error",
+                "Coldsteel" => "Coldsteel"
+			], function(key:String, value:String) {
+				Save.instance.modOptions["exebackingCard"] = value;
+				exebackingCard = value;
+				Save.instance.flush();
+			}, Save.instance.modOptions["exebackingCard"]);
+        }
+    }
+}

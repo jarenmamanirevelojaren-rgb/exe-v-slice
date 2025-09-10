@@ -1,31 +1,9 @@
 import flixel.FlxG;
-import flixel.math.FlxBasePoint;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
-import flixel.util.FlxTimer;
-import flixel.FlxCamera;
-import funkin.audio.FunkinSound;
-import funkin.Conductor;
-import funkin.graphics.FunkinSprite;
-import funkin.modding.module.ScriptedModule;
-import funkin.modding.events.ScriptEvent;
-import funkin.modding.events.ScriptEventDispatcher;
-import funkin.util.ReflectUtil;
 import funkin.Paths;
-import funkin.play.PlayState;
-import funkin.play.stage.Stage;
-import funkin.play.stage.Bopper;
-import funkin.play.stage.StageProp;
-import funkin.data.stage.StageRegistry;
-import funkin.play.character.CharacterType;
-import funkin.play.character.BaseCharacter;
-import funkin.play.character.CharacterDataParser;
 import funkin.play.song.Song;
-import flixel.FlxSprite;
-import haxe.Json;
-import funkin.play.notes.Strumline;
-import funkin.play.notes.StrumlineNote;
-
+import funkin.play.PlayStatePlaylist;
+import funkin.play.cutscene.VideoCutscene;
+import funkin.modding.module.ModuleHandler;
 // Check the other script in scripts/stages/xenoStage for the stage prop editing, everything else is done here.
 
 class YouCantRunSong extends Song {
@@ -33,16 +11,31 @@ class YouCantRunSong extends Song {
 
     var STOP:Bool = false;
 
+    var hasPlayedCutscene:Bool;
+
     public function new() {
         super("you-cant-run");
+
+        hasPlayedCutscene = false;
     }
 
     override function onCreate(event:ScriptEvent):Void {
 
         super.onCreate(event);
 
-        FunkinSprite.cacheTexture(Paths.image('staticNotes'));
+        hasPlayedCutscene = false;
 
+        doBloodSplash = ModuleHandler.getModule("EXEOptions").scriptGet("bloodsplashes");
+        if (!doBloodSplash) {
+            ModuleHandler.getModule('SwappingNotestyles').scriptCall('swapStrumlines', ['exeSemi']);
+        }
+
+    }
+
+    function onSongRetry():Void {
+        super.onSongRetry();
+
+        hasPlayedCutscene = true;
     }
 
 	function onNoteHit(event:HitNoteScriptEvent)
@@ -63,6 +56,25 @@ class YouCantRunSong extends Song {
     
         super.onNoteHit(event);
     }
-    
+
+    public override function onCountdownStart(event:CountdownScriptEvent):Void {
+        super.onCountdownStart(event);
+
+        if (!PlayStatePlaylist.isStoryMode) hasPlayedCutscene = true;
+
+        if (!hasPlayedCutscene) {
+           trace('Pausing countdown to play a video cutscene (`too slow`)');
+
+           hasPlayedCutscene = true;
+
+           event.cancel(); // CANCEL THE COUNTDOWN!
+
+           startVideo();
+        }
+    }
+
+  function startVideo() {
+     VideoCutscene.play(Paths.videos('tooslowcutscene2'));
+  }
 }
 

@@ -1,0 +1,29 @@
+{
+  "version": "2.2.2",
+  "songName": "Personnel (Serious)",
+  "artist": "JesterFrog, Madame McHummus",
+  "charter": "JesterFrog, Madame McHummus",
+  "playData": {
+    "album": "exeVol3OST",
+    "difficulties": ["extra"],
+    "characters": {
+      "player": "bf",
+      "girlfriend": "",
+      "opponent": "coldsteel-serious",
+      "instrumental": ""
+    },
+    "stage": "seriousTable",
+    "noteStyle": "exeSemi",
+    "ratings": {"extra": 5},
+    "previewStart": 0,
+    "previewEnd": 15000
+  },
+  "generatedBy": "Chart Editor Import (FNF Legacy)",
+  "timeFormat": "ms",
+  "timeChanges": [
+    {
+      "t": 0,
+      "bpm": 190
+    }
+  ]
+}

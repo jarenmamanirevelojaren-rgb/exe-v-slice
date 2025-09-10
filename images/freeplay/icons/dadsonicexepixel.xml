@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="sonicexepixel.png">
+<SubTexture name="idle0001" x="0" y="472" width="368" height="336" frameX="-156" frameY="-140" frameWidth="640" frameHeight="640" />
+<SubTexture name="confirm0001" x="368" y="472" width="392" height="312" frameX="-156" frameY="-164" frameWidth="640" frameHeight="640" />
+<SubTexture name="confirm0002" x="0" y="0" width="448" height="472" frameX="-108" frameY="-36" frameWidth="640" frameHeight="640" />
+<SubTexture name="confirm0003" x="448" y="0" width="448" height="440" frameX="-100" frameY="-60" frameWidth="640" frameHeight="640" />
+</TextureAtlas>

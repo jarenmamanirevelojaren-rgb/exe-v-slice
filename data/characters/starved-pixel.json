@@ -1,0 +1,115 @@
+{
+    "version": "1.0.0",
+    "name": "Starved (Pixel)",
+    "assetPath": "characters/starved_sheet",
+    "singTime": 4,
+    "isPixel": true,
+    "scale": 6,
+    "offsets": [
+        -120,
+        -25
+    ],
+    "cameraOffsets": [
+        -200,
+        250
+    ],
+    "healthIcon": {
+        "id": "starved-pixel",
+        "isPixel": false,
+        "flipX": false,
+        "scale": 1
+    },
+    "animations": [
+        {
+            "name": "idle",
+            "prefix": "starved idle",
+            "offsets": [
+                -106,
+                -50
+            ],
+            "looped": true
+        },
+        {
+            "name": "singUP",
+            "prefix": "starved up",
+            "offsets": [
+                -106,
+                -50
+            ]
+        },
+        {
+            "name": "singUP-loop",
+            "prefix": "starved up",
+            "offsets": [
+                -106,
+                -50
+            ],
+            "frameIndices": [12, 13, 14, 15],
+            "looped": true
+        },
+        {
+            "name": "singDOWN",
+            "prefix": "starved down",
+            "offsets": [
+                -106,
+                -50
+            ]
+        },
+        {
+            "name": "singDOWN-loop",
+            "prefix": "starved down",
+            "offsets": [
+                -106,
+                -50
+            ],
+            "frameIndices": [12, 13, 14, 15],
+            "looped": true
+        },
+        {
+            "name": "singLEFT",
+            "prefix": "starved left",
+            "offsets": [
+                -106,
+                -50
+            ]
+        },
+        {
+            "name": "singLEFT-loop",
+            "prefix": "starved left",
+            "offsets": [
+                -106,
+                -50
+            ],
+            "frameIndices": [12, 13, 14, 15],
+            "looped": true
+        },
+        {
+            "name": "singRIGHT",
+            "prefix": "starved right",
+            "offsets": [
+                -106,
+                -50
+            ]
+        },
+        {
+            "name": "singRIGHT-loop",
+            "prefix": "starved right",
+            "offsets": [
+                -106,
+                -50
+            ],
+            "frameIndices": [15, 16, 17, 18],
+            "looped": true
+        },
+        {
+            "name": "dialogue",
+            "prefix": "starved dialogue",
+            "offsets": [
+                -106,
+                -50
+            ],
+            "frameRate": 24
+        }
+    ],
+    "flipX": false
+}

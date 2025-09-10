@@ -2,7 +2,7 @@
     "props": [
         {
             "danceEvery": 0,
-            "zIndex": 10,
+            "zIndex": 20,
             "position": [
                 -1700.0,
                 -820.0
@@ -21,7 +21,7 @@
         },
         {
             "danceEvery": 0,
-            "zIndex": 4,
+            "zIndex": 10,
             "position": [
                 -1700.0,
                 -720.0
@@ -40,7 +40,7 @@
         },
         {
             "danceEvery": 0,
-            "zIndex": 3,
+            "zIndex": 5,
             "position": [
                 -1700.0,
                 -720.0
@@ -58,7 +58,7 @@
             ]
         },
         {
-            "zIndex": 1,
+            "zIndex": 3,
             "position": [
                 -1700.0,
                 -720.0
@@ -92,7 +92,7 @@
             ]
         },
         {
-            "zIndex": -2,
+            "zIndex": 1,
             "position": [
                 -1600,
                 -720
@@ -163,5 +163,5 @@
             ]
         }
     },
-    "name": "Xenophanes' Stage"
+    "name": "Hill Zone (Phase 3)"
 }

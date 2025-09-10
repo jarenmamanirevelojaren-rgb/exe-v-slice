@@ -1,0 +1,23 @@
+{
+	"version": "2.2.3",
+	"songName": "Slaybells",
+	"artist": "Madame McHummus & Saster",
+	"playData": {
+	  "album": "exeVol3OST",
+	  "difficulties": ["easy", "normal", "hard"],
+	  "characters": {
+		"player": "sonic_exenew",
+		"girlfriend": "lord_xchristmas",
+		"opponent": "exeCHRISTMAS",
+		"instrumental": ""
+	  },
+	  "stage": "christmas",
+	  "noteStyle": "exeFourKey",
+	  "ratings": {"easy": 3, "normal": 4, "hard": 5},
+	  "previewStart": 0,
+	  "previewEnd": 15000
+	},
+	"generatedBy": "Chart Editor Import (FNF Legacy)",
+	"timeFormat": "ms",
+	"timeChanges": [{"t": 0, "bpm": 150}]
+}

@@ -1,0 +1,122 @@
+{
+	"danceEvery": 1,
+	"renderType": "sparrow",
+	"offsets": [
+		-570,
+		0
+	],
+	"version": "1.0.0",
+	"scale": 1,
+	"cameraOffsets": [
+		-100,
+		-150
+	],
+	"flipX": false,
+	"name": "Boyfriend (3rd Person - Flipped)",
+	"singTime": 4,
+	"isPixel": false,
+	"healthIcon": {
+		"isPixel": false,
+		"offsets": [
+			0,
+			0
+		],
+		"scale": 1,
+		"id": "bf",
+		"flipX": false
+	},
+	"assetPath": "characters/P3_BF",
+	"generatedBy": "Nova Character Editor REFRESHED v0.1.2",
+	"animations": [
+		{
+			"offsets": [
+				0,
+				-20
+			],
+			"frameRate": 24,
+			"prefix": "Idle_Flip",
+			"name": "idle",
+			"looped": false
+		},
+		{
+			"offsets": [
+				-40,
+				-33
+			],
+			"frameRate": 24,
+			"prefix": "Sing_Down_Flip",
+			"name": "singDOWN",
+			"looped": false
+		},
+		{
+			"offsets": [
+				15,
+				36
+			],
+			"frameRate": 24,
+			"prefix": "Sing_Up_Flip",
+			"name": "singUP",
+			"looped": false
+		},
+		{
+			"offsets": [
+				-110,
+				55
+			],
+			"frameRate": 24,
+			"prefix": "Left_Miss_Flip",
+			"name": "singLEFTmiss",
+			"looped": false
+		},
+		{
+			"offsets": [
+				-28,
+				-20
+			],
+			"frameRate": 24,
+			"prefix": "Down_Miss_Flip",
+			"name": "singDOWNmiss",
+			"looped": false
+		},
+		{
+			"offsets": [
+				6,
+				128
+			],
+			"frameRate": 24,
+			"prefix": "Up_Miss_Flip",
+			"name": "singUPmiss",
+			"looped": false
+		},
+		{
+			"offsets": [
+				45,
+				80
+			],
+			"frameRate": 24,
+			"prefix": "Right_Miss_Flip",
+			"name": "singRIGHTmiss",
+			"looped": false
+		},
+		{
+			"offsets": [
+				-80,
+				-30
+			],
+			"frameRate": 24,
+			"prefix": "Sing_Left_Flip",
+			"name": "singRIGHT",
+			"looped": false
+		},
+		{
+			"offsets": [
+				34,
+				-6
+			],
+			"frameRate": 24,
+			"prefix": "Sing_Right_Flip",
+			"name": "singLEFT",
+			"looped": false
+		}
+	]
+}

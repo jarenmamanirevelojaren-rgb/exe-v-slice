@@ -1,0 +1,61 @@
+import funkin.play.event.SongEvent;
+import funkin.play.PlayState;
+import funkin.modding.module.ModuleHandler;
+
+class StageLightsEvent extends SongEvent
+{
+	public function new()
+	{
+		super('StageLights');
+	}
+
+	public function handleEvent(data)
+	{
+		if (PlayState.instance == null || PlayState.instance.currentStage == null) return;
+
+		ModuleHandler.getModule("StageLightsModule").scriptCall("handleEvent", [data]);
+	}
+
+	public function getTitle()
+	{
+		return "Stage Lights";
+	}
+
+	public function getEventSchema()
+	{
+		return [
+			{
+				name: 'enabled',
+				title: 'Enabled',
+				type: "bool",
+				defaultValue: true
+			},
+			{
+				name: 'color',
+				title: 'Custom Color',
+				type: "string",
+				defaultValue: "#31A2FD"
+			},
+			{
+				name: 'usePreset',
+				title: 'Use Preset Color',
+				type: "bool",
+				defaultValue: false
+			},
+			{
+				name: 'presetColor',
+				title: 'Preset Color',
+				type: "enum",
+				keys: [
+					"Blue" => 0,
+					"Green" => 1,
+					"Pink" => 2,
+					"Red" => 3,
+					"Orange" => 4,
+					"Random" => 5
+				],
+				defaultValue: 5
+			}
+		];
+	}
+}

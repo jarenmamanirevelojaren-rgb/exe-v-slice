@@ -1,0 +1,79 @@
+{
+    "assetPath": "characters/exenew",
+    "name": "EXE (Christmas)",
+    "singTime": 6.1,
+    "version": "1.0.0",
+    "scale": 1,
+    "flipX": false,
+    "isPixel": false,
+    "offsets": [
+        20,
+        -280
+    ],
+    "cameraOffsets": [
+        -170,
+        110
+    ],
+    "healthIcon": {
+        "id": "faker-exe",
+        "offsets": [
+            0,
+            0
+        ],
+        "flipX": false,
+        "isPixel": false,
+        "scale": 1
+    },
+    "animations": [
+        {
+            "name": "singUP",
+            "prefix": "exeup1",
+            "looped": false,
+            "offsets": [
+                175,
+                254
+            ],
+            "frameRate": 24
+        },
+        {
+            "name": "singLEFT",
+            "prefix": "exeleft",
+            "looped": false,
+            "offsets": [
+                341,
+                125
+            ],
+            "frameRate": 24
+        },
+        {
+            "name": "singRIGHT",
+            "prefix": "exeright",
+            "looped": false,
+            "offsets": [
+                20,
+                44
+            ],
+            "frameRate": 24
+        },
+        {
+            "name": "singDOWN",
+            "prefix": "exedown1",
+            "looped": false,
+            "offsets": [
+                213,
+                -120
+            ],
+            "frameRate": 24
+        },
+        {
+            "name": "idle",
+            "prefix": "exeidle1",
+            "looped": true,
+            "offsets": [
+                0,
+                0
+            ],
+            "frameRate": 24
+        }
+    ]
+}

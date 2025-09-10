@@ -4,13 +4,31 @@ import funkin.modding.module.Module;
 import funkin.Paths;
 import funkin.play.PlayState;
 import funkin.Preferences;
+import flixel.FlxG;
 
 // Borrowed some code from the VS Tricky V-Slice Port. Made by thisiscub
 /*https://gamebanana.com/mods/513337*/
 
 class StaticNote extends Module {
+    var staticFlash:FlxSprite;
+    
     function new() {
         super("staticnote");
+        preloadStaticFlash();
+    }
+    
+    function preloadStaticFlash() {
+        // Preload the static flash sprite to avoid lag on first miss
+        staticFlash = new FlxSprite(-100, -100);
+        staticFlash.frames = Paths.getSparrowAtlas("hitStatic");
+        staticFlash.animation.addByPrefix("flash", "staticANIMATION000", 30, false);
+        staticFlash.scale.set(1.25, 1.25);
+        staticFlash.updateHitbox();
+        staticFlash.zIndex = 1002;
+        staticFlash.visible = false;
+		if (FlxG.onMobile) {
+			staticFlash.alpha = 0.55;
+		}
     }
 
 	function onNoteMiss(event:HitNoteScriptEvent) {
@@ -21,17 +39,14 @@ class StaticNote extends Module {
 			FunkinSound.playOnce(Paths.sound("hitStatic1"));
 			PlayState.instance.health -= 0.3;
 
-			var staticFlash:FlxSprite = new FlxSprite(-100, -100);
-			staticFlash.frames = Paths.getSparrowAtlas("hitStatic");
-			staticFlash.animation.addByPrefix("flash", "staticANIMATION000", 30, false);
+			staticFlash.setPosition(-100, -100);
+			staticFlash.visible = true;
 			staticFlash.animation.play("flash");
-            staticFlash.scale.set(1.25, 1.25);
-			staticFlash.updateHitbox();
-			staticFlash.zIndex = 1002;
-			staticFlash.cameras = [PlayState.instance.camHUD]; // Can't see anything if you miss
+			staticFlash.cameras = [PlayState.instance.camHUD];
 			PlayState.instance.add(staticFlash);
 			staticFlash.animation.finishCallback = function(name:String) {
 				PlayState.instance.remove(staticFlash);
+				staticFlash.visible = false;
 			}
 		}
 	}

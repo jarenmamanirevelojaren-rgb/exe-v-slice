@@ -1,0 +1,119 @@
+{
+    "assetPath": "characters/endless_bf-encore",
+    "name": "Boyfriend (Encore - Endless)",
+    "singTime": 4,
+    "version": "1.0.0",
+    "scale": 1,
+    "flipX": true,
+    "isPixel": false,
+    "offsets": [
+        85,
+        20
+    ],
+    "cameraOffsets": [
+        0,
+        50
+    ],
+    "healthIcon": {
+        "id": "bf",
+        "offsets": [
+            0,
+            0
+        ],
+        "flipX": false,
+        "isPixel": false,
+        "scale": 1
+    },
+    "animations": [
+        {
+            "name": "idle",
+            "prefix": "idle instance",
+            "looped": false,
+            "offsets": [
+                -5,
+                0
+            ],
+            "frameRate": 24
+        },
+        {
+            "name": "singDOWNmiss",
+            "prefix": "miss DOWN instance",
+            "looped": false,
+            "offsets": [
+                -7,
+                -53
+            ],
+            "frameRate": 24
+        },
+        {
+            "name": "singLEFTmiss",
+            "prefix": "miss LEFT instance",
+            "looped": false,
+            "offsets": [
+                107,
+                -1
+            ],
+            "frameRate": 24
+        },
+        {
+            "name": "singRIGHTmiss",
+            "prefix": "miss RIGHT instance",
+            "looped": false,
+            "offsets": [
+                -24,
+                -24
+            ],
+            "frameRate": 24
+        },
+        {
+            "name": "singUPmiss",
+            "prefix": "miss UP instance",
+            "looped": false,
+            "offsets": [
+                -36,
+                27
+            ],
+            "frameRate": 24
+        },
+        {
+            "name": "singLEFT",
+            "prefix": "Left instance",
+            "looped": false,
+            "offsets": [
+                105,
+                -2
+            ],
+            "frameRate": 24
+        },
+        {
+            "name": "singDOWN",
+            "prefix": "down instance",
+            "looped": false,
+            "offsets": [
+                -7,
+                -56
+            ],
+            "frameRate": 24
+        },
+        {
+            "name": "singUP",
+            "prefix": "up instance",
+            "looped": false,
+            "offsets": [
+                -25,
+                44
+            ],
+            "frameRate": 24
+        },
+        {
+            "name": "singRIGHT",
+            "prefix": "right instance",
+            "looped": false,
+            "offsets": [
+                -28,
+                -27
+            ],
+            "frameRate": 24
+        }
+    ]
+}

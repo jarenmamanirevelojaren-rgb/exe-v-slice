@@ -57,18 +57,14 @@ class SeriousTable extends Stage
 		// Add the black overlay to the stage
 		game.add(blackOverlay);
 	}
-	function onCountdownStart()
+	override function onCountdownStart(event:CountdownScriptEvent):Void
 	{
-		if (game.opponentStrumline != null) {
-			game.opponentStrumline.visible = false;
-		}
-		game.playerStrumline.visible = false;
-		game.scoreText.visible = false;
-		game.healthBar.visible = false;
-		game.healthBarBG.visible = false;
-		game.iconP1.visible = false;
-		game.iconP2.visible = false;
+		super.onCountdownStart(event);
 
+        new FlxTimer().start(0.000001, function(tmr)
+        {
+			game.camHUD.visible = false;
+        });
 	}
 
 	override function buildStage()
@@ -90,13 +86,7 @@ class SeriousTable extends Stage
 	{
 		if (event.step == 31)
 		{
-			game.opponentStrumline.visible = true;
-			game.playerStrumline.visible = true;
-			game.scoreText.visible = true;
-			game.healthBar.visible = true;
-			game.healthBarBG.visible = true;
-			game.iconP1.visible = true;
-			game.iconP2.visible = true;
+			game.camHUD.visible = true;
 
 			blackOverlay.alpha = 0.4;
 		}

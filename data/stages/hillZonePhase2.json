@@ -116,7 +116,7 @@
         },
         {
             "danceEvery": 0,
-            "zIndex": -7,
+            "zIndex": -50,
             "position": [
                 -1600,
                 -1000

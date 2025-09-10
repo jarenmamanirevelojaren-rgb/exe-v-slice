@@ -1,0 +1,28 @@
+{
+  "version": "2.2.2",
+  "songName": "You Can't Run Encore",
+  "artist": "MarStarBro + Saster",
+  "playData": {
+    "album": "exeEncoreOST",
+    "difficulties": ["encore"],
+    "characters": {
+      "player": "bf-encore",
+      "girlfriend": "gf-encore",
+      "opponent": "sonicexep2",
+      "instrumental": "encore"
+    },
+    "stage": "hillZonePhase2",
+    "noteStyle": "exeFourKey",
+    "ratings": {"encore": 11},
+    "previewStart": 0,
+    "previewEnd": 15000
+  },
+  "generatedBy": "Chart Editor Import (FNF Legacy)",
+  "timeFormat": "ms",
+  "timeChanges": [
+    {
+      "t": 0,
+      "bpm": 140
+    }
+  ]
+}

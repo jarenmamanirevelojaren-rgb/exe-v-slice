@@ -1,16 +1,24 @@
 {
     "version": "1.0.0",
-    "name": "Boyfriend (Final Escape - Midway Point)",
+    "name": "Boyfriend (Final Escape - Running, Third Perspective)",
     "assetPath": "characters/bfrun3",
     "singTime": 4,
     "isPixel": false,
-    "scale": null,
+    "scale": 1.2,
     "healthIcon": {
         "id": "bf",
         "isPixel": false,
         "flipX": false,
         "scale": 1
     },
+    "offsets": [
+        -280,
+        -55
+    ],
+    "cameraOffsets": [
+        180,
+        0
+    ],
     "animations": [
         {
             "name": "parry",

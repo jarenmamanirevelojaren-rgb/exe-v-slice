@@ -2,13 +2,12 @@
   "version": "2.2.2",
   "songName": "Too Slow Encore",
   "artist": "MarStarBro + Saster",
-  "charter": "MarStarBro",
   "playData": {
     "album": "exeEncoreOST",
     "difficulties": ["encore"],
     "characters": {
-      "player": "bf",
-      "girlfriend": "gf",
+      "player": "bf-encore",
+      "girlfriend": "gf-encore",
       "opponent": "sonicexefake",
       "instrumental": "encore"
     },

@@ -1,0 +1,120 @@
+// Coded by NebulaStellaNova
+
+import funkin.play.character.CharacterDataParser;
+import funkin.play.character.CharacterType;
+import funkin.modding.module.Module;
+import funkin.play.song.Song;
+import funkin.play.PlayState;
+import Reflect;
+
+class ChangeCharacterModule extends Module {
+
+	var characterCaches = [
+		"bf" => [ "init" => true ],
+		"gf" => [ "init" => true ],
+		"dad" => [ "init" => true ]
+	];
+
+	var types = [
+		"bf" => CharacterType.BF,
+		"gf" => CharacterType.GF,
+		"dad" => CharacterType.DAD
+	];
+
+	function new() {
+		super("ChangeCharacterModule");
+	}
+
+	override function onSongEvent(event) {
+		super.onSongEvent(event);
+
+		var theEvent = event.eventData;
+		if (theEvent.eventKind == "Change Character") {
+			if (CharacterDataParser.listCharacterIds().contains(theEvent.value.char)) {
+				var theCharacter = characterCaches.get(theEvent.value.target).get(theEvent.value.char);
+				if (theCharacter != null) {
+					var currentCharacter = [
+						"bf" => PlayState.instance.currentStage.getBoyfriend(),
+						"gf" => PlayState.instance.currentStage.getGirlfriend(),
+						"dad" => PlayState.instance.currentStage.getDad()
+					].get(theEvent.value.target);
+					
+					var originalZIndex = currentCharacter.zIndex;
+					
+					currentCharacter.kill();
+					theCharacter.revive();
+					
+					theCharacter.zIndex = originalZIndex;
+					
+					trace(theEvent.value.char);
+					PlayState.instance.currentStage.addCharacter(theCharacter, types.get(theEvent.value.target));
+					theCharacter.initHealthIcon(theEvent.value.target == "dad");
+					
+					PlayState.instance.currentStage.refresh();
+				}
+			} else {
+				trace("Unknown Character \"" + theEvent.value.char + "\"");
+			}
+		}
+	}
+
+	override function onCountdownStart(event) {
+		super.onCountdownStart(event);
+		var unknownCharacters = [];
+		for (i in PlayState.instance.songEvents) {
+			if (i.eventKind == "Change Character") {
+				if (CharacterDataParser.listCharacterIds().contains(i.value.char)) {
+					var exCharacter = CharacterDataParser.fetchCharacter(i.value.char);
+					exCharacter.x = PlayState.instance.currentStage.getBoyfriend().x;
+					exCharacter.y = PlayState.instance.currentStage.getBoyfriend().y;
+					exCharacter.zIndex = PlayState.instance.currentStage.getBoyfriend().zIndex;
+					characterCaches.get(i.value.target).set(i.value.char, exCharacter);
+				} else {
+					unknownCharacters.push(i.value.char);
+				}
+			}
+		}
+		for (i in unknownCharacters)
+			trace("Unkown Character \"" + i + "\"");
+		trace("Character Caching Finished!");
+		PlayState.instance.currentStage.refresh();
+	}
+
+	override function onSongRetry(event) {
+		super.onSongRetry(event);
+		for (a in ["bf", "gf", "dad"]) {
+			for (i in characterCaches.get(a)) {
+				if (i != true) {
+					i.destroy();
+				}
+			}
+		}
+
+		characterCaches = [
+			"bf" => [ "init" => true ],
+			"gf" => [ "init" => true ],
+			"dad" => [ "init" => true ]
+		];
+		
+		var difficulty = PlayState.instance.currentSong.difficulties.get(PlayState.instance.currentVariation).get(PlayState.instance.currentDifficulty);
+		if (PlayState.instance.currentStage.getBoyfriend() != null) {
+			var exCharacter = CharacterDataParser.fetchCharacter(difficulty.characters.player);
+			PlayState.instance.currentStage.getBoyfriend().destroy();
+			PlayState.instance.currentStage.addCharacter(exCharacter, types.get("bf"));
+			exCharacter.initHealthIcon(false);
+		}
+
+		if (PlayState.instance.currentStage.getGirlfriend() != null) {
+			var exCharacter = CharacterDataParser.fetchCharacter(difficulty.characters.girlfriend);
+			PlayState.instance.currentStage.getGirlfriend().destroy();
+			PlayState.instance.currentStage.addCharacter(exCharacter, types.get("gf"));
+		}
+
+		if (PlayState.instance.currentStage.getDad() != null) {
+			var exCharacter = CharacterDataParser.fetchCharacter(difficulty.characters.opponent);
+			PlayState.instance.currentStage.getDad().destroy();
+			PlayState.instance.currentStage.addCharacter(exCharacter, types.get("dad"));
+			exCharacter.initHealthIcon(false); 
+		}
+	}
+}

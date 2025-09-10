@@ -29,11 +29,18 @@ import funkin.play.notes.Strumline;
 import funkin.play.notes.StrumlineNote;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
+import funkin.modding.module.ModuleHandler;
 
 // Faker is 2nd favorite EXE song.
 
 class BarrenHill extends Stage
 {
+    var staticScreen:FunkinSprite;
+	var staticLooping:Bool = false;
+	var staticLoopSound:FunkinSound = null;
+	var staticLoopTimer:FlxTimer = null;
+	var blackOverlay:FunkinSprite;
+
 	public function new()
 	{
 		super('barrenHill');
@@ -45,15 +52,59 @@ class BarrenHill extends Stage
 
 		game = PlayState.instance;
 
+		enableStatic = ModuleHandler.getModule("EXEOptions").scriptGet("screenstatic");
+
+		if (!game.currentSong.id.toLowerCase() == "faker") return;
+
+		staticScreen = FunkinSprite.create(100, 0);
+        staticScreen.frames = Paths.getSparrowAtlas('daSTAT');
+        staticScreen.animation.addByPrefix('static', 'staticFLASH', 30, false); // Single burst
+        staticScreen.animation.addByPrefix('staticinf', 'staticFLASH', 30, true); // Infinite loop
+        staticScreen.animation.play('static');
+		staticScreen.scale.set(5, 5);
+        staticScreen.zIndex = 5000;
+		staticScreen.cameras = [game.camHUD];
+		game.add(staticScreen);
+		staticScreen.visible = false;
+
+		staticScreen.animation.finishCallback = function() {
+            staticScreen.visible = false;
+        };
+
+		blackOverlay = FunkinSprite.create(0, 0, 'blackness');
+		blackOverlay.alpha = 1;
+		blackOverlay.scale.set(5, 5);
+        blackOverlay.cameras = [game.camCutscene];
+		blackOverlay.scrollFactor.set(0, 0);
+		blackOverlay.visible = false;
+		game.add(blackOverlay);
+
+	}
+
+	function doStatic():Void {
+		staticScreen.visible = true;
+		staticScreen.animation.play('static');
+		var staticScreenSound = FunkinSound.playOnce(Paths.sound("staticBUZZ"), 0.6);
+		FlxTween.tween(staticScreenSound, { volume: 0 }, 1, {
+			onComplete: function(tween:FlxTween) {
+				staticScreenSound.stop();
+			}
+		});
 	}
 
 	override function buildStage()
 	{
 		super.buildStage();
+
+		if (FlxG.onMobile) {
+			getNamedProp('FakerGround').scale.set(1.11, 1.2);
+		}
 	}
 
 	function onStepHit(event:SongTimeScriptEvent):Void
 	{
+		if (game.currentSong.id.toLowerCase() != "faker") return;
+		
 		if (event.step == 768)
 		{
 			var hudElements = [
@@ -73,6 +124,31 @@ class BarrenHill extends Stage
 					FlxTween.tween(element, { alpha: 0 }, 3, { ease: FlxEase.quadOut });
 				}
 			}
+		}
+		if (event.step == 800 || event.step == 809 || event.step == 815 || event.step == 824 || event.step == 828 || event.step == 832 || event.step == 836 || event.step == 840 || event.step == 844 || event.step == 848)
+		{
+			doStatic();		
+		}
+		if (event.step == 856)
+		{
+			doStatic();
+			staticScreen.animation.play('staticinf');
+			FunkinSound.playOnce(Paths.sound("staticBUZZ"), 0.6);
+			// Couldn't get the sound to loop so it just plays once.
+		}
+		if (event.step == 883)
+		{
+			blackOverlay.visible = true;
+		}
+	}
+	function onSongRetry(event:ScriptEvent):Void {
+		super.onSongRetry(event);
+
+		if (game.currentSong.id.toLowerCase() != "faker") return;
+
+		if (staticScreen != null && blackOverlay != null) {
+			staticScreen.visible = false;
+		    blackOverlay.visible = false;
 		}
 	}
 }

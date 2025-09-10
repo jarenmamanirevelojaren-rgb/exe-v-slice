@@ -1,0 +1,97 @@
+{
+    "version": "1.0.0",
+    "name": "Boyfriend (Needlemouse)",
+    "assetPath": "characters/needle-bf",
+    "singTime": 4,
+    "isPixel": false,
+    "scale": 0.5,
+    "healthIcon": {
+        "id": "bf",
+        "isPixel": false,
+        "flipX": false,
+        "scale": 1
+    },
+    "animations": [
+        {
+            "name": "singDOWN",
+            "prefix": "singDOWN0",
+            "offsets": [
+                20,
+                -50
+            ]
+        },
+        {
+            "name": "singLEFT",
+            "prefix": "singLEFT0",
+            "offsets": [
+                42,
+                17
+            ]
+        },
+        {
+            "name": "singRIGHT",
+            "prefix": "singRIGHT0",
+            "offsets": [
+                -7,
+                15
+            ]
+        },
+        {
+            "name": "singUP",
+            "prefix": "singUP0",
+            "offsets": [
+                28,
+                28
+            ]
+        },
+        {
+            "name": "singDOWNmiss",
+            "prefix": "singDOWNmiss0",
+            "offsets": [
+                52,
+                -52
+            ]
+        },
+        {
+            "name": "singRIGHTmiss",
+            "prefix": "singRIGHTmiss0",
+            "offsets": [
+                -1,
+                46
+            ]
+        },
+        {
+            "name": "singLEFTmiss",
+            "prefix": "singLEFTmiss0",
+            "offsets": [
+                52,
+                20
+            ]
+        },
+        {
+            "name": "singUPmiss",
+            "prefix": "singUPmiss0",
+            "offsets": [
+                27,
+                35
+            ]
+        },
+        {
+            "name": "danceRight",
+            "prefix": "idle",
+            "offsets": [
+                0,
+                0
+            ]
+        },
+        {
+            "name": "danceLeft",
+            "prefix": "idle",
+            "offsets": [
+                0,
+                0
+            ]
+        }
+    ],
+    "flipX": true
+}

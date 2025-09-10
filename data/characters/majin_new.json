@@ -1,0 +1,82 @@
+{
+	"danceEvery": 1,
+	"renderType": "sparrow",
+	"offsets": [
+		0,
+		-60
+	],
+	"version": "1.0.0",
+	"scale": 1.4,
+	"cameraOffsets": [
+		-50,
+		50
+	],
+	"flipX": false,
+	"name": "Majin Sonic (New / OG)",
+	"singTime": 6,
+	"isPixel": false,
+	"healthIcon": {
+		"isPixel": false,
+		"offsets": [
+			0,
+			0
+		],
+		"scale": 1,
+		"id": "majin-og",
+		"flipX": false
+	},
+	"assetPath": "characters/MajinOG",
+	"generatedBy": "Nova Character Editor REFRESHED v0.1.2",
+	"animations": [
+		{
+			"offsets": [
+				-38,
+				42
+			],
+			"frameRate": 24,
+			"prefix": "Majin_IDLE",
+			"name": "idle",
+			"looped": true
+		},
+		{
+			"offsets": [
+				-17,
+				116
+			],
+			"frameRate": 32,
+			"prefix": "Majin_UP",
+			"name": "singUP",
+			"looped": false
+		},
+		{
+			"offsets": [
+				14,
+				-23
+			],
+			"frameRate": 32,
+			"prefix": "Majin_DOWN",
+			"name": "singDOWN",
+			"looped": false
+		},
+		{
+			"offsets": [
+				152,
+				43
+			],
+			"frameRate": 32,
+			"prefix": "Majin_LEFT",
+			"name": "singLEFT",
+			"looped": false
+		},
+		{
+			"offsets": [
+				-40,
+				7
+			],
+			"frameRate": 32,
+			"prefix": "Majin_RIGHT",
+			"name": "singRIGHT",
+			"looped": false
+		}
+	]
+}

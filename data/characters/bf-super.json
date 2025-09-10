@@ -1,0 +1,238 @@
+{
+	"version": "1.0.0",
+	"offsets": [
+		0,
+		40
+	],
+	"renderType": "sparrow",
+	"danceEvery": 1,
+	"scale": 1,
+	"name": "Boyfriend (Super)",
+	"flipX": true,
+	"cameraOffsets": [
+		0,
+		50
+	],
+	"isPixel": false,
+	"singTime": 4,
+	"startingAnimation": "idle",
+	"assetPath": "characters/Super_BoyFriend_Assets",
+	"healthIcon": {
+		"isPixel": false,
+		"offsets": [
+			0,
+			0
+		],
+		"scale": 1,
+		"id": "bf-super",
+		"flipX": false
+	},
+	"animations": [
+		{
+			"flipY": false,
+			"offsets": [
+				7,
+				2
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE LEFT MISS",
+			"flipX": false,
+			"name": "singLEFTmiss",
+			"looped": false
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				7,
+				-76
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE DOWN MISS",
+			"flipX": false,
+			"name": "singDOWNmiss",
+			"looped": false
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				-14,
+				27
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE UP MISS",
+			"flipX": false,
+			"name": "singUPmiss",
+			"looped": false
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				-55,
+				2
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE RIGHT MISS",
+			"flipX": false,
+			"name": "singRIGHTmiss",
+			"looped": false
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				9,
+				2
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE LEFT instance 1",
+			"flipX": false,
+			"name": "singLEFT",
+			"looped": false
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				16,
+				-85
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE DOWN instance 1",
+			"flipX": false,
+			"name": "singDOWN",
+			"looped": false
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				-9,
+				32
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE UP instance 1",
+			"flipX": false,
+			"name": "singUP",
+			"looped": false
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				-55,
+				2
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE RIGHT instance 1",
+			"flipX": false,
+			"name": "singRIGHT",
+			"looped": false
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 24,
+			"frameIndices": [
+				8,
+				9,
+				10,
+				11
+			],
+			"prefix": "BF Super idle dance instance 1",
+			"flipX": false,
+			"name": "idle-loop",
+			"looped": true
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 24,
+			"prefix": "BF Super idle dance",
+			"flipX": false,
+			"name": "idle",
+			"looped": false
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				-55,
+				2
+			],
+			"frameRate": 24,
+			"frameIndices": [
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14
+			],
+			"prefix": "BF NOTE RIGHT instance 1",
+			"flipX": false,
+			"name": "singRIGHT-loop",
+			"looped": true
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				-183,
+				205
+			],
+			"frameRate": 24,
+			"frameIndices": [
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14
+			],
+			"prefix": "BF NOTE DOWN instance 1",
+			"flipX": false,
+			"name": "singDOWN-loop",
+			"looped": true
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				-9,
+				32
+			],
+			"frameRate": 24,
+			"frameIndices": [
+				7,
+				8,
+				9,
+				14
+			],
+			"prefix": "BF NOTE UP instance 1",
+			"flipX": false,
+			"name": "singUP-loop",
+			"looped": true
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				9,
+				2
+			],
+			"frameRate": 24,
+			"frameIndices": [
+				11,
+				8,
+				9,
+				10
+			],
+			"prefix": "BF NOTE LEFT instance 1",
+			"flipX": false,
+			"name": "singLEFT-loop",
+			"looped": true
+		}
+	]
+}

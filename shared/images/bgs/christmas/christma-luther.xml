@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="christma-luther.png">
+	<!-- Created with Adobe Animate version 21.0.7.42652 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Luther0000" x="4" y="4" width="747" height="1092" frameX="0" frameY="-16" frameWidth="747" frameHeight="1108"/>
+	<SubTexture name="Luther0001" x="4" y="4" width="747" height="1092" frameX="0" frameY="-16" frameWidth="747" frameHeight="1108"/>
+	<SubTexture name="Luther0002" x="755" y="4" width="713" height="1098" frameX="-17" frameY="-9" frameWidth="747" frameHeight="1108"/>
+	<SubTexture name="Luther0003" x="1472" y="4" width="703" height="1102" frameX="-22" frameY="-5" frameWidth="747" frameHeight="1108"/>
+	<SubTexture name="Luther0004" x="2179" y="4" width="704" height="1107" frameX="-21" frameY="0" frameWidth="747" frameHeight="1108"/>
+	<SubTexture name="Luther0005" x="2179" y="4" width="704" height="1107" frameX="-21" frameY="0" frameWidth="747" frameHeight="1108"/>
+	<SubTexture name="Luther0006" x="2179" y="4" width="704" height="1107" frameX="-21" frameY="0" frameWidth="747" frameHeight="1108"/>
+	<SubTexture name="Luther0007" x="2179" y="4" width="704" height="1107" frameX="-21" frameY="0" frameWidth="747" frameHeight="1108"/>
+	<SubTexture name="Luther0008" x="2179" y="4" width="704" height="1107" frameX="-21" frameY="0" frameWidth="747" frameHeight="1108"/>
+	<SubTexture name="Luther0009" x="2179" y="4" width="704" height="1107" frameX="-21" frameY="0" frameWidth="747" frameHeight="1108"/>
+	<SubTexture name="Luther0010" x="2179" y="4" width="704" height="1107" frameX="-21" frameY="0" frameWidth="747" frameHeight="1108"/>
+	<SubTexture name="Luther0011" x="2179" y="4" width="704" height="1107" frameX="-21" frameY="0" frameWidth="747" frameHeight="1108"/>
+	<SubTexture name="Luther0012" x="2179" y="4" width="704" height="1107" frameX="-21" frameY="0" frameWidth="747" frameHeight="1108"/>
+	<SubTexture name="Luther0013" x="2179" y="4" width="704" height="1107" frameX="-21" frameY="0" frameWidth="747" frameHeight="1108"/>
+	<SubTexture name="Luther0014" x="2179" y="4" width="704" height="1107" frameX="-21" frameY="0" frameWidth="747" frameHeight="1108"/>
+</TextureAtlas>

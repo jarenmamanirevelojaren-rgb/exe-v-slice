@@ -1,0 +1,49 @@
+{
+    "assetPath": "characters/Main2GF",
+    "name": "Girlfriend (Encore)",
+    "singTime": 4,
+    "version": "1.0.0",
+    "scale": 0.9,
+    "flipX": false,
+    "isPixel": false,
+    "offsets": [
+        -20,
+        -35
+    ],
+    "cameraOffsets": [
+        0,
+        0
+    ],
+    "healthIcon": {
+        "id": "gf",
+        "offsets": [
+            0,
+            0
+        ],
+        "flipX": false,
+        "isPixel": false,
+        "scale": 1
+    },
+    "animations": [
+        {
+            "name": "danceLeft",
+            "prefix": "DanceLeft",
+            "looped": false,
+            "offsets": [
+                -102,
+                -109
+            ],
+            "frameRate": 20
+        },
+        {
+            "name": "danceRight",
+            "prefix": "DanceRight",
+            "looped": false,
+            "offsets": [
+                -106,
+                -109
+            ],
+            "frameRate": 20
+        }
+    ]
+}

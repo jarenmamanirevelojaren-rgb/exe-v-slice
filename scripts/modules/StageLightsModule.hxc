@@ -1,0 +1,169 @@
+import flixel.FlxG;
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+import funkin.play.PlayState;
+import funkin.modding.module.Module;
+
+class StageLightsModule extends Module
+{
+	/* Stage Lights Event Handler
+	 * This event works similarly to Psych Engine's "Blammed Lights" event
+	 * Some code is also used from SlightlySimple's "Blammed Lights in V-Slice" mod
+	 * However, this event is more flexible and allows for custom colors
+	 * as well as preset colors.
+	*/
+
+	var lightsOn = false;
+	var lightColor = 0;
+	var allColorIndexes = [0xFF31A2FD, 0xFF31FD8C, 0xFFF794F7, 0xFFF96D63, 0xFFFBA633];
+	var allWindows = [];
+	var lightShader = null;
+
+	public function new()
+	{
+		super('StageLightsModule');
+	}
+
+	public function onStateChangeEnd(event)
+	{
+		if (Std.isOfType(event.targetState, PlayState))
+		{
+			lightsOn = false;
+
+			allWindows = [];
+			for (i in 0...5)
+			{
+				if (PlayState.instance.currentStage.getNamedProp('lights' + i) != null)
+					allWindows.push(PlayState.instance.currentStage.getNamedProp('lights' + i));
+			}
+			if (allWindows.length > 0 && allWindows[0].shader != null)
+				lightShader = allWindows[0].shader;
+		}
+	}
+
+	function onSongRetry(event)
+	{
+		super.onSongRetry(event);
+
+		if (lightsOn)
+			turnLightsOff();
+	}
+
+	public function handleEvent(data)
+	{
+		if (PlayState.instance == null || PlayState.instance.currentStage == null) return;
+
+		var chars = [];
+		for (k in PlayState.instance.currentStage.characters.keys())
+			chars.push(PlayState.instance.currentStage.characters[k]);
+		
+		// Special handling for egglair stage - treat StarvedSonicDead as a character
+		var specialProps = [];
+		if (PlayState.instance.currentStage.id == "egglair")
+		{
+			var starvedSonicDead = PlayState.instance.currentStage.getNamedProp("StarvedSonicDead");
+			if (starvedSonicDead != null)
+				specialProps.push(starvedSonicDead);
+		}
+
+		if (data.value.enabled)
+		{
+			var targetColor:Int;
+			var colorIndex:Int = -1;
+
+			// Check if using preset colors or custom color
+			if (data.value.usePreset)
+			{
+				if (data.value.presetColor < 5)
+				{
+					lightColor = data.value.presetColor;
+					colorIndex = lightColor;
+					targetColor = allColorIndexes[colorIndex];
+				}
+				else
+				{
+					// Random preset color
+					if (lightsOn)
+						lightColor = FlxG.random.int(0, 4, [lightColor]);
+					else
+						lightColor = FlxG.random.int(0, 4);
+					colorIndex = lightColor;
+					targetColor = allColorIndexes[colorIndex];
+				}
+			}
+			else
+			{
+				var colorStr = data.value.color;
+				if (colorStr.charAt(0) == '#')
+					colorStr = colorStr.substring(1);
+				
+				if (colorStr.length == 6)
+					colorStr = "FF" + colorStr;
+				
+				targetColor = Std.parseInt("0x" + colorStr);
+				if (targetColor == null)
+					targetColor = 0xFF31A2FD; // fallback to blue
+			}
+
+			if (!lightsOn)
+			{
+				PlayState.instance.currentStage.forEachAlive(function(m) {
+					if (!chars.contains(m) && !allWindows.contains(m) && !specialProps.contains(m))
+						FlxTween.color(m, 1, 0xFFFFFFFF, 0xFF000000, { ease: FlxEase.quadInOut } );
+				});
+				lightsOn = true;
+			}
+
+			for (c in chars)
+				FlxTween.color(c, 1, c.color, targetColor, { ease: FlxEase.quadInOut } );
+			
+			// Apply color change to special props (like StarvedSonicDead in egglair)
+			for (sp in specialProps)
+				FlxTween.color(sp, 1, sp.color, targetColor, { ease: FlxEase.quadInOut } );
+
+			for (w in allWindows)
+			{
+				w.visible = false;
+				w.shader = null;
+			}
+
+			if (data.value.usePreset && colorIndex >= 0 && colorIndex < allWindows.length)
+				allWindows[colorIndex].visible = true;
+		}
+		else if (lightsOn)
+			turnLightsOff();
+	}
+
+	function turnLightsOff()
+	{
+		var chars = [];
+		for (k in PlayState.instance.currentStage.characters.keys())
+			chars.push(PlayState.instance.currentStage.characters[k]);
+		
+		// Special handling for egglair stage - treat StarvedSonicDead as a character
+		var specialProps = [];
+		if (PlayState.instance.currentStage.id == "egglair")
+		{
+			var starvedSonicDead = PlayState.instance.currentStage.getNamedProp("StarvedSonicDead");
+			if (starvedSonicDead != null)
+				specialProps.push(starvedSonicDead);
+		}
+
+		PlayState.instance.currentStage.forEachAlive(function(m) {
+			if (!chars.contains(m) && !allWindows.contains(m) && !specialProps.contains(m))
+				FlxTween.color(m, 1, 0xFF000000, 0xFFFFFFFF, { ease: FlxEase.quadInOut } );
+		});
+
+		for (c in chars)
+			FlxTween.color(c, 1, c.color, 0xFFFFFFFF, { ease: FlxEase.quadInOut } );
+		
+		// Reset color for special props (like StarvedSonicDead in egglair)
+		for (sp in specialProps)
+			FlxTween.color(sp, 1, sp.color, 0xFFFFFFFF, { ease: FlxEase.quadInOut } );
+
+		lightsOn = false;
+
+		for (w in allWindows)
+			w.shader = lightShader;
+	}
+}

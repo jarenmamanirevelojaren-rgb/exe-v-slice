@@ -1,0 +1,79 @@
+{
+    "assetPath": "characters/LordX",
+    "name": "Lord X (Old)",
+    "singTime": 4,
+    "version": "1.0.0",
+    "scale": 1.4,
+    "flipX": false,
+    "isPixel": false,
+    "offsets": [
+        0,
+        180
+    ],
+    "cameraOffsets": [
+        -220,
+        -60
+    ],
+    "healthIcon": {
+        "id": "lord-x",
+        "offsets": [
+            0,
+            0
+        ],
+        "flipX": false,
+        "isPixel": false,
+        "scale": 1
+    },
+    "animations": [
+        {
+            "name": "idle",
+            "prefix": "sonicX IDLE",
+            "looped": false,
+            "offsets": [
+                56,
+                139
+            ],
+            "frameRate": 26
+        },
+        {
+            "name": "singDOWN",
+            "prefix": "sonicx DOWN",
+            "looped": false,
+            "offsets": [
+                80,
+                48
+            ],
+            "frameRate": 24
+        },
+        {
+            "name": "singUP",
+            "prefix": "sonicx UP",
+            "looped": false,
+            "offsets": [
+                65,
+                239
+            ],
+            "frameRate": 26
+        },
+        {
+            "name": "singRIGHT",
+            "prefix": "sonicx RIGHT",
+            "looped": false,
+            "offsets": [
+                95,
+                86
+            ],
+            "frameRate": 26
+        },
+        {
+            "name": "singLEFT",
+            "prefix": "sonicx LEFT",
+            "looped": false,
+            "offsets": [
+                110,
+                140
+            ],
+            "frameRate": 26
+        }
+    ]
+}

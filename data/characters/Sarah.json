@@ -1,0 +1,57 @@
+{
+    "version": "1.0.0",
+    "name": "Sarah",
+    "assetPath": "characters/Sarah",
+    "singTime": 4,
+    "isPixel": false,
+    "scale": 1.2,
+    "healthIcon": {
+        "id": "mom",
+        "isPixel": false,
+        "flipX": false,
+        "scale": 1
+    },
+    "animations": [
+        {
+            "name": "idle",
+            "prefix": "Sarah_IDLE",
+            "offsets": [
+                -190,
+                -100
+            ]
+        },
+        {
+            "name": "singLEFT",
+            "prefix": "Sarah_LEFT",
+            "offsets": [
+                -60,
+                -195
+            ]
+        },
+        {
+            "name": "singRIGHT",
+            "prefix": "Sarah_RIGHT",
+            "offsets": [
+                -40,
+                -214
+            ]
+        },
+        {
+            "name": "singDOWN",
+            "prefix": "Sarah_DOWN",
+            "offsets": [
+                -40,
+                -118
+            ]
+        },
+        {
+            "name": "singUP",
+            "prefix": "Sarah_UP",
+            "offsets": [
+                -208,
+                -70
+            ]
+        }
+    ],
+    "flipX": false
+}

@@ -1,0 +1,79 @@
+{
+    "assetPath": "characters/Needlemouse-p2",
+    "name": "Needlemouse (Corrupted)",
+    "singTime": 4,
+    "version": "1.0.0",
+    "scale": 1,
+    "flipX": false,
+    "isPixel": false,
+    "offsets": [
+        30,
+        70
+    ],
+    "cameraOffsets": [
+        0,
+        0
+    ],
+    "healthIcon": {
+        "id": "needlemouse-p2",
+        "offsets": [
+            0,
+            0
+        ],
+        "flipX": false,
+        "isPixel": false,
+        "scale": 1
+    },
+    "animations": [
+        {
+            "name": "idle",
+            "prefix": "idle",
+            "looped": false,
+            "offsets": [
+                -190,
+                -289
+            ],
+            "frameRate": 24
+        },
+        {
+            "name": "singLEFT",
+            "prefix": "left",
+            "looped": false,
+            "offsets": [
+                77,
+                -356
+            ],
+            "frameRate": 24
+        },
+        {
+            "name": "singRIGHT",
+            "prefix": "right",
+            "looped": false,
+            "offsets": [
+                -167,
+                -346
+            ],
+            "frameRate": 24
+        },
+        {
+            "name": "singUP",
+            "prefix": "up",
+            "looped": false,
+            "offsets": [
+                -118,
+                -184
+            ],
+            "frameRate": 24
+        },
+        {
+            "name": "singDOWN",
+            "prefix": "down",
+            "looped": false,
+            "offsets": [
+                -70,
+                -389
+            ],
+            "frameRate": 24
+        }
+    ]
+}

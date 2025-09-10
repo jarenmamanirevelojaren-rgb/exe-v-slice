@@ -1,0 +1,200 @@
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+import funkin.play.PlayState;
+import funkin.graphics.FunkinSprite;
+import funkin.modding.module.Module;
+import funkin.modding.module.ModuleHandler;
+
+class SongIntroCards extends Module {
+    public var supportedSongs = [
+        'too-slow', 'you-cant-run', 'triple-trouble',
+        'final-escape', 'endless', 'cycles', 'execution',
+        'faker', 'black-sun', 'relax', 'round-a-bout',
+        'spike-trap', 'prey', 'fight-or-flight', 'slaybells'
+    ];
+
+    public var doSongIntroCards:Bool = true;
+
+    public var songIntroCircle:FunkinSprite;
+    public var songIntroText:FunkinSprite;
+    public var blackBackground:FlxSprite;
+    public var songName:String;
+
+    var hasPlayedCutscene:Bool;
+
+    public function new() {
+        super("SongIntroCards");
+    }
+
+    override function onCreate(event:ScriptEvent):Void {
+        super.onCreate(event);
+
+        doSongIntroCards = ModuleHandler.getModule("EXEOptions").scriptGet("doSongIntroCards");
+    }
+
+    function introAssets():Void {
+        if (PlayState.instance == null || PlayState.instance.currentSong == null) return;
+
+        songName = PlayState.instance.currentSong.id.toLowerCase();
+
+        var circleAsset = '';
+        var textAsset = '';
+        switch(songName) {
+            case 'too-slow':
+                circleAsset = 'StartScreens/Circle-too-slow';
+                textAsset = 'StartScreens/Text-too-slow';
+            case 'you-cant-run':
+                circleAsset = 'StartScreens/Circle-you-cant-run';
+                textAsset = 'StartScreens/Text-you-cant-run';
+            case 'triple-trouble':
+                circleAsset = 'StartScreens/Circle-triple-trouble';
+                textAsset = 'StartScreens/Text-triple-trouble';
+            case 'final-escape':
+                circleAsset = 'StartScreens/Circle-final-escape';
+                textAsset = 'StartScreens/Text-final-escape';
+            case 'endless':
+                circleAsset = 'StartScreens/Circle-endless';
+                textAsset = 'StartScreens/Text-endless';
+            case 'cycles':
+                circleAsset = 'StartScreens/Circle-cycles';
+                textAsset = 'StartScreens/Text-cycles';
+            case 'execution':
+                circleAsset = 'StartScreens/Circle-execution';
+                textAsset = 'StartScreens/Text-execution';
+            case 'faker':
+                circleAsset = 'StartScreens/Circle-faker';
+                textAsset = 'StartScreens/Text-faker';
+            case 'black-sun':
+                circleAsset = 'StartScreens/Circle-black-sun';
+                textAsset = 'StartScreens/Text-black-sun';
+            case 'relax':
+                circleAsset = 'StartScreens/Circle-relax';
+                textAsset = 'StartScreens/Text-relax';
+            case 'round-a-bout':
+                circleAsset = 'StartScreens/Circle-round-a-bout';
+                textAsset = 'StartScreens/Text-round-a-bout';
+            case 'spike-trap':
+                circleAsset = 'StartScreens/Circle-spike-trap';
+                textAsset = 'StartScreens/Text-spike-trap';
+            case 'prey':
+                circleAsset = 'StartScreens/Circle-prey';
+                textAsset = 'StartScreens/Text-prey';
+            case 'fight-or-flight':
+                circleAsset = 'StartScreens/Circle-fight-or-flight';
+                textAsset = 'StartScreens/Text-fight-or-flight';
+            case 'slaybells':
+                circleAsset = 'StartScreens/Circle-slaybells';
+                textAsset = 'StartScreens/Text-slaybells';
+            default:
+                circleAsset = 'StartScreens/Circle-too-slow';
+                textAsset = 'StartScreens/Text-too-slow';
+        }
+
+        if (songIntroCircle != null) songIntroCircle.destroy();
+        songIntroCircle = FunkinSprite.create(0, 0, circleAsset);
+        songIntroCircle.cameras = [PlayState.instance.camCutscene];
+        songIntroCircle.zIndex = 1000;
+        songIntroCircle.visible = false;
+        PlayState.instance.add(songIntroCircle);
+
+        if (songIntroText != null) songIntroText.destroy();
+        songIntroText = FunkinSprite.create(0, 0, textAsset);
+        songIntroText.cameras = [PlayState.instance.camCutscene];
+        songIntroText.zIndex = 1000;
+        songIntroText.visible = false;
+        PlayState.instance.add(songIntroText);
+
+        if (blackBackground != null) blackBackground.destroy();
+        blackBackground = new FlxSprite(0, 0);
+        blackBackground.makeGraphic(FlxG.width, FlxG.height, 0xFF000000);
+        blackBackground.cameras = [PlayState.instance.camCutscene];
+        blackBackground.zIndex = 999;
+        blackBackground.visible = false;
+        PlayState.instance.add(blackBackground);
+    }
+
+    override public function onCountdownStart(event:CountdownScriptEvent):Void {
+        super.onCountdownStart(event);
+
+        doSongIntroCards = ModuleHandler.getModule("EXEOptions").scriptGet("doSongIntroCards");
+
+        if (!doSongIntroCards) return;
+
+        if (PlayState.instance == null || PlayState.instance.currentSong == null) return;
+        songName = PlayState.instance.currentSong.id.toLowerCase();
+
+        introAssets();
+
+        if (supportedSongs.indexOf(songName) != -1) {
+            if (blackBackground != null) blackBackground.visible = true;
+            startIntro();
+        }
+    }
+
+    override public function onSongRetry():Void {
+        super.onSongRetry();
+
+        doSongIntroCards = ModuleHandler.getModule("EXEOptions").scriptGet("doSongIntroCards");
+
+        if (!doSongIntroCards) return;
+
+        if (PlayState.instance == null || PlayState.instance.currentSong == null) return;
+        songName = PlayState.instance.currentSong.id.toLowerCase();
+        
+        if (supportedSongs.indexOf(songName) != -1) {
+            if (blackBackground != null) blackBackground.visible = true;
+            startIntro();
+        }
+    }
+
+    public function startIntro():Void {
+        if (songIntroCircle != null) {
+            songIntroCircle.x = FlxG.width;
+            songIntroCircle.alpha = 1;
+            songIntroCircle.visible = true;
+        }
+        if (songIntroText != null) {
+            songIntroText.x = -songIntroText.width;
+            songIntroText.alpha = 1;
+            songIntroText.visible = true;
+        }
+
+        if (blackBackground != null) {
+            blackBackground.visible = true;
+            blackBackground.alpha = 1;
+        }
+
+        FlxTween.tween(songIntroCircle, {x: (FlxG.width / 2) - (songIntroCircle.width / 2)}, 1.5, {
+            ease: FlxEase.quadOut,
+            onComplete: function(tween:FlxTween) {
+                FlxTween.tween(songIntroCircle, {alpha: 0}, 1, {
+                    ease: FlxEase.quadOut,
+                    onComplete: function(tween:FlxTween) {
+                        songIntroCircle.visible = false;
+                    }
+                });
+            }
+        });
+
+        FlxTween.tween(songIntroText, {x: (FlxG.width / 2) - (songIntroText.width / 2)}, 1.5, {
+            ease: FlxEase.quadOut,
+            onComplete: function(tween:FlxTween) {
+                FlxTween.tween(songIntroText, {alpha: 0}, 1, {
+                    ease: FlxEase.quadOut,
+                    onComplete: function(tween:FlxTween) {
+                        songIntroText.visible = false;
+                    }
+                });
+
+                FlxTween.tween(blackBackground, {alpha: 0}, 1, {
+                    ease: FlxEase.quadOut,
+                    onComplete: function(tween:FlxTween) {
+                        blackBackground.visible = false;
+                    }
+                });
+            }
+        });
+    }
+}

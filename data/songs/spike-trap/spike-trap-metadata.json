@@ -1,0 +1,46 @@
+{
+  "version": "2.2.4",
+  "songName": "Spike Trap",
+  "artist": "MiiniStar / KIRB0",
+  "looped": false,
+  "offsets": {
+    "instrumental": 0,
+    "altInstrumentals": {    },
+    "vocals": {    },
+    "altVocals": {    }
+  },
+  "playData": {
+    "songVariations": [    ],
+    "album": "exeVol3OST",
+    "difficulties": [
+      "easy",
+      "normal",
+      "hard"
+    ],
+    "characters": {
+      "player": "bf-needle",
+      "girlfriend": "gf-needlemouse",
+      "opponent": "needlemouse-corrupted",
+      "instrumental": "",
+      "opponentVocals": [
+        "needlemouse-corrupted"
+      ],
+      "playerVocals": [
+        "bf-needle"
+      ]
+    },
+    "stage": "marbleZone",
+    "noteStyle": "exeFourKey",
+    "ratings": {"easy": 4, "normal": 5, "hard": 6},
+    "previewStart": 0,
+    "previewEnd": 15000
+  },
+  "generatedBy": "Friday Night Funkin' - v0.6.4",
+  "timeFormat": "ms",
+  "timeChanges": [
+    {
+      "t": 0,
+      "bpm": 164
+    }
+  ]
+}
